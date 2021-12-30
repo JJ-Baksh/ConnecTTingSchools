@@ -7,7 +7,7 @@ import pandas as pd
 
 class Schools:
     def __init__(self):
-        self.cluster = MongoClient(os.environ('3020_DB_uri'), connectTimeoutMS=3000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
+        self.cluster = MongoClient(os.environ['3020_DB_uri'], connectTimeoutMS=3000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
         self.db = self.cluster['ECNG3020']['Schools']
 
     

@@ -9,7 +9,7 @@ from modules.map import addCoverageMap, convertTemplate
 
 # initialize project components
 app = Flask(__name__)                                               # create Flask application
-app.config['SECRET_KEY'] = os.environ('3020_flask_app_secret_key')  # required for forms collection
+app.config['SECRET_KEY'] = os.environ['3020_flask_app_secret_key']  # required for forms collection
 
 
 
