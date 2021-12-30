@@ -1,0 +1,170 @@
+{% extends "index.html" %}
+
+{% block title %} ConnecTTing Schools: Schools Listing {% endblock %}
+
+
+{% block navlinks %}
+{% if user %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome, {{user}}</span>
+{% else %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome Unauthorized</span>
+{% endif%}
+<a class="nav-link" aria-current="page" href="/home">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link dropdown-toggle active" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
+<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+    <a class="dropdown-item" href="#">Your Projects</a>
+    <a class="dropdown-item active" href="#">School Listing</a>
+</div>
+<a class="nav-link" href="/logout">Log out</a>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="text-center my-5">
+    <h1> School Listing </h1>
+</div>
+
+
+<div class="container-auto" style="margin-right: 95px;margin-left: 95px">
+    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+        <div style="width:40%">
+            {% if list %}
+                <input type="text" id="search_bar" class="form-control" onkeyup="searchSchools()" placeholder="Search" aria-label="Search">
+            {% else %}
+                <input type="text" id="search_bar" class="form-control" onkeyup="searchSchools()" placeholder="Search" aria-label="Search" disabled>
+            {% endif%}
+        </div>
+        
+        <div>
+            <a href="/schools/add" class="btn btn-primary"> <b> + </b> </a>
+        </div>
+    </div>
+
+    <div class="overflow-auto border border-secondary border-2 mt-2">
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    
+                    <div class="col-4">
+                        <span><b>School Name</b></span>
+                    </div>
+                    
+                    <div class="col-3">
+                        <b>Region*</b>
+                    </div>
+
+                    <div class="col-3">
+                        <b>Sub-region*</b>
+                    </div>
+
+                    <div class="col-2 d-flex justify-content-center">
+                        <b>Actions</b>
+                    </div> 
+                </div>
+            </li>
+        </ul>
+        {% if list %}
+        <div class="overflow-auto" style="height: 550px">
+            <ul class="list-group">
+                {% for i in list %}
+
+                <li class="list-group-item school_item border border-secondary border-1">
+                    <div class="row btn-toolbar" style='align-items: center;'>
+                        
+                        <div class="school_name col-4">
+                            <span>{{ i.school_name }}</span>
+                        </div>
+                        
+                        <div class="school_region_subregion col-3">
+                            {{ i.region }}
+                        </div>
+
+                        <div class="school_region_subregion col-3">
+                            {{ i.subregion }}
+                        </div>
+
+                        <div class="col-2 d-grid gap-3 d-md-flex justify-content-md-center">
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{i._id}}" class="btn btn-primary me-md-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                </svg>
+                            </button>  
+                            <div class="modal fade" id="edit{{i._id}}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirm Edit</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"> Do you wish to edit {{ i.school_name }}?</div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="" method="post">
+                                                <button type="submit" name="edit" value="{{ i.school_name }}" class="btn btn-primary">Continue</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{i._id}}" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+                            <div class="modal fade" id="delete{{i._id}}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirm Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"> Do you wish to delete {{ i.school_name }}? This action cannot be undone. </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="" method="post">
+                                                <button type="submit" name="delete" value="{{ i.school_name }}" class="btn btn-primary">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> 
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        </div>
+    {% else %}
+        <div class="overflow-auto d-flex align-items-center justify-content-center" style="height: 600px">
+            <span class="navbar-text ms-2"><h4>There are currently no schools in the database.</h4></span>
+        </div>     
+    {% endif %}
+
+    </div>
+    <div style='font-size: 12px;margin-top: 9px;'>
+        <b>* Region refer to geographically distinct areas which share local governmenting body. Sub-regions are geographically distinct communities within each region as outlined by the CSO. The region and sub-region categories are based on the categorizations used by the <a href="https://cso.gov.tt/subjects/population-and-vital-statistics/population/">Central Statistical Office (CSO)</a></b>
+    </div>
+
+</div>
+
+<script>
+    function searchSchools() {
+        var input = document.getElementById("search_bar").value.toLowerCase()
+        var items = document.getElementsByClassName("school_item")
+        var school = document.getElementsByClassName("school_name")
+
+        for (i = 0; i < items.length; i++) {
+            if (!school[i].innerHTML.toLowerCase().includes(input)) {
+                items[i].style.display="none";
+            }
+            else {
+                items[i].style.display="list-item";                 
+            }
+        }
+    }
+</script>
+
+{% endblock %}

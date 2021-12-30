@@ -1,0 +1,1128 @@
+{% extends "index.html" %}
+
+{% block title %} ConnecTTing Schools: Edit School {% endblock %}
+
+
+{% block navlinks %}
+{% if user %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome, {{user}}</span>
+{% else %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome Unauthorized</span>
+{% endif%}
+<a class="nav-link" aria-current="page" href="/home">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link dropdown-toggle active" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
+<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+    <a class="dropdown-item" href="#">Your Projects</a>
+    <a class="dropdown-item active" href="/schools">School Listing</a>
+</div>
+<a class="nav-link" href="/logout">Log out</a>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="text-center my-5"> <h1> Update School </h1> </div>
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-8 offset-sm-2">
+            <form action="" method="post" onsubmit="return submitForm()">
+        
+                <div class="mb-3">
+                    <span><h5>School Identification</h5></span>
+                </div>
+        
+                <div class="input-group mb-3" style="display: none">
+                    <input type="text" name="_id" class="form-control" value="{{ school_data_dB['_id'] }}">
+                </div>
+        
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Name of School</span>
+                    <input type="text" id='sch_name' name="school_name" class="form-control" pattern="[a-zA-Z\s.]*" title="The school name should only contain non-numeric characters" value="{{ school_data_dB['school_name'] }}" required>
+                </div>
+                
+                <div class="input-group mb-3">
+        
+                    <span class="input-group-text">Region ></span>
+                    <input class="form-select" list='region_list' name="region" id='region' onchange="populate('this.id', 'subregion_list')" value="{{ school_data_dB['region'] }}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="<b>Region</b> refer to geographically distinct areas which share local governmenting body." required>
+                    <datalist id='region_list'>
+                        <option value='Arima'>Trinidad - Arima</option>
+                        <option value='Chaguanas'>Trinidad - Chaguanas</option>
+                        <option value='Couva/Tabaquite/Talparo'>Trinidad - Couva/Tabaquite/Talparo</option>
+                        <option value='Diego Martin'>Trinidad - Diego Martin</option>
+                        <option value='Penal/Debe'>Trinidad - Penal/Debe</option>
+						<option value='Point Fortin'>Trinidad - Point Fortin</option>
+						<option value='Port of Spain'>Trinidad - Port of Spain</option>
+                        <option value='Princes Town'>Trinidad - Princes Town</option>
+                        <option value='Rio Claro/Mayaro'>Trinidad - Rio Claro/Mayaro</option>
+                        <option value='Sangre Grande'>Trinidad - Sangre Grande</option>
+						<option value='San Fernando'>Trinidad - San Fernando</option>
+                        <option value='San Juan/Laventille'>Trinidad - San Juan/Laventille</option>
+                        <option value='Siparia'>Trinidad - Siparia</option>
+                        <option value='Tunapuna/Piarco'>Trinidad - Tunapuna/Piarco</option>    
+                        <option value='St Andrews'>Tobago - St Andrews</option>
+                        <option value='St David'>Tobago - St David</option>
+                        <option value='St George'>Tobago - St George</option>
+                        <option value='St John'>Tobago - St John</option>
+                        <option value='St Mary'>Tobago - St Mary</option>
+                        <option value='St Paul'>Tobago - St Paul</option>
+                        <option value='St Patrick'>Tobago - St Patrick</option>
+                    </datalist>
+        
+                    <span class="input-group-text">Sub-region ></span>
+					<input class='form-control' name='subregion' list='subregion_list' id='subregion' value="{{school_data_dB['subregion']}}" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="right" title="<b>Sub-regions</b> are geographically distinct communities within each region as outlined by the CSO." required>
+                    <datalist id='subregion_list'>
+                    </datalist>
+        
+                </div>
+        
+                <div class="mt-5">
+                    <span><h5>Location</h5></span>
+                </div>
+        
+                <div class="row mb-2" style='align-items: center;'>
+        
+                    <div class="form-check form-check-inline col-lg-3 mb-2 me-3">
+                        <span class="form-check-label">Select a coordinate format:</span>
+                    </div>
+        
+                    <div class="form-check form-check-inline col-2 mb-2 me-5">
+                        <input class="form-check-input" type="radio" name="longlat_type" id="DD" value="dd" onchange="LongLatFormat(this)" checked>
+                        <label class="form-check-label" for="DD"><b>Decimal Degrees</b></label>
+                    </div>
+                    
+                    <div class="form-check form-check-inline col-3 mb-2">
+                        <input class="form-check-input" type="radio" name="longlat_type" id="DDM" value="ddm" onchange="LongLatFormat(this)">
+                        <label class="form-check-label" for="DDM"><b>Degrees Decimal Minutes</b></label>
+                    </div>
+                   
+                    <div class="form-check form-check-inline col-md-3 mb-2">
+                        <input class="form-check-input" type="radio" name="longlat_type" id="DMS" value="dms" onchange="LongLatFormat(this)">
+                        <label class="form-check-label" for="DMS"><b>Degrees Minutes Seconds</b></label>
+                    </div>
+        
+                </div>
+                
+                <div class="row mb-4">
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <span class="input-group-text">Latitude</span>
+                        </div>
+                    </div>
+        
+                    <div class="col offset-md-1 offset-lg-0">
+                        <div class="input-group">
+                            <input type="number" min="-90" max="90" step="any" name="lat_deg" id="lat_deg" class="form-control" value="{{ school_data_dB['latitude'] }}" required>
+                            <span class="input-group-text"><b>°</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col order-1" id='latitude_minutes_col'>
+                        <div class="input-group" id="latitude_minutes_div" hidden>
+                            <input type="number" min="0" max="59.9999" step="any" name="lat_min" id="lat_min" class="form-control">
+                            <span class="input-group-text" id="lat_min_unit"><b>'</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col order-2" id="latitude_seconds_col">
+                        <div class="input-group" id="latitude_seconds_div" hidden>
+                            <input type="number" min="0" max="59.9999" step="any" name="lat_sec" id="lat_sec" class="form-control">
+                            <span class="input-group-text" id="lat_sec_unit"><b>"</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col-1 order-3" id="latitude_cardinal_col">
+                        <div id="latitude_cardinal_div" hidden>
+                            <select name="cardinal_lat" class="form-select" id='cardinal_lat'>
+                                <option value='N'>N</option>
+                                <option value='S'>S</option>
+                            </select>
+                        </div>
+                    </div>
+        
+                </div>
+        
+                <div class="mb-4 row">
+                    <div class="col-md-1">
+                        <div class="input-group">
+                            <span class="input-group-text">Longitude</span>
+                        </div>
+                    </div>
+                   
+                    <div class="col offset-md-1 offset-lg-0">
+                        <div class="input-group">
+                            <input type="number" min="-180" max="180" step="any" name="long_deg" id="long_deg" class="form-control" value="{{ school_data_dB['longitude'] }}" required>
+                            <span class="input-group-text"><b>°</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col order-1" id="longitude_minutes_col">
+                        <div class="input-group" id="longitude_minutes_div" hidden>
+                            <input type="number" min="0" max="59.9999" step="any" name="long_min" id="long_min"  class="form-control">
+                            <span class="input-group-text" id="long_min_unit"><b>'</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col order-2" id="longitude_seconds_col">
+                        <div class="input-group" id="longitude_seconds_div" hidden>
+                            <input type="number" min="0" max="59.9999" step="any" name="long_sec" id="long_sec"  class="form-control">
+                            <span class="input-group-text" id="long_sec_unit"><b>"</b></span>
+                        </div>
+                    </div>
+        
+                    <div class="col-1 order-3" id="longitude_cardinal_col">
+                        <div id="longitude_cardinal_div" hidden>
+                            <select name="cardinal_long" class="form-select" id='cardinal_long'>
+                                <option value='E'>E</option>
+                                <option value='W'>W</option>
+                            </select>
+                        </div>
+        
+                    </div>
+                </div>
+        
+                <div class="mt-5 mb-3">
+                    <span><h5>Infrustructral Data</h5></span>
+                </div>
+        
+                <div class="input-group mb-2">
+                    <span class="input-group-text">Building Length (m)</span>
+                    <input type="number" min="1" max="10000" step="0.1" value="{{ school_data_dB['length'] }}" name="length" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" title="The maximum distance covered by the school in any one direction" required>
+                    <span class="input-group-text">Building Width (m)</span>
+                    <input type="number" min="1" max="10000" step="0.1" value="{{ school_data_dB['width'] }}" name="width" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" title="The maximum distance covered by the school perpendicular to the Length" required>
+                    <span class="input-group-text">No. of Floors</span>
+                    <input type="number" min="1" max="10" step="1" value="{{ school_data_dB['floors'] }}" onkeydown="return event.keyCode !== 190" name="floors" class="form-control" data-bs-toggle="tooltip" data-bs-placement="top" title="The highest floors which shall be occupied" required>
+                </div>
+            
+                <div class="row">
+                    <div class="col-6">
+                        <div class="input-group mb-5 mt-4">
+                            <span class="input-group-text">Access to Electricity</span>
+                            <select class="form-select" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="right" title="Consistent - <b>Constant and reliable</b> electricity at all times. <br>Limited - <b>Inconstant and/or unreliable</b> electricity at most times.<br>None - <b>No access</b> to electricity." name="electricity">
+                                <option value="Consistent" {% if school_data_dB['electricity'] == 'Consistent' %} selected {% endif %} >Consistent</option>
+                                <option value="Limited" {% if school_data_dB['electricity'] == 'Limited' %} selected {% endif %} >Limited</option>
+                                <option value="No" {% if school_data_dB['electricity'] == 'No' %} selected {% endif %} >None</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center">
+                    <button id="subt_button_real" class="btn btn-primary mb-3" onclick="checkName()">Update School and Configure User Device Groups</button>
+					<button id="subt_button_fake" class="btn btn-primary mb-3" disabled hidden>Please wait...</button>
+                </div>
+        
+                <div class="text-center">
+                    <a href="{{ url_for('.schoolListing') }}" class="btn btn-secondary mb-5">Back</a>
+                </div>
+            
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+
+window.onload = populate('region', 'subregion_list')
+
+function populate(r,s) {
+    let region = document.getElementById(r)
+    let subregion = document.getElementById(s)
+    subregion.innerHTML = " "
+    
+	if (region.value == "Arima") {
+        var optionArray = [
+            "Arima Proper",
+            "Calvary Hill",
+            "Carib Homes",
+            "Malabar",
+            "Maturita",
+            "Mount Pleasant",
+            "O'Meara Road",
+			"Tumpuna Road",
+        ]
+    }
+	
+    else if (region.value == "Chaguanas") {
+        var optionArray = [
+            "Chaguanas Proper",
+			"Charlieville",
+			"Cunupia",
+			"Edinburgh 500",
+			"Edinburgh Gardens",
+			"Endeavour Village",
+			"Enterprise",
+			"Esmeralda",
+			"Felicity",
+			"Homeland Gardens",
+			"Jerningham Junction",
+			"Lange Park",
+			"Lendore Village",
+			"Longdenville",
+			"Montrose Village",
+			"Munroe Settlement",
+			"Petersfield",
+			"St. Charles Village",
+			"St. Thomas Village",
+        ]
+    }
+
+    else if (region.value == "Couva/Tabaquite/Talparo") {
+        var optionArray = [
+			"Agostini Village",
+			"Arena",
+			"Bonne Aventure",
+			"Brasso Caparo Village",
+			"Brasso Manuel Junction",
+			"Brasso Tamana",
+			"Brasso Venado",
+			"Brickfield/Navet",
+			"Brothers Road",
+			"California",
+			"Caparo",
+			"Carapichaima",
+			"Cararal",
+			"Carlsen Field",
+			"Chase Village",
+			"Chickland",
+			"Chin Chin",
+			"Claxton Bay",
+			"Coalmine",
+			"Corosal",
+			"Couva Central",
+			"Cunupia",
+			"Dow Village",
+			"Eccles Village",
+			"Edinburgh Village",
+			"Farnum Village",
+			"Flanagin Town",
+			"Forres Park",
+			"Freeport",
+			"Gasparillo",
+			"Gran Couva",
+			"Guaracara",
+			"Hermitage",
+			"Indian Trail",
+			"Las Lomas",
+			"Longdenville",
+			"Macaulay",
+			"Madras Settlement",
+			"Mamoral No. 2",
+			"Margaret",
+			"Mayo",
+			"Mc Bean",
+			"Mount Pleasant",
+			"Mundo Nuevo",
+			"Nancoo Village",
+			"Palmiste",
+			"Parforce",
+			"Pepper Village",
+			"Piparo",
+			"Plaisance Park",
+			"Point Lisas",
+			"Point-a-Pierre",
+			"Poonah",
+			"Preysal",
+			"Ravine Sable",
+			"Riversdale",
+			"San Pedro",
+			"San Raphael/Brazil",
+			"Springland",
+			"St. Andrew's Village",
+			"Tabaquite",
+			"Talparo",
+			"Tamana Road",
+			"Todd's Road",
+			"Todd's Station",
+			"Tortuga",
+			"Welcome",
+			"White Land",
+        ]
+    }
+
+    else if (region.value == "Diego Martin") {
+        var optionArray = [
+			"Alyce Glen",
+			"Bagatelle",
+			"Bayshore",
+			"Beau Pres",
+			"Big Yard",
+			"Blue Basin",
+			"Blue Range",
+			"Boissiere",
+			"Cameron Road",
+			"Carenage",
+			"Chaguaramas",
+			"Champ Elysees",
+			"Covigne",
+			"Diamond Vale",
+			"Dibe/Belle Vue",
+			"Diego Martain Proper",
+			"Fairways",
+			"Fort George",
+			"Four Roads",
+			"Glencoe",
+			"Goodwood Gardens",
+			"Green Hill Village",
+			"Haleland Park/Moka",
+			"Industrial Estate",
+			"La Puerta",
+			"La Seiva",
+			"L'anse Mitan",
+			"Le Platte",
+			"Maraval Proper",
+			"North Post",
+			"Paramin",
+			"Patna Village",
+			"Petit Valley",
+			"Point Cumana",
+			"Powder Magazine",
+			"Rich Plain",
+			"River Estate",
+			"Saut Deau",
+			"Simeon Road",
+			"St. Lucien Road",
+			"Upper St. James",
+			"Victoria Gardens",
+			"Water Hole",
+			"West Moorings",
+        ]
+    } 
+
+    else if (region.value == "Penal/Debe") {
+        var optionArray = [
+            "Friendship",
+			"Barrackpore",
+			"Batchyia Village",
+			"Borde Narve",
+			"Canaan Village Palmiste",
+			"Charlo Village",
+			"Debe Proper",
+			"Diamond",
+			"Duncan Village",
+			"Golconda",
+			"Hermitage Vallage",
+			"La Fortune",
+			"La Romain",
+			"Lengua Village",
+			"Mendez Village",
+			"Monkey Town",
+			"Morne Diablo",
+			"Palmiste",
+			"Penal",
+			"Penal Quinam Beach Road",
+			"Penal Rock Road",
+			"Picton",
+			"Rambert Village",
+			"Rochard Road",
+			"San Francique",
+			"Scott Road Village",
+			"St. Croix Village",
+			"St. John's Village",
+			"Syne Village",
+			"Tulsa Village",
+			"Wellington",
+        ]
+    }
+
+    else if (region.value == "Point Fortin") {
+        var optionArray = [
+			"Cap-de-Ville",
+			"Clifton Hill",
+			"Cochrane",
+			"Egypt Village",
+			"Fanny Village",
+			"Gonzales",
+			"Hollywood",
+			"New Village",
+			"Newlands",
+			"Point Fortin Proper",
+			"Point Ligoure",
+			"Techier Village",
+        ]
+    }
+
+    else if (region.value == "Port of Spain") {
+        var optionArray = [
+            "Belmont",
+            "Cocorite",
+            "East Port of Spain",
+            "Ellerslie Park",
+            "Federation Park",
+            "Gonzales",
+            "Long Circular",
+			"Newtown",
+			"Port of Spain Area",
+			"Port of Spain Proper",
+			"Sealots",
+			"St. Clair",
+			"St. James",
+			"Woodbrook",
+        ]
+    }
+
+    else if (region.value == "Princes Town") {
+        var optionArray = [
+			"Barrackpore",
+			"Basse Terre",
+			"Ben Lomond",
+			"Bon Jean",
+			"Borde Narve",
+			"Broomage",
+			"Brothers Settlement",
+			"Buen Intento",
+			"Canaree",
+			"Cedar Hill",
+			"Cleghorn and Mt. Pleasant",
+			"Clements",
+			"Corinth",
+			"Coryal Village",
+			"Dyer Village",
+			"Eccles Village",
+			"Fifth Company",
+			"Friendship",
+			"George Village",
+			"Golconda",
+			"Hard Bargain",
+			"Harmony Hall",
+			"Hindustan",
+			"Iere Village",
+			"Indian Company",
+			"Indian Walk",
+			"Jordan Village",
+			"Kumar Village",
+			"La Lune",
+			"La Ruffin",
+			"La Savanne",
+			"Lengua Village/Barrackpore",
+			"Lothian",
+			"Madeline St.",
+			"Malgretoute",
+			"Marac",
+			"Matilda",
+			"Moruga Village",
+			"New Grant",
+			"Palmyra",
+			"Palmyra Village/Mt. Steward",
+			"Petit Café",
+			"Petit Morne",
+			"Piparo",
+			"Princes Town Proper",
+			"Reform Village",
+			"Robert Village",
+			"Sisters Village",
+			"Sixth Company",
+			"St. Charles Village",
+			"St. Croix Village",
+			"St. John's Village",
+			"St. Julien",
+			"St. Mary's Village",
+			"Ste. Madeleine",
+			"Tableland",
+			"Usine Ste.",
+        ]
+    }
+
+    else if (region.value == "Rio Claro/Mayaro") {
+        var optionArray = [
+			"Abysinia Village",
+			"Agostini Village",
+			"Biche",
+			"Canque",
+			"Charuma Village",
+			"Cocal Estate/Mayaro",
+			"Cushe/Navet",
+			"Deep Ravine/Clear Water",
+			"Ecclesville",
+			"Fonrose Village",
+			"Grand Lagoon",
+			"Guayaguayare",
+			"La Savanne",
+			"Libertville",
+			"Mafeking",
+			"Mainfield",
+			"Mayaro",
+			"Mora Settlement",
+			"Navet Village",
+			"Ortoire",
+			"Plaisance",
+			"Poole",
+			"Radix",
+			"Rio Claro",
+			"San Pedro",
+			"St. Joseph Village",
+			"Union Village",
+        ]
+    }
+
+    else if (region.value == "Sangre Grande") {
+        var optionArray = [
+            "Anglais Settlement",
+			"Balandra",
+			"Biche",
+			"Brooklyn Settlement",
+			"Caigual",
+			"Carmichael",
+			"Coal Mile",
+			"Coryal",
+			"Cumaca",
+			"Cumana",
+			"Cumuto",
+			"Cunaripo",
+			"Fishing Pond",
+			"Four Roads - Tamana",
+			"Grand Riviere",
+			"Guaico",
+			"Guatopajaro",
+			"Howsen Village",
+			"L'Anse Noir",
+			"Mahoe",
+			"Manzanilla",
+			"Maraj Hill",
+			"Matelot",
+			"Matura",
+			"Melajo",
+			"Mission",
+			"Monte Video",
+			"Morin Bay",
+			"North Manzanilla",
+			"Oropouche",
+			"Plum Mitan",
+			"Rampanalgas",
+			"Salybia Village",
+			"San Souci",
+			"Sangre Chiquito",
+			"Sangre Grande",
+			"Tamana",
+			"Toco",
+			"Tompire",
+			"Turure",
+			"Valencia",
+        ]
+    }
+
+    else if (region.value == "San Fernando") {
+        var optionArray = [
+			"Broadway",
+			"Cocoyea Village",
+			"Embacadere",
+			"Green Acres",
+			"Gulf View",
+			"Les Efforts East",
+			"Les Efforts West",
+			"Lower Hill Side",
+			"Marabella",
+			"Maraj Lands",
+			"Mon Repos",
+			"Navet Village",
+			"Paradise",
+			"Pleasantville",
+			"San Fernando Proper",
+			"St. Joseph Vilalge",
+			"Tarouba",
+			"Union Park",
+			"Union Village",
+			"Victoria Village",
+			"Vistabella",
+        ]
+    }
+	
+    else if (region.value == "San Juan/Laventille") {
+        var optionArray = [
+			"Aranguez",
+			"Bamboo Grove",
+			"Barataria",
+			"Beetham Estage",
+			"Bejucal",
+			"Blanchisseuse",
+			"Cantaro Village",
+			"Cascade",
+			"Champ Fleurs",
+			"Eastern Quarry",
+			"El Socorro",
+			"El Socorro Extension",
+			"Febeau Village",
+			"Gran Curucaye",
+			"La Canoa",
+			"La Pastora",
+			"Lady Chancellor",
+			"Las Cuevas",
+			"Laventille",
+			"Lower Santa Cruz",
+			"Malick",
+			"Maracas",
+			"Maracas Bay",
+			"Marie Road",
+			"Mon Repos",
+			"Morvant",
+			"Mount D'or",
+			"Mt. Hope",
+			"Mt. Lambert",
+			"Never Dirty",
+			"Petit Bourg",
+			"Petit Curucaye",
+			"Picton",
+			"Romain Lands",
+			"Sam Boucaud",
+			"San Juan",
+			"Santa Cruz",
+			"Soconusco",
+			"St. Anns",
+			"St. Barbs",
+			"Upper Belmont",
+        ]
+    }
+	
+	else if (region.value == "Siparia") {
+        var optionArray = [
+			"Apex Oil Field",
+			"Aripero Village",
+			"Avocat Village",
+			"Bamboo Village",
+			"Beach Camp",
+			"Bennet Village",
+			"Bois Bough",
+			"Bonasse Village",
+			"Brighton",
+			"Cap-de-Ville",
+			"Carapal",
+			"Cedros",
+			"Chatham",
+			"Chinese Village",
+			"Cochrane",
+			"Coromandel",
+			"Danny Village",
+			"De Gannes Village",
+			"Delhi Settlement",
+			"Dow Village",
+			"Erin Proper",
+			"Erin/Buenos Ayres",
+			"Forest Reserve",
+			"Fullerton",
+			"Fyzabad",
+			"Gheerahoo",
+			"Gonzales",
+			"Granville",
+			"Guapo Lot 10",
+			"Harris Village",
+			"Icacos",
+			"Jacob Village",
+			"La Brea",
+			"La Fortune/Pluck",
+			"Lorensotte",
+			"Los Bajos",
+			"Los Charos",
+			"Los Iros/Erin",
+			"Mon Desir",
+			"Mon Desir/Silver Stream",
+			"Oropouche",
+			"Palo Seco",
+			"Parry Lands South",
+			"Pepper Village",
+			"Point D'or",
+			"Quarry Village",
+			"Rancho Quemado",
+			"Robert Hill/Siparia",
+			"Rousillac",
+			"Salazar Village",
+			"San Francique",
+			"Santa Flora",
+			"Siparia",
+			"Sobo Villable",
+			"St. John",
+			"St. Mary's Village",
+			"Sudama Village",
+			"Syne Village",
+			"Thick Village",
+			"Tulsa Village",
+			"Vance River",
+			"Vessigny",
+			"Waddle Village",
+        ]
+    }
+	
+    else if (region.value == "Tunapuna/Piarco") {
+        var optionArray = [
+			"Acono Village",
+			"Arima Heights/Temple Village",
+			"Bamboo Grove",
+			"Bejucal",
+			"Blanchisseuse",
+			"Bon Air Development",
+			"Bon Air West Development",
+			"Brasso Seco Village",
+			"Cane Farm",
+			"Carapo",
+			"Caroni Village",
+			"Caura",
+			"Centerno",
+			"Champ Fleurs",
+			"Cleaver Road",
+			"Cunupia",
+			"Curepe",
+			"D'Abadie",
+			"Dinsley",
+			"El Dorado",
+			"Eric Williams Medical Complex",
+			"Five Rivers",
+			"Frederick Settlement",
+			"Heights of Guanapo",
+			"Kandahar",
+			"Kelly Village",
+			"La Baja",
+			"La Florisante",
+			"La Horquetta",
+			"La Laja",
+			"La Mango Village",
+			"La Paille Village",
+			"La Resource",
+			"La Seiva Village",
+			"Lopinot Village",
+			"Macoya",
+			"Malony",
+			"Maracas/St. Joseph",
+			"Maturita",
+			"Mausica",
+			"Mount St. Benedict",
+			"Olton Road",
+			"Oropuna Village/Piarco",
+			"Paradise Gardens",
+			"Pasea Extension",
+			"Peytonville",
+			"Pinto Road",
+			"Real Springs",
+			"Red Hill",
+			"Saint Margarita",
+			"Samaroo Village",
+			"Santa Rosa Heights",
+			"Sherwood Park",
+			"Spring Village",
+			"St. Augustine",
+			"St. Augustine South",
+			"St. Helena Village",
+			"St. John's Village",
+			"St. Joseph",
+			"Surrey Village Arouca",
+			"Tacarigua",
+			"Trincity",
+			"Tumpuna Road",
+			"Tunapuna",
+			"Valley View",
+			"Valsayn",
+			"Wallerfield",
+			"Warren Village",
+        ]
+    }
+
+    else if (region.value == "St Andrews") {
+        var optionArray = [
+			"Bacolet",
+			"Bagatelle",
+			"Bethel/Mt. Gomery",
+			"Calder Hall/Friendsfield",
+			"Carnbee/Patience Hill",
+			"Cinnamon Hall",
+			"Darrel Spring",
+			"Idlewild/Whim",
+			"Lambeau",
+			"Mount Grace",
+			"Mount Marie",
+			"Patience Hill",
+			"Sargeant Cain",
+			"Scarbrough",
+			"Sherwood Park",
+			"Signal Hill/Patience Hill",
+			"Spring Garden/Signal Hill",
+        ]
+    }
+	
+	else if (region.value == "St David") {
+        var optionArray = [
+			"Arnos Vale",
+			"Bethesda",
+			"Castara",
+			"Culloden",
+			"Golden Lane",
+			"Les Coteaux",
+			"Mary's Hill",
+			"Moriah",
+			"Plymouth",
+			"Whim",
+        ]
+    }
+	
+	else if (region.value == "St George") {
+        var optionArray = [
+			"Belmont",
+			"Concordia",
+			"Easterfield",
+			"Hope Farm/John Dial",
+			"Hope/Blenheim",
+			"Mason Hall",
+			"Mount St. George",
+        ]
+    }
+	
+	else if (region.value == "St John") {
+        var optionArray = [
+			"Bloody Bay",
+			"Campbleton/Charlotteville",
+			"Charlotteville",
+			"L'anse Fourmi",
+			"Lucy Vale",
+			"Parlatuvier",
+			"Speyside",
+			"Top Hill",
+        ]
+    }
+	
+	else if (region.value == "St Mary") {
+        var optionArray = [
+            "Glamorgan",
+			"Goodwood",
+			"Pembroke",
+        ]
+    }
+	
+	else if (region.value == "St Paul") {
+        var optionArray = [
+            "Argyle/Kendal",
+			"Belle Gardens",
+			"Betsy's Hope",
+			"Delaford",
+			"Delaford/Louis D'or/Lands Settlement",
+			"King's Bay",
+			"Roxborough",
+			"Zion Hill",
+        ]
+    }
+	
+	else if (region.value == "St Patrick") {
+        var optionArray = [
+            "Bethel",
+			"Bethlehem",
+			"Black Rock",
+			"Bon Accord",
+			"Buccoo/Coral Gardens",
+			"Canaan",
+			"Carnbee/All Field Trace",
+			"Crown Point",
+			"Lowlands",
+			"Milford Court/Pigeon Point",
+			"Mt. Irvine/Black Rock",
+			"Mt. Pleasant",
+			"Old Grange/Sou Sou Lands",
+			"Orange Hill",
+        ]
+    }
+	
+    else {
+        var optionArray = [" "]
+    }
+
+    for (var option in optionArray) {
+        var newOption = document.createElement("option")
+        newOption.value = optionArray[option]
+        newOption.innerHTML = optionArray[option]
+        subregion.appendChild(newOption)
+    }
+}
+
+
+function LongLatFormat(radio) {
+    var r = document.getElementById(radio.id)
+
+    // coordinate entry fields
+    var long_deg = document.getElementById('long_deg')
+    var long_min = document.getElementById('long_min')
+    var long_sec = document.getElementById('long_sec')
+    var lat_deg = document.getElementById('lat_deg')
+    var lat_min = document.getElementById('lat_min')
+    var lat_sec = document.getElementById('lat_sec')
+
+    var latitude_minutes_div = document.getElementById('latitude_minutes_div')
+    var latitude_seconds_div = document.getElementById('latitude_seconds_div')
+    var latitude_cardinal_div = document.getElementById('latitude_cardinal_div')
+    var longitude_minutes_div = document.getElementById('longitude_minutes_div')
+    var longitude_seconds_div = document.getElementById('longitude_seconds_div')
+    var longitude_cardinal_div = document.getElementById('longitude_cardinal_div')
+
+    var latitude_minutes_col = document.getElementById('latitude_minutes_col')
+    var latitude_seconds_col = document.getElementById('latitude_seconds_col')
+    var latitude_cardinal_col = document.getElementById('latitude_cardinal_col')
+    var longitude_minutes_col = document.getElementById('longitude_minutes_col')
+    var longitude_seconds_col = document.getElementById('longitude_seconds_col')
+    var longitude_cardinal_col = document.getElementById('longitude_cardinal_col')
+
+    if (r.value == 'dd') {
+
+        // adjusts the fields which are visible and required
+        longitude_minutes_div.hidden = true
+        long_min.required = false
+
+        longitude_seconds_div.hidden = true
+        long_sec.required = false
+
+        latitude_minutes_div.hidden = true
+        lat_min.required = false
+        
+        latitude_seconds_div.hidden = true
+        lat_sec.required = false
+
+        latitude_cardinal_div.hidden = true
+        longitude_cardinal_div.hidden = true
+
+        // changes input types and constraints
+        long_deg.min = '-180'
+        long_deg.max = '180'
+        long_deg.step = 'any'
+        lat_deg.min = '-90'
+        lat_deg.max = '90'
+        lat_deg.step = 'any'
+
+        // remove any input restrictions
+        long_deg.removeAttribute("onkeydown")
+        lat_deg.removeAttribute("onkeydown")
+
+        // reset values
+        long_deg.value = ''
+        long_min.value = ''
+        long_sec.value = ''
+        lat_deg.value = ''
+        lat_min.value = ''
+        lat_sec.value = ''
+    
+    }
+    else if (r.value == 'ddm') {
+
+        // adjusts the fields which are visible and required
+        longitude_minutes_div.hidden = false
+        long_min.required = true
+        
+        longitude_seconds_div.hidden = true
+        long_sec.required = false
+
+        latitude_minutes_div.hidden = false
+        lat_min.required = true
+
+        latitude_seconds_div.hidden = true
+        lat_sec.required = false
+
+        latitude_cardinal_div.hidden = false
+        longitude_cardinal_div.hidden = false
+
+        latitude_minutes_col.className = 'col order-1'
+        latitude_seconds_col.className = 'col order-3'
+        latitude_cardinal_col.className = 'col-1 order-2'
+
+        longitude_minutes_col.className = 'col order-1'
+        longitude_seconds_col.className = 'col order-3'
+        longitude_cardinal_col.className = 'col-1 order-2'
+
+        // changes input types and constraints
+        long_deg.min = '0'
+        long_deg.max = '179'
+        long_deg.step = '1'
+
+        lat_deg.min = '0'
+        lat_deg.max = '89'
+        lat_deg.step = '1'
+
+        long_min.min = '0'
+        long_min.max = '59.9999'
+        long_min.step = 'any'
+        
+        lat_min.min = '0'
+        lat_min.max = '59.9999'
+        lat_min.step = 'any'
+
+        // remove any input restrictions
+        long_deg.setAttribute("onkeydown", "return event.keyCode !== 190")
+        lat_deg.setAttribute("onkeydown", "return event.keyCode !== 190")
+
+        // reset value
+        long_deg.value = ''
+        long_min.value = ''
+        long_sec.value = ''
+        lat_deg.value = ''
+        lat_min.value = ''
+        lat_sec.value = ''
+    }
+    else if (r.value == 'dms') {
+        longitude_minutes_div.hidden = false
+        long_min.required = true
+        
+        longitude_seconds_div.hidden = false
+        long_sec.required = true
+        
+        latitude_minutes_div.hidden = false
+        lat_min.required = true
+        
+        latitude_seconds_div.hidden = false
+        lat_sec.required = true
+
+        latitude_cardinal_div.hidden = false
+        longitude_cardinal_div.hidden = false
+
+        latitude_minutes_col.className = 'col order-1'
+        latitude_seconds_col.className = 'col order-2'
+        latitude_cardinal_col.className = 'col-1 order-3'
+
+        longitude_minutes_col.className = 'col order-1'
+        longitude_seconds_col.className = 'col order-2'
+        longitude_cardinal_col.className = 'col-1 order-3'
+
+        // changes input types and constraints
+        long_deg.min = '0'
+        long_deg.max = '179'
+        long_deg.step = '1'
+        
+        lat_deg.min = '0'
+        lat_deg.max = '89'
+        lat_deg.step = '1'
+
+        long_min.min = '0'
+        long_min.max = '59'
+        long_min.step = '1'
+        
+        lat_min.min = '0'
+        lat_min.max = '59'
+        lat_min.step = '1'
+
+        long_deg.setAttribute("onkeydown", "return event.keyCode !== 190")
+        lat_deg.setAttribute("onkeydown", "return event.keyCode !== 190")
+        long_min.setAttribute("onkeydown", "return event.keyCode !== 190")
+        lat_min.setAttribute("onkeydown", "return event.keyCode !== 190")
+
+        long_deg.value = ''
+        long_min.value = ''
+        long_sec.value = ''
+        lat_deg.value = ''
+        lat_min.value = ''
+        lat_sec.value = ''
+    }
+}
+
+function checkName(){
+	// check for duplicate informatation
+	let name = document.getElementById('sch_name')
+	
+	{% for i in list %}
+	if (name.value == '{{i["school_name"]}}' && name.value != "{{ school_data_dB['school_name'] }}") {
+		return name.setCustomValidity('This name is already in use. Please try another.')
+	}
+	{% endfor %}
+	return name.setCustomValidity('')
+}
+
+function submitForm() {
+	// disable save button to prevent double data entry
+	document.getElementById('subt_button_real').hidden = true
+	document.getElementById('subt_button_fake').hidden = false
+}
+
+</script>
+    
+{% endblock %}

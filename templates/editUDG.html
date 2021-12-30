@@ -1,0 +1,456 @@
+{% extends "index.html" %}
+
+{% block title %} ConnecTTing Schools: User Device Groups {% endblock %}
+
+
+{% block navlinks %}
+{% if user %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome, {{user}}</span>
+{% else %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome Unauthorized</span>
+{% endif%}
+<a class="nav-link" aria-current="page" href="/home">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link dropdown-toggle active" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
+<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+    <a class="dropdown-item" href="#">Your Projects</a>
+    <a class="dropdown-item active" href="#">School Listing</a>
+</div>
+<a class="nav-link" href="/logout">Log out</a>
+{% endblock %}
+
+
+{% block body %}
+
+<!-- Inner Page Title -->
+<div class="text-center my-5"> <h1>User Device Groups for {{ school }}</h1> </div>
+
+<!-- Inner Page Boundary -->
+<div class="container-auto" style="margin-right: 95px;margin-left: 95px">
+
+    <!-- Inner page options -->
+    <div class="btn-toolbar justify-content-between" role="toolbar" aria-label="Toolbar with button groups">
+        
+        <!-- ADD button -->
+        <div class='d-flex justify-content-md-end' style="width:100%">
+            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#reg-modal"><b>+</b></button>
+        </div>
+    
+        <!-- ADD button modal -->
+        <div>
+            <div class="div modal fade" id="reg-modal" tabindex="-1" aria-labbeledby="modal-title" aria-hidden="true">
+                <div class="div modal-dialog modal-dialog-centered">
+                    <div class="div modal-content">
+                        
+                        <div class="div modal-header">
+                            <h5 class="modal-title">Configure User Device Group</h5>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+
+                        <!-- Form for ADD button modal -->
+                        <form action="" method="post" onsubmit="return checkNameAdd()">
+                            <div class="div modal-body">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text">Name of User Group</span>
+                                    <input id='grp_name_add' type="text" name="group_name" class="form-control" required>
+                                </div>
+
+                                <div class="input-group mb-4">
+                                    <span class="input-group-text">Number of Devices</span>
+                                    <input type="number" min='1' max='1000000' step='1' name="devices" class="form-control" required>
+                                </div>
+                                
+                                <div class="d-flex justify-content-center">
+                                    <span class="input-group-text">Quality of Service (QoS) profile</span>
+                                </div>
+                                
+                                <div class='row mt-2 mb-4'>
+                                    <div class="col">
+                                        <div class="d-grid gap-3">
+                                            <input type="radio" class="btn-check" name="profile" value="Basic-" id="Basic-" autocomplete="off" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="Users in hard-to-reach areas (including rural areas) in the countries where the internal backbone is not developed yet and/or the external connectivity to the international communication channels is poor, with low intensity of service usage">
+                                            <label class="btn btn-outline-primary" data-bs-toggle="tooltip" data-bs-html="true" data-bs-placement="top" title="Users in hard-to-reach areas (including rural areas) in the countries where the internal backbone is not developed yet and/or the external connectivity to the international communication channels is poor, with low intensity of service usage" for="Basic-">Basic -</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate-" id="Intermediate-" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Intermediate-">Intermediate -</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile" value="Advanced-" id="Advanced-" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Advanced-">Advanced -</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="d-grid gap-3">
+                                            <input type="radio" class="btn-check" name="profile" value="Basic" id="Basic" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Basic">Basic</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate" id="Intermediate" autocomplete="off" checked>
+                                            <label class="btn btn-outline-primary" for="Intermediate">Intermediate</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile" value="Advanced" id="Advanced" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Advanced">Advanced</label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="d-grid gap-3">
+                                            <input type="radio" class="btn-check" name="profile" value="Basic+" id="Basic+" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Basic+">Basic +</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate+" id="Intermediate+" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Intermediate+">Intermediate +</label>
+
+                                            <input type="radio" class="btn-check btn-block" name="profile"  value="Advanced+" id="Advanced+" autocomplete="off">
+                                            <label class="btn btn-outline-primary" for="Advanced+">Advanced +</label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="justify-content-center">
+                                    <span class="input-group-text">Services (Select all that apply)</span>
+                                </div>
+                               
+                                <div class="row">
+                                    <div class="col">
+                                        <div class="list-group mt-2">
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Conversational Voice" value="Conversational Voice"> Conversational Voice
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Video Conference" value="Video Conference"> Video Conferencing
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Streaming Audio" value="Streaming Audio"> Audio Streaming
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Streaming Video" value="Streaming Video"> Video Streaming
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Web Browsing" value="Web Browsing"> Web Browsing
+                                            </label>
+                                        </div>
+                                    </div>
+                                    <div class="col">
+                                        <div class="list-group mt-2">
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Data Transfer" value="Data Transfer"> Data Transfer
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Low Priority Transactions" value="Low Priority Transactions"> Online Transactions
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Email" value="Email"> Emails
+                                            </label>
+                                            <label class="list-group-item">
+                                                <input class="form-check-input me-1" type="checkbox" name="Client Server Software" value="Client Server Software"> Client-Server Software
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        
+                            <div class="modal-footer">
+                                <button type="submit" name="addUDG" value="{{ school }}" class="btn btn-primary" onclick="checkNameAdd()">Continue</button>
+                            </div>
+                        </form>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+    <!-- Display Table -->
+    <div class="overflow-auto border border-secondary border-2 mt-2">
+
+        <!-- Dispaly Table Headings -->
+        <ul class="list-group">
+            <li class="list-group-item">
+                <div class="row">
+                    
+                    <div class="col"> <span><b>User Device Group</b></span> </div>
+                    
+                    <div class="col"> <b>No. of Devices</b> </div>
+    
+                    <div class="col"> <b>QoS Profile</b> </div>
+    
+                    <div class="col"> <b>Services</b> </div>
+    
+                    <div class="col-2 d-flex justify-content-center"> <b>Actions</b> </div> 
+                </div>
+            </li>
+        </ul>
+
+        <!-- UDG entries -->
+        {% if udg != [] %}
+        <div class="overflow-auto" style="height: 450px">
+            <ul class="list-group">
+                {% for i in udg %}
+
+                <li class="list-group-item border border-secondary border-1">
+                    <div class="row btn-toolbar" style='align-items: center;'>
+                        
+                        <div class="col"> <span><b>{{ i.group_name }}</b></span> </div>
+                        
+                        <div class="col"> {{ i.devices }} </div>
+
+                        <div class="col"> {{ i.profile }} </div>
+
+                        <div class="col"> {% for s in i.services %} {{s}} <br> {% endfor %} </div>
+
+                        <!-- Edit -->
+                        <div class="col-2 d-grid gap-2 d-md-flex justify-content-md-center">
+                            
+                            <!-- Edit Button -->
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#edit{{i.group_name}}" class="btn btn-primary me-md-2">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-pencil-fill" viewBox="0 0 16 16">
+                                    <path d="M12.854.146a.5.5 0 0 0-.707 0L10.5 1.793 14.207 5.5l1.647-1.646a.5.5 0 0 0 0-.708l-3-3zm.646 6.061L9.793 2.5 3.293 9H3.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.5h.5a.5.5 0 0 1 .5.5v.207l6.5-6.5zm-7.468 7.468A.5.5 0 0 1 6 13.5V13h-.5a.5.5 0 0 1-.5-.5V12h-.5a.5.5 0 0 1-.5-.5V11h-.5a.5.5 0 0 1-.5-.5V10h-.5a.499.499 0 0 1-.175-.032l-.179.178a.5.5 0 0 0-.11.168l-2 5a.5.5 0 0 0 .65.65l5-2a.5.5 0 0 0 .168-.11l.178-.178z"/>
+                                </svg>
+                            </button>
+
+                            <!-- Edit Button Modal -->
+                            <div>
+                                <div class="div modal fade" id="edit{{i.group_name}}" tabindex="-1" aria-labbeledby="modal-title" aria-hidden="true">
+                                    <div class="div modal-dialog modal-dialog-centered">
+                                        <div class="div modal-content">
+                                            
+                                            <div class="div modal-header">
+                                                <h5 class="modal-title">Configure User Device Group</h5>
+                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                            </div>
+                    
+                                            <!-- Edit Button Modal Form -->
+                                            <form action="" method="post" onsubmit='return checkNameEdit("{{i.group_name}}")'>
+
+                                                <input type="text" name="id_name" class="form-control" value="{{ i.group_name }}" hidden>
+
+                                                <div class="div modal-body">
+                                                    <div class="input-group mb-3">
+                                                        <span class="input-group-text">Name of User Group</span>
+                                                        <input id='grp_name_edit' type="text" name="group_name" class="form-control" value="{{ i.group_name }}" required>
+                                                    </div>
+                    
+                                                    <div class="input-group mb-4">
+                                                        <span class="input-group-text">Number of Devices</span>
+                                                        <input type="number" min='1' max='1000000' step='1' name="devices" class="form-control" value='{{ i.devices }}' required>
+                                                    </div>
+                                                    
+                                                    <div class="d-flex justify-content-center">
+                                                        <span class="input-group-text">Quality of Service (QoS) profile</span>
+                                                    </div>
+                                                    
+                                                    <div class='row mt-2 mb-4'>
+                                                        <div class="col">
+                                                            <div class="d-grid gap-3">
+                                                                <input type="radio" class="btn-check" name="profile" value="Basic-" id="basic-edit" {% if i.profile == 'Basic-' %} checked {% endif %} >
+                                                                <label class="btn btn-outline-primary" for="basic-edit">Basic -</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate-" id="intermediate-edit" {% if i.profile == 'Intermediate-' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="intermediate-edit">Intermediate -</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile" value="Advanced-" id="advanced-edit" {% if i.profile == 'Advanced-' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="advanced-edit">Advanced -</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="d-grid gap-3">
+                                                                <input type="radio" class="btn-check" name="profile" value="Basic" id="basicedit" {% if i.profile == 'Basic' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="basicedit">Basic</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate" id="intermediateedit" {% if i.profile == 'Intermediate' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="intermediateedit">Intermediate</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile" value="Advanced" id="advancededit" {% if i.profile == 'Advanced' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="advancededit">Advanced</label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="d-grid gap-3">
+                                                                <input type="radio" class="btn-check" name="profile" value="Basic+" id="basic+edit" {% if i.profile == 'Basic+' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="basic+edit">Basic +</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile" value="Intermediate+" id="intermediate+edit" {% if i.profile == 'Intermediate+' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="intermediate+edit">Intermediate +</label>
+                    
+                                                                <input type="radio" class="btn-check btn-block" name="profile"  value="Advanced+" id="advanced+edit" {% if i.profile == 'Advanced+' %} checked {% endif %}>
+                                                                <label class="btn btn-outline-primary" for="advanced+edit">Advanced +</label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    <div class="justify-content-center">
+                                                        <span class="input-group-text">Services (Select all that apply)</span>
+                                                    </div>
+                                                    
+                                                    <div class="row">
+                                                        <div class="col">
+                                                            <div class="list-group mt-2">
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Conversational Voice" value="Conversational Voice" {% if 'Conversational Voice' in i.services %} checked {% endif %}> Conversational Voice
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Video Conference" value="Video Conference" {% if 'Video Conference' in i.services %} checked {% endif %}> Video Conferencing
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Streaming Audio" value="Streaming Audio" {% if 'Streaming Audio' in i.services %} checked {% endif %}> Audio Streaming
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Streaming Video" value="Streaming Video" {% if 'Streaming Video' in i.services %} checked {% endif %}> Video Streaming
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Web Browsing" value="Web Browsing" {% if 'Web Browsing' in i.services %} checked {% endif %}> Web Browsing
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col">
+                                                            <div class="list-group mt-2">
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Data Transfer" value="Data Transfer" {% if 'Data Transfer' in i.services %} checked {% endif %}> Data Transfer
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Low Priority Transactions" value="Low Priority Transactions" {% if 'Low Priority Transactions' in i.services %} checked {% endif %}> Online Transactions
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Email" value="Email" {% if 'Email' in i.services %} checked {% endif %}> Emails
+                                                                </label>
+                                                                <label class="list-group-item">
+                                                                    <input class="form-check-input me-1" type="checkbox" name="Client Server Software" value="Client Server Software" {% if 'Client Server Software' in i.services %} checked {% endif %}> Client-Server Software
+                                                                </label>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                                <div class="modal-footer">
+                                                    <button type="submit" name="editUDG" value="{{ school }}" class="btn btn-primary" onclick='checkNameEdit("{{i.group_name}}")'>Edit</button>
+                                                </div>
+                    
+                                            </form>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Delete Button -->
+                            <button type="button" data-bs-toggle="modal" data-bs-target="#delete{{i.group_name}}" class="btn btn-primary">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash-fill" viewBox="0 0 16 16">
+                                    <path d="M2.5 1a1 1 0 0 0-1 1v1a1 1 0 0 0 1 1H3v9a2 2 0 0 0 2 2h6a2 2 0 0 0 2-2V4h.5a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1H10a1 1 0 0 0-1-1H7a1 1 0 0 0-1 1H2.5zm3 4a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 .5-.5zM8 5a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-1 0v-7A.5.5 0 0 1 8 5zm3 .5v7a.5.5 0 0 1-1 0v-7a.5.5 0 0 1 1 0z"/>
+                                </svg>
+                            </button>
+
+                            <!-- Delete Button Modal -->
+                            <div class="modal fade" id="delete{{i.group_name}}" tabindex="-1" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title">Confirm Delete</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body"> Do you wish to delete {{ i.group_name }}? This action cannot be undone. </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                            <form action="" method="post">
+                                                <button type="submit" name="delete" value="{{ i.group_name }}" class="btn btn-primary">Delete</button>
+                                            </form>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                   
+                    </div>
+                </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+
+        <div class="overflow-auto d-flex align-items-center justify-content-center" style="height: 450px">
+            <span class="navbar-text ms-2"><h4>There are currently no configured user device groups for this school.</h4></span>
+        </div>
+
+        {% endif %}
+        </div>
+    </div>
+
+    <!-- Save options -->
+    <div class="d-flex justify-content-center">
+        <form action="" method="post" onsubmit="return submitForm()">
+            <button id="subt_button_real" type="submit" name="save" value="save" class="mt-4 btn btn-primary align-content-end" onclick="submitForm()">Save</button>
+            <button id="subt_button_fake" class="mt-4 btn btn-primary align-content-end" disabled hidden>Please wait...</button>
+        </form>
+    </div>
+
+    <div class="mt-2 d-flex justify-content-center">
+        <span> Your configuration will not be recorded unless you click 'Save' </span>
+    </div>
+
+    <div class="mt-2 d-flex justify-content-center">
+        <a class='btn btn-secondary' href='{{ url_for(".schoolListing") }}'> Return to School Listing without saving</a>
+    </div>
+
+</div>
+
+<script>
+
+function searchSchools() {
+    var input = document.getElementById("search_bar").value.toLowerCase()
+    var items = document.getElementsByClassName("school_item")
+    var school = document.getElementsByClassName("school_name")
+
+    for (i = 0; i < items.length; i++) {
+        if (!school[i].innerHTML.toLowerCase().includes(input)) {
+            items[i].style.display="none";
+        }
+        else {
+            items[i].style.display="list-item";                 
+        }
+    }
+}
+
+function checkNameAdd() {
+	// check for duplicate informatation
+	var name = document.getElementById('grp_name_add')
+	
+    if ( /\s/g.test(name.value)) {
+        return name.setCustomValidity('Name must not have spaces.')
+    }
+
+    {% for i in udg %}
+	if (name.value == '{{i["group_name"]}}') {
+		return name.setCustomValidity('This name is already in use. Please try another.')
+	}
+	{% endfor %}
+
+    return name.setCustomValidity('')
+}
+
+function checkNameEdit(present_name) {
+	// check for duplicate informatation
+	var name = document.getElementById('grp_name_edit')
+	
+    if ( /\s/g.test(name.value)) {
+        return name.setCustomValidity('Name must not have spaces.')
+    }
+
+    {% for i in udg %}
+	if (name.value == '{{i["group_name"]}}' &&  name.value != present_name) {
+		return name.setCustomValidity('This name is already in use. Please try another.')
+	}
+	{% endfor %}
+
+    return name.setCustomValidity('')
+}
+
+function submitForm() {
+	var submit_real = document.getElementById('subt_button_real')
+	var submit_fake = document.getElementById('subt_button_fake')
+
+	submit_real.hidden = true
+	submit_fake.hidden = false
+}
+
+</script>
+
+
+{% endblock %}

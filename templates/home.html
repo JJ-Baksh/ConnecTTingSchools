@@ -1,0 +1,55 @@
+{% extends "index.html" %}
+
+
+
+
+<!-- tab title -->
+{% block title %} ConnecTTing Schools: Homepage {% endblock %}
+
+
+
+
+<!-- any special conditions that need to be in the head tag -->
+{% block head %}
+
+<!-- Leaflet CSS file -->
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
+integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
+crossorigin=""/>
+
+<!-- Leaflet JavaScript File -->
+<script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"
+integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA=="
+crossorigin=""></script>
+
+{% endblock %}
+
+
+
+
+<!-- navigation bar dependent on page -->
+{% block navlinks %}
+{% if user %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome, {{user}}</span>
+<a class="nav-link active" aria-current="page" href="#">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link dropdown-toggle" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
+<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+    <a class="dropdown-item" href="#">Your Projects</a>
+    <a class="dropdown-item" href="/schools">School Listing</a>
+</div>
+<a class="nav-link" href="/logout">Log out</a>
+{% else %}
+<a class="nav-link active" aria-current="page" href="#">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link disabled" href="#">Databases</a>
+<a class="nav-link" href="/login">Log in</a>
+{% endif %}
+{% endblock %}
+
+
+
+<!-- main body content -->
+{% block body %}
+<iframe style='height:calc(100% - 62px);width:100%;' src="{{ url_for('static', filename='map/map_template_c.html') }}"></iframe>
+{% endblock %}
