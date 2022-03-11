@@ -1,0 +1,502 @@
+{% extends "index.html" %}
+
+{% block title %} ConnecTTing Schools: Middle Mile Configuration {% endblock %}
+
+
+{% block navlinks %}
+{% if user %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome, {{user}}</span>
+{% else %}
+<span class="navbar-text text-light" style="margin-right: 20px;">Welcome Unauthorized</span>
+{% endif%}
+<a class="nav-link" aria-current="page" href="/home">Home</a>
+<a class="nav-link" href="/about">About</a>
+<a class="nav-link dropdown-toggle active" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
+<div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
+    <a class="dropdown-item" href="#">Your Projects</a>
+    <a class="dropdown-item active" href="/schools">School Listing</a>
+</div>
+<a class="nav-link" href="/logout">Log out</a>
+{% endblock %}
+
+
+{% block body %}
+
+<div class="text-center my-5"> <h1> Middle Mile Parameters </h1> </div>
+
+<div class="container-fluid">
+    <div class='row'>
+        <div class="col-sm-8 offset-sm-2">
+            <form action="" method="post" onsubmit="return submitForm()">
+        
+                <div class="mb-3">
+                    <span><h5>Fibre Optic Cable Laying (FOCL)</h5></span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Distance between school and local PoP (km)</span>
+                    <input type="number" name='length' min="0" step="any" class="form-control" value="{{param['focl']['length']}}" required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Length Coefficient</span>
+                    <input type="number" name='C_hdd' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_hdd"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Sections Coefficient</span>
+                    <input type="number" name='C_cd' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_cd"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Cable Laying Coefficient</span>
+                    <input type="number" name='C_clm' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_clm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Cost Coefficient</span>
+                    <input type="number" name='C_focl' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_focl"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">Design Cost Coefficient</span>
+                    <input type="number" name='C_design' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_design"]}}' required>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">N_CHm_avg</span>
+                    <input type="number" name='N_CHm_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_CHm_avg"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">N_c_avg</span>
+                    <input type="number" name='N_c_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_c_avg"]}}' required>
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_geod_norm</span>
+                    <input type="number" name='T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_geod_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_hdd_norm</span>
+                    <input type="number" name='T_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_hdd_norm"]}}' required>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_cd_norm</span>
+                    <input type="number" name='T_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_cd_norm"]}}' required>
+                </div>
+        
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_CHm_norm</span>
+                    <input type="number" name='T_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_CHm_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_clm_norm</span>
+                    <input type="number" name='T_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_clm_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_c_norm</span>
+                    <input type="number" name='T_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_c_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_st_norm</span>
+                    <input type="number" name='T_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_st_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_ts_norm</span>
+                    <input type="number" name='T_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_ts_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_sc_norm</span>
+                    <input type="number" name='T_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_sc_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_focl_norm</span>
+                    <input type="number" name='T_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_focl_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_cd_norm</span>
+                    <input type="number" name='T_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_cd_norm"]}}' required>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_geod_norm</span>
+                    <input type="number" name='S_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_geod_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1focl</span>
+                    <input type="number" name='S_1focl' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1focl"]}}' required>
+                </div>
+                
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1c</span>
+                    <input type="number" name='S_1c' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1c"]}}' required>
+                </div>
+        
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_hdd_norm</span>
+                    <input type="number" name='S_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_hdd_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1cd</span>
+                    <input type="number" name='S_1cd' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1cd"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1CMh</span>
+                    <input type="number" name='S_1CMh' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1CMh"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_cd_norm</span>
+                    <input type="number" name='S_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_cd_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_CHm_norm</span>
+                    <input type="number" name='S_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_CHm_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_clm_norm</span>
+                    <input type="number" name='S_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_clm_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_c_norm</span>
+                    <input type="number" name='S_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_c_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_st_norm</span>
+                    <input type="number" name='S_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_st_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_ts_norm</span>
+                    <input type="number" name='S_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_ts_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_sc_norm</span>
+                    <input type="number" name='S_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_sc_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_tr_eq</span>
+                    <input type="number" name='S_tr_eq' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_tr_eq"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_focl_norm</span>
+                    <input type="number" name='S_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_focl_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_cd_norm</span>
+                    <input type="number" name='S_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_cd_norm"]}}' required>
+                </div>
+
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">In</span>
+                    <input type="number" name='In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_vat</span>
+                    <input type="number" name='T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_operation</span>
+                    <input type="number" name='S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_prof</span>
+                    <input type="number" name='T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_equip_mat</span>
+                    <input type="number" name='S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_lt</span>
+                    <input type="number" name='T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">K_disc</span>
+                    <input type="number" name='K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">s_inv</span>
+                    <input type="number" name='s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required>
+                </div>
+
+
+
+                <div class="mt-5">
+                    <span><h5>Microwave Radio (MW)</h5></span>
+                </div>
+        
+                <div class="input-group mb-3">
+                    <span class="input-group-text">L_rpl</span>
+                    <input type="number" name='L_rpl' min="0" step="0.01" class="form-control" value='{{param["mw"]["L_rpl"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">N_rts_term</span>
+                    <input type="number" name='N_rts_term' min="0" step="0.01" class="form-control" value='{{param["mw"]["N_rts_term"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C_rts</span>
+                    <input type="number" name='C_rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_rts"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C_afd</span>
+                    <input type="number" name='C_afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_afd"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C_design</span>
+                    <input type="number" name='C_design' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_design"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1rts</span>
+                    <input type="number" name='S_1rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1rts"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1afd</span>
+                    <input type="number" name='S_1afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1afd"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1pylon</span>
+                    <input type="number" name='S_1pylon' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1pylon"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_geod_rts_norm</span>
+                    <input type="number" name='S_geod_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_geod_rts_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_pylon_norm</span>
+                    <input type="number" name='S_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_pylon_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_afd_norm</span>
+                    <input type="number" name='S_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_afd_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_rts_norm</span>
+                    <input type="number" name='S_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_rts_coord_norm</span>
+                    <input type="number" name='S_rts_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_coord_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_1pylon_norm</span>
+                    <input type="number" name='S_maint_1pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_1pylon_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_afd_norm</span>
+                    <input type="number" name='S_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_afd_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_rts_norm</span>
+                    <input type="number" name='S_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_rts_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_spectrum</span>
+                    <input type="number" name='S_spectrum' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_spectrum"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_annual_spectrum_fee</span>
+                    <input type="number" name='S_annual_spectrum_fee' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_annual_spectrum_fee"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_geod_norm</span>
+                    <input type="number" name='T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_geod_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_pylon_norm</span>
+                    <input type="number" name='T_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_pylon_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_afd_norm</span>
+                    <input type="number" name='T_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_afd_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_rts_norm</span>
+                    <input type="number" name='T_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_rts_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_coord_norm</span>
+                    <input type="number" name='T_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_coord_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_pylon_norm</span>
+                    <input type="number" name='T_maint_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_pylon_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_afd_norm</span>
+                    <input type="number" name='T_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_afd_norm"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_rts_norm</span>
+                    <input type="number" name='T_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_rts_norm"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_In</span>
+                    <input type="number" name='mw_In' min="0" step="0.01" class="form-control" value='{{param["mw"]["In"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_T_vat</span>
+                    <input type="number" name='mw_T_vat' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_vat"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_S_operation</span>
+                    <input type="number" name='mw_S_operation' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_operation"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_T_prof</span>
+                    <input type="number" name='mw_T_prof' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_prof"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_S_equip_mat</span>
+                    <input type="number" name='mw_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_equip_mat"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_T_lt</span>
+                    <input type="number" name='mw_T_lt' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_lt"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_K_disc</span>
+                    <input type="number" name='mw_K_disc' min="0" step="0.01" class="form-control" value='{{param["mw"]["K_disc"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">mw_s_inv</span>
+                    <input type="number" name='mw_s_inv' min="0" step="0.01" class="form-control" value='{{param["mw"]["s_inv"]}}' required>
+                </div>
+        
+
+                <div class="mt-5 mb-3">
+                    <span><h5>Saatellite</h5></span>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">V_chan</span>
+                    <input type="number" name='V_chan' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_chan"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">V_1user</span>
+                    <input type="number" name='V_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_1user"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_1user</span>
+                    <input type="number" name='S_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_1user"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_mat_1user</span>
+                    <input type="number" name='S_mat_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_mat_1user"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_user_typ</span>
+                    <input type="number" name='S_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_user_typ"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_user_typ</span>
+                    <input type="number" name='T_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_user_typ"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C_user</span>
+                    <input type="number" name='C_user' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_user"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">C_design</span>
+                    <input type="number" name='C_design' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_design"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_rent_1mbit</span>
+                    <input type="number" name='S_rent_1mbit' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_rent_1mbit"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">S_maint_1user</span>
+                    <input type="number" name='S_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_maint_1user"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">T_maint_1user</span>
+                    <input type="number" name='T_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_maint_1user"]}}' required>
+                </div>
+
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_In</span>
+                    <input type="number" name='sat_In' min="0" step="0.01" class="form-control" value='{{param["sat"]["In"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_T_vat</span>
+                    <input type="number" name='sat_T_vat' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_vat"]}}' required>
+                </div>
+
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_S_operation</span>
+                    <input type="number" name='sat_S_operation' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_operation"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_T_prof</span>
+                    <input type="number" name='sat_T_prof' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_prof"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_S_equip_mat</span>
+                    <input type="number" name='sat_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_equip_mat"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_T_lt</span>
+                    <input type="number" name='sat_T_lt' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_lt"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_K_disc</span>
+                    <input type="number" name='sat_K_disc' min="0" step="0.01" class="form-control" value='{{param["sat"]["K_disc"]}}' required>
+                </div>
+                <div class="input-group mb-3">
+                    <span class="input-group-text">sat_s_inv</span>
+                    <input type="number" name='sat_s_inv' min="0" step="0.01" class="form-control" value='{{param["sat"]["s_inv"]}}' required>
+                </div>
+
+
+
+        
+                <div class="text-center">
+                    <button id="subt_button_real" class="btn btn-primary mb-3">Submit Middle Mile Paramters</button>
+					<button id="subt_button_fake" class="btn btn-primary mb-3" disabled hidden>Please wait...</button>
+                </div>
+                <div class="text-center">
+                    <a href="{{ url_for('.schoolListing') }}" class="btn btn-secondary mb-5">Return to School Listing</a>
+                </div>
+            
+            </form>
+
+        </div>
+    </div>
+</div>
+
+<script>
+    
+
+function submitForm() {
+	// disable save button to prevent double data entry
+	document.getElementById('subt_button_real').hidden = true
+	document.getElementById('subt_button_fake').hidden = false
+}
+
+
+</script>
+
+{% endblock %}

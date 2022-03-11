@@ -5,7 +5,7 @@ from modules.user_accounts import UserAccounts
 from modules.schools import Schools, arrangeSchoolData
 from modules.map import addCoverageMap, convertTemplate
 
-
+parameters = []
 
 # initialize project components
 app = Flask(__name__)                                               # create Flask application
@@ -31,10 +31,13 @@ def updateMap():
 # route for initalizing map
 @app.route('/')
 def inital():
-    
+    global parameters
     # map_template_a contains leaflet code for map, feature groups and jinja2 loop for tower locations
     # map_template_b contains leaflet code for map, feature groups, coverage maps and jinja2 loop for schools
     # map_template_c contains leaflet code for map, feature groups, coverage maps and schools
+    
+    # to update default parameters
+    parameters = Schools().setDefaultParamters()
     
     if not os.path.exists('./templates/map_template_b.html'):
         # if template b does not exist, get code from template a
@@ -257,10 +260,166 @@ def schoolUserDeviceGroup(school):
         Schools().EditUDG(school_data_dB[0])        # edit
         updateMap()                                 # update map
 
-        return redirect(url_for(".schoolListing"))
+        return redirect(url_for(".middlemile", school=school))
 
 
+
+@app.route('/schools/<school>/middlemile', methods=['GET', 'POST'])
+def middlemile(school):
+    global parameters
+    
+    all_schools = Schools().getSchoolListing()
+    school_data_dB = [x for x in all_schools if x['school_name'] == school]
+    
+    if not school_data_dB[0]['middle_mile_parameters']:
+        paramter_val = parameters
+    else:
+        paramter_val = school_data_dB[0]['middle_mile_parameters']
+
+
+    # arrival to middle-mile paramter configuration page with no POST data
+    if not request.form:
+        return render_template('middlemile.html', user=userSession(), school=school, param = paramter_val)
+    
+        
+    middle_mile_paramters = {
+        'focl': {
+            'length' : float(request.form["length"]),
+            'C_hdd' : request.form["C_hdd"],
+            'C_cd' : request.form["C_cd"],
+            'C_clm' : request.form["C_clm"],
+            'C_focl' : request.form["C_focl"],
+            'C_design' : request.form["C_design"],
+            
+            'N_CHm_avg': request.form["N_CHm_avg"],
+            'N_c_avg': request.form["N_c_avg"],
+            
+            'T_geod_norm' : request.form["T_geod_norm"],
+            'T_hdd_norm' : request.form["T_hdd_norm"],
+            'T_cd_norm' : request.form["T_cd_norm"],
+            'T_CHm_norm' : request.form["T_CHm_norm"],
+            'T_clm_norm' : request.form["T_clm_norm"],
+            'T_c_norm' : request.form["T_c_norm"],
+            'T_st_norm' : request.form["T_st_norm"],
+            'T_ts_norm' : request.form["T_ts_norm"],
+            'T_sc_norm' : request.form["T_sc_norm"],
+            'T_maint_focl_norm' : request.form["T_maint_focl_norm"],
+            'T_maint_cd_norm' : request.form["T_maint_cd_norm"],
+            
+            'S_geod_norm' : request.form["S_geod_norm"],
+            'S_1focl' : request.form["S_1focl"],
+            'S_1c' : request.form["S_1c"],
+            'S_hdd_norm' : request.form["S_hdd_norm"],
+            'S_1cd' : request.form["S_1cd"],
+            'S_1CMh' : request.form["S_1CMh"],
+            'S_cd_norm' : request.form["S_cd_norm"],
+            'S_CHm_norm' : request.form["S_CHm_norm"],
+            'S_clm_norm' : request.form["S_clm_norm"],
+            'S_c_norm' : request.form["S_c_norm"],
+            'S_st_norm' : request.form["S_st_norm"],
+            'S_ts_norm' : request.form["S_ts_norm"],
+            'S_sc_norm' : request.form["S_sc_norm"],
+            'S_tr_eq' : request.form["S_tr_eq"],
+            'S_maint_focl_norm' : request.form["S_maint_focl_norm"],
+            'S_maint_cd_norm' : request.form["S_maint_cd_norm"],
+            
+            'In' : request.form["In"],
+            'T_vat' : request.form["T_vat"],
+            'S_operation' : request.form["S_operation"],
+            'T_prof' : request.form["T_prof"],
+            'S_equip_mat' : request.form["S_equip_mat"],
+            'T_lt' : request.form["T_lt"],
+            'K_disc' : request.form["K_disc"],
+            's_inv' : request.form["s_inv"],
+        },
+        
+        'mw': {
+            'L_rpl' : request.form["L_rpl"],
+            'N_rts_term' : request.form["N_rts_term"],
+            'C_rts' : request.form["C_rts"],
+            'C_afd' : request.form["C_afd"],
+            'C_design' : request.form["C_design"],
+            'S_1rts' : request.form["S_1rts"],
+            'S_1afd' : request.form["S_1afd"],
+            'S_1pylon' : request.form["S_1pylon"],
+
+            'S_geod_rts_norm' : request.form["S_geod_rts_norm"],
+            'S_pylon_norm' : request.form["S_pylon_norm"],
+            'S_afd_norm' : request.form["S_afd_norm"],
+            'S_rts_norm' : request.form["S_rts_norm"],
+
+            'S_rts_coord_norm' : request.form["S_rts_coord_norm"],
+            'S_maint_1pylon_norm' :request.form["S_maint_1pylon_norm"],
+            'S_maint_afd_norm' : request.form["S_maint_afd_norm"],
+            'S_maint_rts_norm' : request.form["S_maint_rts_norm"],
+            'S_spectrum' : request.form["S_spectrum"],
+            'S_annual_spectrum_fee' : request.form["S_annual_spectrum_fee"],
+
+            'T_geod_norm' :request.form["T_geod_norm"],
+            'T_pylon_norm' : request.form["T_pylon_norm"],
+            'T_afd_norm' : request.form["T_afd_norm"],
+            'T_rts_norm' : request.form["T_rts_norm"],
+            'T_coord_norm' : request.form["T_coord_norm"],
+            
+            'T_maint_pylon_norm' : request.form["T_maint_pylon_norm"],
+            'T_maint_afd_norm' : request.form["T_maint_afd_norm"],
+            'T_maint_rts_norm' : request.form["T_maint_rts_norm"],
+            
+            'In' : request.form["mw_In"],
+            'T_vat' : request.form["mw_T_vat"],
+            'S_operation' : request.form["mw_S_operation"],
+            'T_prof' : request.form["mw_T_prof"],
+            'S_equip_mat' : request.form["mw_S_equip_mat"],
+            'T_lt' : request.form["mw_T_lt"],
+            'K_disc' : request.form["mw_K_disc"],
+            's_inv' : request.form["mw_s_inv"],
+        },
+        
+        'sat': {
+            'V_chan' : request.form["V_chan"],
+            'V_1user' : request.form["V_1user"],
+            'S_1user' : request.form["S_1user"],
+            'S_mat_1user' : request.form["S_mat_1user"],
+            'S_user_typ' : request.form["S_user_typ"],
+            'T_user_typ' : request.form["T_user_typ"],
+            'C_user' : request.form["C_user"],
+            'C_design' : request.form["C_design"],
+            'S_rent_1mbit' : request.form["S_rent_1mbit"],
+            'S_maint_1user' :request.form["S_maint_1user"],
+            'T_maint_1user' : request.form["T_maint_1user"],
+            
+            'In' : request.form["sat_In"],
+            'T_vat' : request.form["sat_T_vat"],
+            'S_operation' : request.form["sat_S_operation"],
+            'T_prof' : request.form["sat_T_prof"],
+            'S_equip_mat' : request.form["sat_S_equip_mat"],
+            'T_lt' : request.form["sat_T_lt"],
+            'K_disc' : request.form["sat_K_disc"],
+            's_inv' : request.form["sat_s_inv"],
+
+        }
+    }
+    
+    all_schools = Schools().getSchoolListing()
+    school_data_dB = [x for x in all_schools if x['school_name'] == school]
+    
+    Schools().updateMiddleMile(school_data_dB[0], middle_mile_paramters)
+    updateMap()     # update map
+    
+    return redirect(url_for(".schoolListing"))
+
+
+@app.route('/schools/<school>/lastmile', methods=['GET', 'POST'])
+def lastmile(school):
+    
+    # arrival to middle-mile paramter configuration page with no POST data
+    if not request.form:
+        return render_template('lastmile.html', user=userSession(), school=school)
+    
+    
+    return redirect(url_for(".schoolListing"))
 
 
 if __name__ == '__main__':
     app.run(debug=True)
+    

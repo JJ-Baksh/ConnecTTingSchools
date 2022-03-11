@@ -48,8 +48,41 @@ def convertTemplate(template):
         {% endif %}
     
         <br> <br>
-        <b>Middle- and Last-Mile Technology: </b> Not yet implemented <br><br>
-        <b>Projected Cost of Deployment:</b> Not yet implemented
+
+        {% if x.results %}
+        <b>Middle Mile Technology and Projected Costs: </b> <br>
+        
+            <table style="width:100%">
+                <tr>
+                    <th rowspan='2' class="text-center">Technology</th>
+                    <th colspan='2' class="text-center">Projected Costs</th>
+                </tr>
+                <tr>
+                    <th class="text-center">TCO</th>
+                    <th class="text-center">NPV</th>
+                </tr>
+                <tr>
+                    <td> &nbsp {{x.results.middle_mile_technology_TCO.name}} &nbsp </td>
+                    <td>  &nbsp<b>{{x.results.middle_mile_technology_TCO.TCO}} &nbsp</b> </td>
+                    <td> &nbsp {{x.results.middle_mile_technology_TCO.NPV}} &nbsp </td>
+                </tr>
+                <tr>
+                    <td> &nbsp {{x.results.middle_mile_technology_NPV.name}} &nbsp </td>
+                    <td>  &nbsp{{x.results.middle_mile_technology_NPV.TCO}} &nbsp </td>
+                    <td>  &nbsp <b>{{x.results.middle_mile_technology_NPV.NPV}} &nbsp</b> </td>
+                </tr>
+            </table>
+
+         <br>
+
+        <b>Last Mile Technology and Projected Costs: </b> <br><br>
+
+        {% else %}
+        <b>Middle Mile Technology and Projected Costs: </b> No user device groups have been configured <br>
+         <br><br>
+
+        <b>Last Mile Technology and Projected Costs: No user device groups have been configured</b> <br><br>
+        {% endif %}
     `
     popup_{{x._id}}.setContent(i_frame_{{x._id}})
         

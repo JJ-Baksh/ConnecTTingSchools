@@ -4,6 +4,12 @@
 <head>
     <meta charset="UTF-8">
     <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>
+        table, th, td {
+          text-align: center;
+          border:1px solid black;
+        }
+        </style>
     <!-- Leaflet CSS file -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css"
     integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A=="
@@ -213,7 +219,7 @@
    
     
     
-    var icon_61bc8676a19648bd85562c08 = L.AwesomeMarkers.icon(
+    var icon_622ad7e761fa2d983f2fd0f6 = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
@@ -221,14 +227,14 @@
         "prefix": "glyphicon"}
     )
 
-    var school_61bc8676a19648bd85562c08 = L.marker(
+    var school_622ad7e761fa2d983f2fd0f6 = L.marker(
         [11.1806290319663, -60.8050054143551], {
-            icon: icon_61bc8676a19648bd85562c08,
+            icon: icon_622ad7e761fa2d983f2fd0f6,
         },
     ).addTo( fullConfigGroup )
 
-    var popup_61bc8676a19648bd85562c08 = L.popup({"maxWidth": 650})
-    var i_frame_61bc8676a19648bd85562c08 = `
+    var popup_622ad7e761fa2d983f2fd0f6 = L.popup({"maxWidth": 650})
+    var i_frame_622ad7e761fa2d983f2fd0f6 = `
         <u><b>SCHOOL INFORMATION</b></u><br>
         <b>Name:</b> Buccoo Government Primary School <br>
         <b>Electricity:</b> Consistent Access<br>
@@ -246,19 +252,122 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         6.64 Mbps
+         18.3 Mbps
         
     
         <br> <br>
-        <b>Middle- and Last-Mile Technology: </b> Not yet implemented <br><br>
-        <b>Projected Cost of Deployment:</b> Not yet implemented
-    `
-    popup_61bc8676a19648bd85562c08.setContent(i_frame_61bc8676a19648bd85562c08)
-        
-    school_61bc8676a19648bd85562c08.bindPopup(popup_61bc8676a19648bd85562c08)
 
-    school_61bc8676a19648bd85562c08.bindTooltip(
+        
+        <b>Middle Mile Technology and Projected Costs: </b> <br>
+        
+            <table style="width:100%">
+                <tr>
+                    <th rowspan='2' class="text-center">Technology</th>
+                    <th colspan='2' class="text-center">Projected Costs</th>
+                </tr>
+                <tr>
+                    <th class="text-center">TCO</th>
+                    <th class="text-center">NPV</th>
+                </tr>
+                <tr>
+                    <td> &nbsp Satellite &nbsp </td>
+                    <td>  &nbsp<b>$607700.00 TTD &nbsp</b> </td>
+                    <td> &nbsp $75797398.82 TTD &nbsp </td>
+                </tr>
+                <tr>
+                    <td> &nbsp Microwave radio &nbsp </td>
+                    <td>  &nbsp$18248269.66 TTD &nbsp </td>
+                    <td>  &nbsp <b>$76712254.05 TTD &nbsp</b> </td>
+                </tr>
+            </table>
+
+         <br>
+
+        <b>Last Mile Technology and Projected Costs: </b> <br><br>
+
+        
+    `
+    popup_622ad7e761fa2d983f2fd0f6.setContent(i_frame_622ad7e761fa2d983f2fd0f6)
+        
+    school_622ad7e761fa2d983f2fd0f6.bindPopup(popup_622ad7e761fa2d983f2fd0f6)
+
+    school_622ad7e761fa2d983f2fd0f6.bindTooltip(
         `<div> Buccoo Government Primary School </div>`,
+        {"sticky": true}
+    )
+
+    
+    
+    var icon_622b708030c3b6ce9639107c = L.AwesomeMarkers.icon(
+        {"extraClasses": "fa-rotate-0", 
+        icon: "info-sign", 
+        "iconColor": "white",
+         "markerColor": "green", 
+        "prefix": "glyphicon"}
+    )
+
+    var school_622b708030c3b6ce9639107c = L.marker(
+        [1.0, 1.0], {
+            icon: icon_622b708030c3b6ce9639107c,
+        },
+    ).addTo( fullConfigGroup )
+
+    var popup_622b708030c3b6ce9639107c = L.popup({"maxWidth": 650})
+    var i_frame_622b708030c3b6ce9639107c = `
+        <u><b>SCHOOL INFORMATION</b></u><br>
+        <b>Name:</b> rer <br>
+        <b>Electricity:</b> Consistent Access<br>
+        <b>Cellular Coverage:</b> 
+        
+        None
+        
+        
+        <br><br>
+
+        <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
+        <b>Network Bandwidth:</b>
+                            
+         1.38 Mbps
+        
+    
+        <br> <br>
+
+        
+        <b>Middle Mile Technology and Projected Costs: </b> <br>
+        
+            <table style="width:100%">
+                <tr>
+                    <th rowspan='2' class="text-center">Technology</th>
+                    <th colspan='2' class="text-center">Projected Costs</th>
+                </tr>
+                <tr>
+                    <th class="text-center">TCO</th>
+                    <th class="text-center">NPV</th>
+                </tr>
+                <tr>
+                    <td> &nbsp Satellite &nbsp </td>
+                    <td>  &nbsp<b>$172100.00 TTD &nbsp</b> </td>
+                    <td> &nbsp $75797398.82 TTD &nbsp </td>
+                </tr>
+                <tr>
+                    <td> &nbsp Microwave radio &nbsp </td>
+                    <td>  &nbsp$3302289.66 TTD &nbsp </td>
+                    <td>  &nbsp <b>$76712254.05 TTD &nbsp</b> </td>
+                </tr>
+            </table>
+
+         <br>
+
+        <b>Last Mile Technology and Projected Costs: </b> <br><br>
+
+        
+    `
+    popup_622b708030c3b6ce9639107c.setContent(i_frame_622b708030c3b6ce9639107c)
+        
+    school_622b708030c3b6ce9639107c.bindPopup(popup_622b708030c3b6ce9639107c)
+
+    school_622b708030c3b6ce9639107c.bindTooltip(
+        `<div> rer </div>`,
         {"sticky": true}
     )
 
