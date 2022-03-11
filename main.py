@@ -5,7 +5,7 @@ from modules.user_accounts import UserAccounts
 from modules.schools import Schools, arrangeSchoolData
 from modules.map import addCoverageMap, convertTemplate
 
-parameters = []
+parameters = Schools().setDefaultParamters()
 
 # initialize project components
 app = Flask(__name__)                                               # create Flask application
@@ -31,13 +31,9 @@ def updateMap():
 # route for initalizing map
 @app.route('/')
 def inital():
-    global parameters
     # map_template_a contains leaflet code for map, feature groups and jinja2 loop for tower locations
     # map_template_b contains leaflet code for map, feature groups, coverage maps and jinja2 loop for schools
     # map_template_c contains leaflet code for map, feature groups, coverage maps and schools
-    
-    # to update default parameters
-    parameters = Schools().setDefaultParamters()
     
     if not os.path.exists('./templates/map_template_b.html'):
         # if template b does not exist, get code from template a
