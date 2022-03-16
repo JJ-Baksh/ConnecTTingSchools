@@ -1,22 +1,26 @@
-# imports and dependancies
+###### imports and dependancies
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 import os
 from modules.user_accounts import UserAccounts
-from modules.schools import Schools, arrangeSchoolData
+from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters
 from modules.map import addCoverageMap, convertTemplate
 
-parameters = Schools().setDefaultParamters()
 
-# initialize project components
+##### initialize project components
 app = Flask(__name__)                                               # create Flask application
 app.config['SECRET_KEY'] = os.environ['3020_flask_app_secret_key']  # required for forms collection
 
 
+###### function methods for convenience (run once if necessary)
+# Schools().setDefaultParamters() # adds default middle- mile and last- mile paramters to the database
+
+
+
+##### primary functions
 
 def userSession():
     if 'firstName' in session: return session['firstName']
     return None
-
 
 
 def updateMap():
@@ -28,39 +32,42 @@ def updateMap():
 
 
 
-# route for initalizing map
+
+###### route for initalizing the map and default values used in the application
 @app.route('/')
 def inital():
-    # map_template_a contains leaflet code for map, feature groups and jinja2 loop for tower locations
-    # map_template_b contains leaflet code for map, feature groups, coverage maps and jinja2 loop for schools
-    # map_template_c contains leaflet code for map, feature groups, coverage maps and schools
+    ##### initalizing the map
     
-    if not os.path.exists('./templates/map_template_b.html'):
-        # if template b does not exist, get code from template a
-        template = render_template('map_template_a.html', tower=addCoverageMap())
+    # if map_template_b does not exist: 
+        # render the original code (map_template_a) with cellular coverage areas
+        # add the jinja2 loop for schools (convertTemplate function)
+        # write contents to map_template_b
         
-        # then write to template b (after adding jinja2 loop for schools)
-        with open('./templates/map_template_b.html', 'w') as f: 
-            f.write(convertTemplate(template))
+    if not os.path.exists('./templates/map_template_b.html'):
+        template = render_template('map_template_a.html', tower=addCoverageMap())
+        with open('./templates/map_template_b.html', 'w') as f: f.write(convertTemplate(template))
     
-    # then write template c for displaying (this will be used repeatitively)
+    
+    # create final HTML which will be displayed (map_template_c)
+        # take map_template_b and add the schools in the database
+    
     with open('./static/map/map_template_c.html', 'w') as f:
         all_schools = Schools().getSchoolListing()
         f.write(render_template('map_template_b.html', school=all_schools))
     
+
     return redirect(url_for(".home"))
 
 
 
 
-# information
+
+##### information routes
 @app.route('/home')
 def home():
     if 'all_groups' in session:
         session.pop('all_groups', None)
     return render_template('home.html', user=userSession())
-
-
 
 
 @app.route('/about')
@@ -70,12 +77,14 @@ def about():
 
 
 
-# user authentication
+
+##### user authentication routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     
     # inital arrival to login page
-    if not request.form: return render_template('login.html')
+    if not request.form: 
+        return render_template('login.html')
     
     # retrieve and validate POST data
     user = UserAccounts().ValidateUserAccount(request.form)
@@ -91,14 +100,10 @@ def login():
     return redirect(url_for(".home"))
 
 
-
-
 @app.route('/logout')
 def logout():
     session.pop('firstName', None)
     return redirect(url_for(".home"))
-
-
 
 
 @app.route('/register', methods=['GET', 'POST'])
@@ -130,7 +135,8 @@ def register():
 
 
 
-# functionality
+
+##### functionality routes
 @app.route('/schools', methods=['GET', 'POST'])
 def schoolListing():
     all_schools = Schools().getSchoolListing()
@@ -145,8 +151,6 @@ def schoolListing():
         all_schools = updateMap()               # update listing and map
     
     return render_template('schoolListing.html', user=userSession(), list=all_schools)
-
-
 
 
 @app.route('/schools/add', methods=['GET', 'POST'])
@@ -165,8 +169,6 @@ def schoolAdd():
     return redirect(url_for(".schoolUserDeviceGroup", school=school_data['school_name']))
 
 
-
-
 @app.route('/schools/<school>/editInfo', methods=['GET', 'POST'])
 def schoolEdit(school):
 
@@ -183,8 +185,6 @@ def schoolEdit(school):
     updateMap()                                         # update map
     
     return redirect(url_for(".schoolUserDeviceGroup", school=school_data_dB['school_name']))
-
-
 
 
 @app.route('/schools/<school>/editUDG', methods=['GET', 'POST'])
@@ -259,16 +259,16 @@ def schoolUserDeviceGroup(school):
         return redirect(url_for(".middlemile", school=school))
 
 
-
 @app.route('/schools/<school>/middlemile', methods=['GET', 'POST'])
 def middlemile(school):
-    global parameters
+
     
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
     
     if not school_data_dB[0]['middle_mile_parameters']:
-        paramter_val = parameters
+        bandwidth = school_data_dB[0]['results']['required_bandwidth']
+        paramter_val = getMiddleMileDefaultParamters(bandwidth)
     else:
         paramter_val = school_data_dB[0]['middle_mile_parameters']
 
@@ -416,6 +416,9 @@ def lastmile(school):
     return redirect(url_for(".schoolListing"))
 
 
+
+
+
+##### run application
 if __name__ == '__main__':
     app.run(debug=True)
-    

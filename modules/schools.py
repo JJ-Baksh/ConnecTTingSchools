@@ -15,135 +15,6 @@ class Schools:
     def AddtoDB(self, school_form):
         self.db.insert_one(school_form)
         self.cluster.close()
-
-
-    def setDefaultParamters(self):
-        database = self.cluster['ECNG3020']['DefaultParamters']
-        
-        middle_mile_focl = {
-            'length' : 20,
-            'T_payback' : 5,   # years
-            'C_hdd' : 0.01,
-            'C_cd' : 0.1,
-            'C_clm' : 0.9,
-            'C_focl' : 0.1,
-            'C_design' : 0.05,
-            
-            'N_CHm_avg': 2,           # assumed
-            'N_c_avg': 0.5,           # assumed
-            
-            'T_geod_norm' : 80.18,     # units: man-hours/km, value: provided
-            'T_hdd_norm' : 6837.20,    # units: man-hours/km, value: provided
-            'T_cd_norm' : 2467.48 ,
-            'T_CHm_norm' : 754.77,
-            'T_clm_norm' : 451.20,
-            'T_c_norm' : 44.2,
-            'T_st_norm' : 31.50,
-            'T_ts_norm' : 0,
-            'T_sc_norm' : 0,
-            'T_maint_focl_norm' : 30.00,
-            'T_maint_cd_norm' : 16,
-            
-            'S_geod_norm' : 100,       # assumed
-            'S_1focl' : 3071.44,       
-            'S_1c' : 268.24,           
-            'S_hdd_norm' : 500,        # assumed
-            'S_1cd' : 24787.90,       
-            'S_1CMh' : 2666.83,        
-            'S_cd_norm' : 2500,        # assumed
-            'S_CHm_norm' : 500,        # assumed
-            'S_clm_norm' : 1000,       # assumed
-            'S_c_norm' : 500,          # assumed
-            'S_st_norm' : 250,         # assumed
-            'S_ts_norm' : 10000,       # assumed
-            'S_sc_norm' : 10000,       # assumed
-            'S_tr_eq' : 1221.75,
-            'S_maint_focl_norm' : 1000, # assumed
-            'S_maint_cd_norm' : 1000,   # assumed
-            
-            'In' : 36000000,           # assumed
-            'T_vat' : 15,              # assumed
-            'S_operation' : 400000,    # assumed
-            'T_prof' : 10,             # assumed
-            'S_equip_mat' : 500000,    # assumed
-            'T_lt' : 25,               # assumed
-            'K_disc' : 5,              # assumed
-            's_inv' : 50000000        # assumed
-        }
-        
-        middle_mile_mw = {
-            'L_rpl' : 20,
-            'N_rts_term' : 2,
-            'C_rts' : 2,
-            'C_afd' : 2,
-            'C_design' : 5,
-            'S_1rts' : 4517.14,
-            'S_1afd' : 1419.67,
-            'S_1pylon' : 7437.99,
-
-            'S_geod_rts_norm' : 5000,  # assumed
-            'S_pylon_norm' : 3000,     # assumed
-            'S_afd_norm' : 3000,       # assumed
-            'S_rts_norm' : 3000,       # assumed
-
-            'S_rts_coord_norm' : 0,
-            'S_maint_1pylon_norm' : 0,
-            'S_maint_afd_norm' : 0,
-            'S_maint_rts_norm' : 0,
-            'S_spectrum' : 10000,
-            'S_annual_spectrum_fee' : 1000,   # assumed
-
-            'T_geod_norm' : 67,
-            'T_pylon_norm' : 87.80,
-            'T_afd_norm' : 40,
-            'T_rts_norm' : 40,
-            'T_coord_norm' : 0,
-            
-            'T_maint_pylon_norm' : 2000,   # assumed
-            'T_maint_afd_norm' : 2000,     # assumed
-            'T_maint_rts_norm' : 2000,     # assumed
-            
-            'In' : 36000000,           # assumed
-            'T_vat' : 15,              # assumed
-            'S_operation' : 300000,    # assumed
-            'T_prof' : 10,             # assumed
-            'S_equip_mat' : 100000,    # assumed
-            'T_lt' : 25,               # assumed
-            'K_disc' :5 ,              # assumed
-            's_inv' : 20000000        # assumed
-        }
-        
-        middle_mile_sat = {
-            'V_chan' : 5.54,
-            'V_1user' : 100,
-            'S_1user' : 10000 ,      # assumed
-            'S_mat_1user' : 10000,   # assumed
-            'S_user_typ' : 5000,      # assumed
-            'T_user_typ' : 16,         # assumed
-            'C_user' : 0.4,
-            'C_design' : 5,
-            'S_rent_1mbit' : 1000,     # assumed
-            'S_maint_1user' : 500,    # assumed
-            'T_maint_1user' : 16,
-            
-            'In' : 36000000,           # assumed
-            'T_vat' : 15,              # assumed
-            'S_operation' : 600000,    # assumed
-            'T_prof' : 10,             # assumed
-            'S_equip_mat' : 400000,    # assumed
-            'T_lt' : 25,               # assumed
-            'K_disc' : 5,              # assumed
-            's_inv' : 20000000        # assumed
-        }
-        
-        database.insert_one({'focl': middle_mile_focl,
-                            'mw': middle_mile_mw,
-                            'sat': middle_mile_sat})
-        self.cluster.close()
-        
-        return {'focl': middle_mile_focl,
-                'mw': middle_mile_mw,
-                'sat': middle_mile_sat}
     
     
     def DeletefromDB(self, school_name):
@@ -251,6 +122,135 @@ class Schools:
         return item
 
 
+def getMiddleMileDefaultParamters(bandwidth): 
+    # all values will be user-definable but all assumed should be defined by the user first
+    middle_mile_focl = {
+        'length' : 20,      # distance between school and local PoP (km) - ASSUMED
+        'T_payback' : 5,    # payback period on investment (years) - ASSUMED
+        
+        'N_CHm_avg': 2,     # average number of cable manholes per km (cable manholes per km) - ASSUMED
+        'N_c_avg': 0.5,     # average FOCL section length that needs a cable duct (km) - ASSUMED
+        
+        # coefficient for ...
+        'C_hdd' : 0.01,     # extending FOCL length due to road crossing (horiz. dir. drilling.)
+        'C_cd' : 0.1,       # the FOCL sections that need cable ducts
+        'C_clm' : 0.9,      # the FOCL sections that need cable laying machine
+        'C_focl' : 0.1,     # the FOCL cost with cable laying and unpacking margin
+        'C_design' : 0.05,  # the FOCL design cost
+        
+        # labor cost norms (man-hours/km) for ...
+        'T_geod_norm' : 80.18,          # geodetic work along FOCL route
+        'T_hdd_norm' : 6837.20,         # road crossings construction by horiz. dir. drilling
+        'T_cd_norm' : 2467.48 ,         # cable-duct construction
+        'T_CHm_norm' : 754.77,          # cable manhole construction and FOCL installation
+        'T_clm_norm' : 451.20,          # FOCL laying by cable laying machine
+        'T_c_norm' : 44.2,              # cable coupling installation
+        'T_st_norm' : 31.50,            # signalling test
+        'T_ts_norm' : 0,                # technical specification design
+        'T_sc_norm' : 0,                # design solutions coordination
+        'T_maint_focl_norm' : 30.00,    # FOCL maintainance along route
+        'T_maint_cd_norm' : 16,         # cable duct mantainance
+        
+        # cost norms ($TTD/hour) for ...
+        'S_geod_norm' : 100,        # geodetic work along FOCL route  - ASSUMED
+        'S_1focl' : 3071.44,        ## cost of FOCL materials per km ($TTD/hour)
+        'S_1c' : 268.24,            ## cost of one cable coupling ($TTD/unit)
+        'S_hdd_norm' : 500,         # road crossings construction by horiz. dir. drilling - ASSUMED
+        'S_1cd' : 24787.90,         ## cost of basic materials for cable duct construction per km ($TTD/hour)
+        'S_1CMh' : 2666.83,         ## cost of basic materials for cable manhole ($TTD/manhole)
+        'S_cd_norm' : 2500,         # cable-duct construction - ASSUMED
+        'S_CHm_norm' : 500,         # cable manhole construction and FOCL installation - ASSUMED
+        'S_clm_norm' : 1000,        # FOCL laying by cable laying machine - ASSUMED
+        'S_c_norm' : 500,           # cable coupling installation - ASSUMED
+        'S_st_norm' : 250,          # signalling test - ASSUMED
+        'S_ts_norm' : 10000,        # technical specification design - ASSUMED
+        'S_sc_norm' : 10000,        # design solutions coordination - ASSUMED
+        'S_tr_eq' : 1221.75,        ## cost of data transmission equipment for L2 channel
+        'S_maint_focl_norm' : 1000, # FOCL maintainance along route - ASSUMED
+        'S_maint_cd_norm' : 1000,   # cable duct mantainance - ASSUMED
+        
+        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 400000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5,               # discord rate (%) - ASSUMED
+        's_inv' : 50000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    middle_mile_mw = {
+        'L_rpl' : 20,               # retransmission path length (km)
+        'N_rts_term' : 2,           # number of terminal RTS (units) 
+        'C_rts' : 2,                # number of RTS devices per repeaters (units)
+        'C_afd' : 2,                # number of antenna feeder devices per repeater (units)
+        'C_design' : 0.05,          # microwave design cost coefficient
+        'S_1rts' : 4517.14,         # internal RTS device subassembly cost ($TTD/device)
+        'S_1afd' : 1419.67,         # internal RTS antenna feeder device subassembly cost ($TTD/device)
+        'S_1pylon' : 7437.99,       # main material cost for one RTS pylon construction ($TTD/device)
+
+        # cost norms ($TTD/hour) for ...
+        'S_geod_rts_norm' : 5000,   # geodetic work at RTS pylon location ($TTD/device) - ASSUMED
+        'S_pylon_norm' : 3000,      # per pylon construction of RTS antenna ($TTD/device) - ASSUMED
+        'S_afd_norm' : 3000,        # antenna feeder deivce installation and commisioning ($TTD/device) - ASSUMED
+        'S_rts_norm' : 3000,        # internal devices installion and commissioning per RTS ($TTD/device) - ASSUMED
+
+        'S_rts_coord_norm' : 0,         # design solutions coordination per RTS construction ($TTD/hour)
+        'S_maint_1pylon_norm' : 0,      # typical cost for one RTS pylon maintainance ($TTD/hour)
+        'S_maint_afd_norm' : 0,         # typical cost for antenna feeder device maintainance per RTS ($TTD/hour)
+        'S_maint_rts_norm' : 0,         # typical cost for internal RTS device maintainance ($TTD/hour)
+        'S_spectrum' : 10000,           # spectrum licensing cost for the entire channel ($TTD)
+        'S_annual_spectrum_fee' : 1000, # annual spectrum licensing cost for the entire channel ($TTD) - ASSUMED
+
+        # labor cost norms (man-hour/unit) for ...
+        'T_geod_norm' : 67,         # geodetic work at RTS pylon location
+        'T_pylon_norm' : 87.80,     # pylon construction of RTS antenna
+        'T_afd_norm' : 40,          # antenna feeder devices installation and commissioning
+        'T_rts_norm' : 40,          # internal RTS devices installtion and commissioning
+        'T_coord_norm' : 0,         # design solutions coordingation on one RTS construction
+
+        # typical annual labor cost (man-hours/unit) for ...
+        'T_maint_pylon_norm' : 2000,    # RTS pylon maintainance - ASSUMED
+        'T_maint_afd_norm' : 2000,      # cost for antenna feeder device maintainance - ASSUMED
+        'T_maint_rts_norm' : 2000,      # internal RTS device maintainance - ASSUMED
+        
+        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 100000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' :5 ,               # discord rate (%) - ASSUMED
+        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    middle_mile_sat = {
+        'V_chan' : bandwidth,   # required network bandwidth for school (Mbps)
+        'V_1user' : 100,        # communication channel capacity per single Internet channel (Mbps)
+        'S_1user' : 10000,      # cost of user terminal set ($TTD/unit) - ASSUMED
+        'S_mat_1user' : 10000,  # cost of materials and supplied equipment for one terminal set ($TTD/unit) - ASSUMED
+        'S_user_typ' : 5000,    # typical cost of installation and configuration of one user terminal set ($TTD/unit) - ASSUMED
+        'T_user_typ' : 16,      # labor cost for installation and configuration of one user terminal set (man-hours/unit) - ASSUMED
+        'C_user' : 0.4,         # total cost of user terminal equipment and installation materials coefficient
+        'C_design' : 0.05,      # satellite design cost coefficient
+        'S_rent_1mbit' : 1000,  # annual cost for 1Mbps channel rent ($TTD/Mbps) - ASSUMED
+        'S_maint_1user' : 500,  # typical cost for user terminal set maintainance per hour ($TTD/hour) - ASSUMED
+        'T_maint_1user' : 16,   # annual labor norms for one user terminal set maintainance (man-hours/unit)
+        
+        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 600000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 400000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5,               # discord rate (%) - ASSUMED
+        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    
+    return {'focl': middle_mile_focl,
+            'mw': middle_mile_mw,
+            'sat': middle_mile_sat}
 
 
 def arrangeSchoolData(post_data):
