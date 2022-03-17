@@ -22,7 +22,7 @@
 
 {% block body %}
 
-<div class="text-center my-5"> <h1> Middle Mile Parameters </h1> </div>
+<div class="text-center my-5"> <h1> Middle Mile Parameters for {{ school }}</h1> </div>
 
 <div class="container-fluid">
     <div class='row'>
@@ -32,453 +32,1038 @@
                 <div class="mb-3">
                     <span><h5>Fibre Optic Cable Laying (FOCL)</h5></span>
                 </div>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Distance between school and local PoP (km)</span>
-                    <input type="number" name='length' min="0" step="any" class="form-control" value="{{param['focl']['length']}}" required>
-                </div>
+                        <tr>
+                            <td>Length</td>
+                            <td>The distance between the school and a local PoP</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_length' min="0" step="any" class="form-control" value="{{param['focl']['length']}}" required> km
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Length Coefficient</span>
-                    <input type="number" name='C_hdd' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_hdd"]}}' required>
-                </div>
+                        <tr>
+                            <td>Payback Period</td>
+                            <td>The timespan upon which the return of investment is expected within</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_payback' min="0" step="any" class="form-control" value="{{param['focl']['T_payback']}}"  required> years
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Sections Coefficient</span>
-                    <input type="number" name='C_cd' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_cd"]}}' required>
-                </div>
+                        <tr>
+                            <td>FOCL Length Coefficient</td>
+                            <td>This coefficient compensates for the additional length of cable needed to cover road crossing along FOCL route (between 0 and 1)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_hdd' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_hdd"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Cable Laying Coefficient</span>
-                    <input type="number" name='C_clm' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_clm"]}}' required>
-                </div>
+                        <tr>
+                            <td>FOCL Section Coefficient</td>
+                            <td>This coefficient for the FOCL sections that need cable ducts (between 0 and 1)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_cd' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_cd"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Cost Coefficient</span>
-                    <input type="number" name='C_focl' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_focl"]}}' required>
-                </div>
+                        <tr>
+                            <td>FOCL Cable Laying Coefficient</td>
+                            <td>This coefficient for the FOCL sections that need cable laying machine (between 0 and 1)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_clm' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_clm"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">Design Cost Coefficient</span>
-                    <input type="number" name='C_design' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_design"]}}' required>
-                </div>
+                        <tr>
+                            <td>FOCL Installation Cost Coefficient</td>
+                            <td>This coefficient affects the cost of cable lating and unpacking margin (between 0 and 1)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_focl' min="0" max="1" step="0.1" class="form-control" value='{{param["focl"]["C_focl"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>FOCL Design Cost Coefficient</td>
+                            <td>This coefficient for the FOCL design cost (between 0 and 1)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_design' min="0" max="1" step="0.01" class="form-control" value='{{param["focl"]["C_design"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>Avg. number of cable manholes per km</td>
+                            <td>This value will be used to determine the number of cable manholes along the FOCL route</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_N_CHm_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_CHm_avg"]}}' required> manholes/km
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">N_CHm_avg</span>
-                    <input type="number" name='N_CHm_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_CHm_avg"]}}' required>
-                </div>
+                        <tr>
+                            <td>Avg. FOCL section length that need cable ducts</td>
+                            <td>This value will be used to determine the number of cable ducts along the FOCL route</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_N_c_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_c_avg"]}}' required> km
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">N_c_avg</span>
-                    <input type="number" name='N_c_avg' min="0" step="0.1" class="form-control" value='{{param["focl"]["N_c_avg"]}}' required>
-                </div>
+                        <tr>
+                            <td>Labor Cost Norms for Geodetic Work</td>
+                            <td>This is the labor cost norms for geodetic work along the FOCL route</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_geod_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
 
+                        <tr>
+                            <td>Labor Cost Norms for Road Crossings</td>
+                            <td>This is the labor cost norms applied when using horizontal directional drilling to cover road crossings of the cable</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_hdd_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Labor Cost Norms for Cable-Duct Construction</td>
+                            <td>This is the labor cost norms applied when constructing cable-ducts along the FOCL route</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_cd_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_geod_norm</span>
-                    <input type="number" name='T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_geod_norm"]}}' required>
-                </div>
+                        <tr>
+                            <td>Labor Cost Norms for Cable Man-hole Construction</td>
+                            <td>This is the labor cost norms applied when constructing cable man-holes along the FOCL route</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_CHm_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_hdd_norm</span>
-                    <input type="number" name='T_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_hdd_norm"]}}' required>
-                </div>
-                
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_cd_norm</span>
-                    <input type="number" name='T_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_cd_norm"]}}' required>
-                </div>
+                        <tr>
+                            <td>Labor Cost Norms for Cable Laying Machine</td>
+                            <td>This is the labor cost norms applied for the use of a cable laying machine</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_clm_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for Cable Couplings</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_c_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for FOCL Signalling Test</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_st_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for Technical Specification Design</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_ts_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for Design Solutions Coordination</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_sc_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for FOCL Maintainance along route</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_focl_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Labor Cost Norms for Cable Duct Maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_cd_norm"]}}' required> man-hours/km
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cost Norms for Geodetic Work along FOCL Route</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_geod_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
         
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_CHm_norm</span>
-                    <input type="number" name='T_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_CHm_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_clm_norm</span>
-                    <input type="number" name='T_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_clm_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_c_norm</span>
-                    <input type="number" name='T_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_c_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_st_norm</span>
-                    <input type="number" name='T_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_st_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_ts_norm</span>
-                    <input type="number" name='T_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_ts_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_sc_norm</span>
-                    <input type="number" name='T_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_sc_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_focl_norm</span>
-                    <input type="number" name='T_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_focl_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_cd_norm</span>
-                    <input type="number" name='T_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_maint_cd_norm"]}}' required>
-                </div>
-
-
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_geod_norm</span>
-                    <input type="number" name='S_geod_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_geod_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1focl</span>
-                    <input type="number" name='S_1focl' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1focl"]}}' required>
-                </div>
-                
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1c</span>
-                    <input type="number" name='S_1c' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1c"]}}' required>
-                </div>
+                        <tr>
+                            <td>Cost of FOCL materials per km</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_1focl' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1focl"]}}' required> $TTD/km
+                                </div> 
+                            </td>
+                        </tr>
         
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_hdd_norm</span>
-                    <input type="number" name='S_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_hdd_norm"]}}' required>
-                </div>
+                        <tr>
+                            <td>Cost of Cable Coupling</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_1c' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1c"]}}' required> $TTD/unit
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Cost Norms for Road Crossing Construction</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_hdd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_hdd_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+                
+                        <tr>
+                            <td>Cost of Basic Materials for Cable Duct Construction per km</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_1cd' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1cd"]}}' required> $TTD/km
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>cost of basic materials for cable manhole/td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_1CMh' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1CMh"]}}' required> $TTD/manhole
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for Cable-Duct Construction</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_cd_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for cable manhole construction and FOCL installation</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_CHm_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for cable manhole construction and FOCL installation</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_clm_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for cable coupling installation </td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_c_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost Norms for FOCL Signalling Test</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_st_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost Norms for technical specification design</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_ts_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost Norms for design solutions coordination</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_sc_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>cost of data transmission equipment for L2 channel</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_tr_eq' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_tr_eq"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost Norms for FOCL maintainance along route</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_focl_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost Norms for cable duct mantainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_cd_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+         
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1cd</span>
-                    <input type="number" name='S_1cd' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1cd"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1CMh</span>
-                    <input type="number" name='S_1CMh' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_1CMh"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_cd_norm</span>
-                    <input type="number" name='S_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_cd_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_CHm_norm</span>
-                    <input type="number" name='S_CHm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_CHm_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_clm_norm</span>
-                    <input type="number" name='S_clm_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_clm_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_c_norm</span>
-                    <input type="number" name='S_c_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_c_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_st_norm</span>
-                    <input type="number" name='S_st_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_st_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_ts_norm</span>
-                    <input type="number" name='S_ts_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_ts_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_sc_norm</span>
-                    <input type="number" name='S_sc_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_sc_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_tr_eq</span>
-                    <input type="number" name='S_tr_eq' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_tr_eq"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_focl_norm</span>
-                    <input type="number" name='S_maint_focl_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_focl_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_cd_norm</span>
-                    <input type="number" name='S_maint_cd_norm' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_maint_cd_norm"]}}' required>
-                </div>
-
-
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">In</span>
-                    <input type="number" name='In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_vat</span>
-                    <input type="number" name='T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_operation</span>
-                    <input type="number" name='S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_prof</span>
-                    <input type="number" name='T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_equip_mat</span>
-                    <input type="number" name='S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_lt</span>
-                    <input type="number" name='T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">K_disc</span>
-                    <input type="number" name='K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">s_inv</span>
-                    <input type="number" name='s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required>
-                </div>
+                    </tbody>
+                </table>
 
 
 
                 <div class="mt-5">
                     <span><h5>Microwave Radio (MW)</h5></span>
                 </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
+
+                        <tr>
+                            <td>Re-transmission Path Length</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_L_rpl' min="0" step="0.01" class="form-control" value='{{param["mw"]["L_rpl"]}}' required> km
+                                </div> 
+                            </td>
+                        </tr>
         
-                <div class="input-group mb-3">
-                    <span class="input-group-text">L_rpl</span>
-                    <input type="number" name='L_rpl' min="0" step="0.01" class="form-control" value='{{param["mw"]["L_rpl"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">N_rts_term</span>
-                    <input type="number" name='N_rts_term' min="0" step="0.01" class="form-control" value='{{param["mw"]["N_rts_term"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">C_rts</span>
-                    <input type="number" name='C_rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_rts"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">C_afd</span>
-                    <input type="number" name='C_afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_afd"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">C_design</span>
-                    <input type="number" name='C_design' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_design"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1rts</span>
-                    <input type="number" name='S_1rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1rts"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1afd</span>
-                    <input type="number" name='S_1afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1afd"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1pylon</span>
-                    <input type="number" name='S_1pylon' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1pylon"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_geod_rts_norm</span>
-                    <input type="number" name='S_geod_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_geod_rts_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_pylon_norm</span>
-                    <input type="number" name='S_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_pylon_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_afd_norm</span>
-                    <input type="number" name='S_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_afd_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_rts_norm</span>
-                    <input type="number" name='S_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_rts_coord_norm</span>
-                    <input type="number" name='S_rts_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_coord_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_1pylon_norm</span>
-                    <input type="number" name='S_maint_1pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_1pylon_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_afd_norm</span>
-                    <input type="number" name='S_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_afd_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_rts_norm</span>
-                    <input type="number" name='S_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_rts_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_spectrum</span>
-                    <input type="number" name='S_spectrum' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_spectrum"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_annual_spectrum_fee</span>
-                    <input type="number" name='S_annual_spectrum_fee' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_annual_spectrum_fee"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_geod_norm</span>
-                    <input type="number" name='T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_geod_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_pylon_norm</span>
-                    <input type="number" name='T_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_pylon_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_afd_norm</span>
-                    <input type="number" name='T_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_afd_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_rts_norm</span>
-                    <input type="number" name='T_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_rts_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_coord_norm</span>
-                    <input type="number" name='T_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_coord_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_pylon_norm</span>
-                    <input type="number" name='T_maint_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_pylon_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_afd_norm</span>
-                    <input type="number" name='T_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_afd_norm"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_rts_norm</span>
-                    <input type="number" name='T_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_rts_norm"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_In</span>
-                    <input type="number" name='mw_In' min="0" step="0.01" class="form-control" value='{{param["mw"]["In"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_T_vat</span>
-                    <input type="number" name='mw_T_vat' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_vat"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_S_operation</span>
-                    <input type="number" name='mw_S_operation' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_operation"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_T_prof</span>
-                    <input type="number" name='mw_T_prof' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_prof"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_S_equip_mat</span>
-                    <input type="number" name='mw_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_equip_mat"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_T_lt</span>
-                    <input type="number" name='mw_T_lt' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_lt"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_K_disc</span>
-                    <input type="number" name='mw_K_disc' min="0" step="0.01" class="form-control" value='{{param["mw"]["K_disc"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">mw_s_inv</span>
-                    <input type="number" name='mw_s_inv' min="0" step="0.01" class="form-control" value='{{param["mw"]["s_inv"]}}' required>
-                </div>
+                        <tr>
+                            <td>Number of RTS terminals</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_N_rts_term' min="0" step="0.01" class="form-control" value='{{param["mw"]["N_rts_term"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
         
+                        <tr>
+                            <td>Number of RTS Devices per Repeater</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_C_rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_rts"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+          
+                        <tr>
+                            <td>number of antenna feeder devices per repeater</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_C_afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_afd"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Microwave Design Cost Coefficient</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_C_design' min="0" step="0.01" class="form-control" value='{{param["mw"]["C_design"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Internal RTS device Sub-assembly</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_1rts' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1rts"]}}' required> $TTD/device
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Internal RTS antenna Feeder Device Sub-assembly</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_1afd' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1afd"]}}' required> $TTD/device
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>main material cost for one RTS pylon construction</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_1pylon' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_1pylon"]}}' required> $TTD/device
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for geodetic work at RTS pylon location</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_geod_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_geod_rts_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for pylon construction of RTS antenna</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_pylon_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for antenna feeder deivce installation and commisioning</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_afd_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for internal devices installion and commissioning per RTS</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for design solutions coordination per RTS construction</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_rts_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_rts_coord_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for typical cost for one RTS pylon maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_maint_1pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_1pylon_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for typical cost for antenna feeder device maintainance per RTS</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_afd_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for typical cost for internal RTS device maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_maint_rts_norm"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for spectrum licensing cost for the entire channel</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_spectrum' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_spectrum"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost norms for annual spectrum licensing cost for the entire channel</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_annual_spectrum_fee' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_annual_spectrum_fee"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor Cost Norms for geodetic work at RTS pylon location</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_geod_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_geod_norm"]}}' required> man-hour/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor Cost Norms for pylon construction of RTS antenna</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_pylon_norm"]}}' required> man-hour/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor Cost Norms for antenna feeder devices installation and commissioning</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_afd_norm"]}}' required> man-hour/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor Cost Norms for internal RTS devices installtion and commissioning</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_rts_norm"]}}' required> man-hour/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor Cost Norms for design solutions coordination on one RTS construction</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_coord_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_coord_norm"]}}' required> man-hour/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>typical annual labor cost for RTS pylon maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_maint_pylon_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_pylon_norm"]}}' required> man-hours/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>typical annual labor cost for cost for antenna feeder device maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_maint_afd_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_afd_norm"]}}' required> man-hours/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>typical annual labor cost for internal RTS device maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_maint_rts_norm' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_maint_rts_norm"]}}' required> man-hours/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_In' min="0" step="0.01" class="form-control" value='{{param["mw"]["In"]}}' required>  $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_vat' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_operation' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_operation"]}}' required>  $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_prof' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["mw"]["S_equip_mat"]}}' required>  $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_lt' min="0" step="0.01" class="form-control" value='{{param["mw"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_K_disc' min="0" step="0.01" class="form-control" value='{{param["mw"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_s_inv' min="0" step="0.01" class="form-control" value='{{param["mw"]["s_inv"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
 
                 <div class="mt-5 mb-3">
                     <span><h5>Satellite</h5></span>
                 </div>
 
-                <div class="input-group mb-3">
-                    <span class="input-group-text">V_chan</span>
-                    <input type="number" name='V_chan' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_chan"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">V_1user</span>
-                    <input type="number" name='V_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_1user"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_1user</span>
-                    <input type="number" name='S_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_1user"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_mat_1user</span>
-                    <input type="number" name='S_mat_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_mat_1user"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_user_typ</span>
-                    <input type="number" name='S_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_user_typ"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_user_typ</span>
-                    <input type="number" name='T_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_user_typ"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">C_user</span>
-                    <input type="number" name='C_user' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_user"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">C_design</span>
-                    <input type="number" name='C_design' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_design"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_rent_1mbit</span>
-                    <input type="number" name='S_rent_1mbit' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_rent_1mbit"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">S_maint_1user</span>
-                    <input type="number" name='S_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_maint_1user"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">T_maint_1user</span>
-                    <input type="number" name='T_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_maint_1user"]}}' required>
-                </div>
-
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_In</span>
-                    <input type="number" name='sat_In' min="0" step="0.01" class="form-control" value='{{param["sat"]["In"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_T_vat</span>
-                    <input type="number" name='sat_T_vat' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_vat"]}}' required>
-                </div>
-
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_S_operation</span>
-                    <input type="number" name='sat_S_operation' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_operation"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_T_prof</span>
-                    <input type="number" name='sat_T_prof' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_prof"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_S_equip_mat</span>
-                    <input type="number" name='sat_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_equip_mat"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_T_lt</span>
-                    <input type="number" name='sat_T_lt' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_lt"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_K_disc</span>
-                    <input type="number" name='sat_K_disc' min="0" step="0.01" class="form-control" value='{{param["sat"]["K_disc"]}}' required>
-                </div>
-                <div class="input-group mb-3">
-                    <span class="input-group-text">sat_s_inv</span>
-                    <input type="number" name='sat_s_inv' min="0" step="0.01" class="form-control" value='{{param["sat"]["s_inv"]}}' required>
-                </div>
-
-
-
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    
+                    <tbody>
         
+                        <tr>
+                            <td>Required Network Bandwidth for the School</td>
+                            <td>This value was calculated using the user devices groups defined previously</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_V_chan' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_chan"]}}' required> Mbps
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Communication Channel Capacity</td>
+                            <td>The channel capcity per user terminal can be used to determine the number of user terminals requied to meet the demand</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_V_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["V_1user"]}}' required> Mbps
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of User Terminal Set</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_1user"]}}' required> $TTD/unit
+                                </div> 
+                            </td>
+                        </tr>
+            
+                        <tr>
+                            <td>Cost of Materials and Equipment</td>
+                            <td>This includes material and equipment to deploy and install</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_mat_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_mat_1user"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Typical cost of installation and configuration per user terminal set</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_user_typ"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Labor cost for Installation and Configuration of User Terminal Sets</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_user_typ' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_user_typ"]}}' required> man-hours/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total cost of User Terminal Equipment and Installation</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_C_user' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_user"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Design Cost Coefficient</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_C_design' min="0" step="0.01" class="form-control" value='{{param["sat"]["C_design"]}}' required>
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Annual cost of 1 Mbps channel rent</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_rent_1mbit' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_rent_1mbit"]}}' required> $TTD/Mbps
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Typical cost of hour for user terminal set maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_maint_1user"]}}' required> $TTD/hour
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Annual Labor norms of one user terminal set maintainance</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_maint_1user' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_maint_1user"]}}' required> man-hours/unit
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_In' min="0" step="0.01" class="form-control" value='{{param["sat"]["In"]}}' required>  $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_vat' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_operation' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_operation"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_prof' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["sat"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_lt' min="0" step="0.01" class="form-control" value='{{param["sat"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_K_disc' min="0" step="0.01" class="form-control" value='{{param["sat"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_s_inv' min="0" step="0.01" class="form-control" value='{{param["sat"]["s_inv"]}}' required>  $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+
+
                 <div class="text-center">
                     <button id="subt_button_real" class="btn btn-primary mb-3">Submit Middle Mile Paramters</button>
 					<button id="subt_button_fake" class="btn btn-primary mb-3" disabled hidden>Please wait...</button>
                 </div>
                 <div class="text-center">
-                    <a href="{{ url_for('.schoolListing') }}" class="btn btn-secondary mb-5">Return to School Listing</a>
+                    <a href="{{ url_for('.schoolListing') }}" class="btn btn-secondary mb-5">Return to School Listing without Saving</a>
                 </div>
             
             </form>

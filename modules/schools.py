@@ -156,7 +156,7 @@ def getMiddleMileDefaultParamters(bandwidth):
         'S_1focl' : 3071.44,        ## cost of FOCL materials per km ($TTD/hour)
         'S_1c' : 268.24,            ## cost of one cable coupling ($TTD/unit)
         'S_hdd_norm' : 500,         # road crossings construction by horiz. dir. drilling - ASSUMED
-        'S_1cd' : 24787.90,         ## cost of basic materials for cable duct construction per km ($TTD/hour)
+        'S_1cd' : 24787.90,         ## cost of basic materials for cable duct construction per km ($TTD/km)
         'S_1CMh' : 2666.83,         ## cost of basic materials for cable manhole ($TTD/manhole)
         'S_cd_norm' : 2500,         # cable-duct construction - ASSUMED
         'S_CHm_norm' : 500,         # cable manhole construction and FOCL installation - ASSUMED
@@ -175,7 +175,7 @@ def getMiddleMileDefaultParamters(bandwidth):
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
         'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
         'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
-        'K_disc' : 5,               # discord rate (%) - ASSUMED
+        'K_disc' : 5,               # discount rate (%) - ASSUMED
         's_inv' : 50000000          # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
@@ -207,7 +207,7 @@ def getMiddleMileDefaultParamters(bandwidth):
         'T_pylon_norm' : 87.80,     # pylon construction of RTS antenna
         'T_afd_norm' : 40,          # antenna feeder devices installation and commissioning
         'T_rts_norm' : 40,          # internal RTS devices installtion and commissioning
-        'T_coord_norm' : 0,         # design solutions coordingation on one RTS construction
+        'T_coord_norm' : 0,         # design solutions coordination on one RTS construction
 
         # typical annual labor cost (man-hours/unit) for ...
         'T_maint_pylon_norm' : 2000,    # RTS pylon maintainance - ASSUMED
