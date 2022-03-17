@@ -139,6 +139,7 @@ def register():
 ##### functionality routes
 @app.route('/schools', methods=['GET', 'POST'])
 def schoolListing():
+    session.pop('all_groups', None) # cleanup
     all_schools = Schools().getSchoolListing()
     
     # edit or delete school record
@@ -399,7 +400,7 @@ def middlemile(school):
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
     
-    Schools().updateMiddleMile(school_data_dB[0], middle_mile_paramters)
+    Schools().selectMiddleMile(school_data_dB[0], middle_mile_paramters)
     updateMap()     # update map
     
     return redirect(url_for(".lastmile", school=school))
@@ -412,6 +413,12 @@ def lastmile(school):
     if not request.form:
         return render_template('lastmile.html', user=userSession(), school=school)
     
+    parameters = '1'
+    all_schools = Schools().getSchoolListing()
+    school_data_dB = [x for x in all_schools if x['school_name'] == school]
+    
+    Schools().selectLastMile(school_data_dB[0], parameters)
+    updateMap()     # update map
     
     return redirect(url_for(".schoolListing"))
 

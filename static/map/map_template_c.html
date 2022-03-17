@@ -66,7 +66,7 @@
                 <li>
                     <div class='legend-subtitle'>
                         Mapped Status*
-                        <span class="tooltiptext"> Mapping a school refers to establishing its location and connectivity requirements. <br><br> 1. Geographically - The school has identification, location, and infrustructural data only. <br><br> 2. Fully - The school is geographically mapped and has the data needed for determining the required bandwidth.</span>
+                        <span class="tooltiptext"> Mapping a school refers to establishing its location and connectivity requirements. <br><br> 1. Geographically - The school has identification, location, and infrustructural data only. <br><br> 2. Partially - The school is geograpahically mapped and the required network baandwidth has been calculated but lacks the parameters needed for determining the most affordable middle- mile or last- mile option<br><br>3. Fully - The school is geographically mapped and all the data needed to determine the required bandwidth, the most affordable middle- and last- mile solutions and projected costs.</span>
                     </div>
                 </li>
 
@@ -76,6 +76,10 @@
                 </li>
                 <li>
                     <img src='../images/partial.png' width='24' height='31.5'>
+                    &nbsp Partially
+                </li>
+                <li>
+                    <img src='../images/geographic.png' width='24' height='31.5'>
                     &nbsp Geographically
                 </li>
                 
@@ -123,7 +127,7 @@
                 visibility: hidden;
                 font-size: 12px;
                 width: 300px;
-                height: 200px;
+                height: 300px;
                 background-color: black;
                 color: #fff;
                 text-align: left;
@@ -213,37 +217,38 @@
 
 
     // define school markers
+    var geoConfigGroup = L.featureGroup({}).addTo(worldMap)
     var partConfigGroup = L.featureGroup({}).addTo(worldMap)
     var fullConfigGroup = L.featureGroup({}).addTo(worldMap)
 
    
     
     
-    var icon_622b7977e5421588322ce3b8 = L.AwesomeMarkers.icon(
+    var icon_623383ba24a841513747c9f8 = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
-         "markerColor": "green", 
+         "markerColor": "red", 
         "prefix": "glyphicon"}
     )
 
-    var school_622b7977e5421588322ce3b8 = L.marker(
+    var school_623383ba24a841513747c9f8 = L.marker(
         [11.1806290319663, -60.8050054143551], {
-            icon: icon_622b7977e5421588322ce3b8,
+            icon: icon_623383ba24a841513747c9f8,
         },
-    ).addTo( fullConfigGroup )
+    ).addTo( geoConfigGroup )
 
-    var popup_622b7977e5421588322ce3b8 = L.popup({"maxWidth": 650})
-    var i_frame_622b7977e5421588322ce3b8 = `
+    var popup_623383ba24a841513747c9f8 = L.popup({"maxWidth": 650})
+    var i_frame_623383ba24a841513747c9f8 = `
         <u><b>SCHOOL INFORMATION</b></u><br>
         <b>Name:</b> Buccoo Government Primary School <br>
         <b>Electricity:</b> Consistent Access<br>
         <b>Cellular Coverage:</b> 
         
         
-        3G   
-        
         4G   
+        
+        3G   
         
         
         
@@ -252,14 +257,143 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         5.45 Mbps
+         No user device groups configured
         
     
         <br> <br>
 
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
         
-        <b>Middle Mile Technology and Projected Costs: </b> <br>
+        Parameters not configured <br>
         
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        
+        Parameters not configured
+        
+        <br>
+        
+    `
+    popup_623383ba24a841513747c9f8.setContent(i_frame_623383ba24a841513747c9f8)
+        
+    school_623383ba24a841513747c9f8.bindPopup(popup_623383ba24a841513747c9f8)
+
+    school_623383ba24a841513747c9f8.bindTooltip(
+        `<div> Buccoo Government Primary School </div>`,
+        {"sticky": true}
+    )
+
+    
+    
+    var icon_623384304b80ad7aa849035c = L.AwesomeMarkers.icon(
+        {"extraClasses": "fa-rotate-0", 
+        icon: "info-sign", 
+        "iconColor": "white",
+         "markerColor": "orange", 
+        "prefix": "glyphicon"}
+    )
+
+    var school_623384304b80ad7aa849035c = L.marker(
+        [10.4604509731823, -61.421069522052], {
+            icon: icon_623384304b80ad7aa849035c,
+        },
+    ).addTo( partConfigGroup )
+
+    var popup_623384304b80ad7aa849035c = L.popup({"maxWidth": 650})
+    var i_frame_623384304b80ad7aa849035c = `
+        <u><b>SCHOOL INFORMATION</b></u><br>
+        <b>Name:</b> Carapichaima R.C. Primary School <br>
+        <b>Electricity:</b> Limited Access<br>
+        <b>Cellular Coverage:</b> 
+        
+        
+        4G   
+        
+        3G   
+        
+        
+        
+        <br><br>
+
+        <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
+        <b>Network Bandwidth:</b>
+                            
+         12.1 Mbps
+        
+    
+        <br> <br>
+
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
+        
+        Parameters not configured <br>
+        
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        
+        Parameters not configured
+        
+        <br>
+        
+    `
+    popup_623384304b80ad7aa849035c.setContent(i_frame_623384304b80ad7aa849035c)
+        
+    school_623384304b80ad7aa849035c.bindPopup(popup_623384304b80ad7aa849035c)
+
+    school_623384304b80ad7aa849035c.bindTooltip(
+        `<div> Carapichaima R.C. Primary School </div>`,
+        {"sticky": true}
+    )
+
+    
+    
+    var icon_623386bdc8d47ccae42e5045 = L.AwesomeMarkers.icon(
+        {"extraClasses": "fa-rotate-0", 
+        icon: "info-sign", 
+        "iconColor": "white",
+         "markerColor": "orange", 
+        "prefix": "glyphicon"}
+    )
+
+    var school_623386bdc8d47ccae42e5045 = L.marker(
+        [10.7069897235975, -61.5107602733107], {
+            icon: icon_623386bdc8d47ccae42e5045,
+        },
+    ).addTo( partConfigGroup )
+
+    var popup_623386bdc8d47ccae42e5045 = L.popup({"maxWidth": 650})
+    var i_frame_623386bdc8d47ccae42e5045 = `
+        <u><b>SCHOOL INFORMATION</b></u><br>
+        <b>Name:</b> Maraval R.C. Primary School <br>
+        <b>Electricity:</b> No Access<br>
+        <b>Cellular Coverage:</b> 
+        
+        
+        4G   
+        
+        3G   
+        
+        
+        
+        <br><br>
+
+        <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
+        <b>Network Bandwidth:</b>
+                            
+         5.96 Mbps
+        
+    
+        <br> <br>
+
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
+        
+        <br>
             <table style="width:100%">
                 <tr>
                     <th rowspan='2' class="text-center">Technology</th>
@@ -271,7 +405,7 @@
                 </tr>
                 <tr>
                     <td> &nbsp Satellite &nbsp </td>
-                    <td>  &nbsp<b>$172100.00 TTD &nbsp</b> </td>
+                    <td>  &nbsp<b>$174200.00 TTD &nbsp</b> </td>
                     <td> &nbsp $75797398.82 TTD &nbsp </td>
                 </tr>
                 <tr>
@@ -281,24 +415,29 @@
                 </tr>
             </table>
 
-         <br>
-
-        <b>Last Mile Technology and Projected Costs: </b> <br><br>
-
+        
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        
+        Parameters not configured
+        
+        <br>
         
     `
-    popup_622b7977e5421588322ce3b8.setContent(i_frame_622b7977e5421588322ce3b8)
+    popup_623386bdc8d47ccae42e5045.setContent(i_frame_623386bdc8d47ccae42e5045)
         
-    school_622b7977e5421588322ce3b8.bindPopup(popup_622b7977e5421588322ce3b8)
+    school_623386bdc8d47ccae42e5045.bindPopup(popup_623386bdc8d47ccae42e5045)
 
-    school_622b7977e5421588322ce3b8.bindTooltip(
-        `<div> Buccoo Government Primary School </div>`,
+    school_623386bdc8d47ccae42e5045.bindTooltip(
+        `<div> Maraval R.C. Primary School </div>`,
         {"sticky": true}
     )
 
     
     
-    var icon_622b7c2ea3f22f6f7e823930 = L.AwesomeMarkers.icon(
+    var icon_623387a81d3a65a80465ab15 = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
@@ -306,17 +445,17 @@
         "prefix": "glyphicon"}
     )
 
-    var school_622b7c2ea3f22f6f7e823930 = L.marker(
-        [10.4604509731823, -61.421069522052], {
-            icon: icon_622b7c2ea3f22f6f7e823930,
+    var school_623387a81d3a65a80465ab15 = L.marker(
+        [10.6478574924142, -61.2851370310922], {
+            icon: icon_623387a81d3a65a80465ab15,
         },
-    ).addTo( fullConfigGroup )
+    ).addTo( partConfigGroup )
 
-    var popup_622b7c2ea3f22f6f7e823930 = L.popup({"maxWidth": 650})
-    var i_frame_622b7c2ea3f22f6f7e823930 = `
+    var popup_623387a81d3a65a80465ab15 = L.popup({"maxWidth": 650})
+    var i_frame_623387a81d3a65a80465ab15 = `
         <u><b>SCHOOL INFORMATION</b></u><br>
-        <b>Name:</b> Carapichaima R.C. Primary School <br>
-        <b>Electricity:</b> Limited Access<br>
+        <b>Name:</b> Holy Cross College <br>
+        <b>Electricity:</b> Consistent Access<br>
         <b>Cellular Coverage:</b> 
         
         
@@ -331,14 +470,15 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         2.5 Mbps
+         0.512 Mbps
         
     
         <br> <br>
 
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
         
-        <b>Middle Mile Technology and Projected Costs: </b> <br>
-        
+        <br>
             <table style="width:100%">
                 <tr>
                     <th rowspan='2' class="text-center">Technology</th>
@@ -350,107 +490,33 @@
                 </tr>
                 <tr>
                     <td> &nbsp Satellite &nbsp </td>
-                    <td>  &nbsp<b>$172100.00 TTD &nbsp</b> </td>
+                    <td>  &nbsp<b>$146960.00 TTD &nbsp</b> </td>
                     <td> &nbsp $75797398.82 TTD &nbsp </td>
                 </tr>
                 <tr>
-                    <td> &nbsp Fiber optic &nbsp </td>
-                    <td>  &nbsp$99691162.20 TTD &nbsp </td>
-                    <td>  &nbsp <b>$160381243.41 TTD &nbsp</b> </td>
+                    <td> &nbsp Microwave radio &nbsp </td>
+                    <td>  &nbsp$3302289.66 TTD &nbsp </td>
+                    <td>  &nbsp <b>$76712254.05 TTD &nbsp</b> </td>
                 </tr>
             </table>
 
-         <br>
-
-        <b>Last Mile Technology and Projected Costs: </b> <br><br>
-
+        
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        
+        <br> Configured
+        
+        <br>
         
     `
-    popup_622b7c2ea3f22f6f7e823930.setContent(i_frame_622b7c2ea3f22f6f7e823930)
+    popup_623387a81d3a65a80465ab15.setContent(i_frame_623387a81d3a65a80465ab15)
         
-    school_622b7c2ea3f22f6f7e823930.bindPopup(popup_622b7c2ea3f22f6f7e823930)
+    school_623387a81d3a65a80465ab15.bindPopup(popup_623387a81d3a65a80465ab15)
 
-    school_622b7c2ea3f22f6f7e823930.bindTooltip(
-        `<div> Carapichaima R.C. Primary School </div>`,
-        {"sticky": true}
-    )
-
-    
-    
-    var icon_623145c1008a039f6fe2c9f9 = L.AwesomeMarkers.icon(
-        {"extraClasses": "fa-rotate-0", 
-        icon: "info-sign", 
-        "iconColor": "white",
-         "markerColor": "green", 
-        "prefix": "glyphicon"}
-    )
-
-    var school_623145c1008a039f6fe2c9f9 = L.marker(
-        [10.7069897235975, -61.5107602733107], {
-            icon: icon_623145c1008a039f6fe2c9f9,
-        },
-    ).addTo( fullConfigGroup )
-
-    var popup_623145c1008a039f6fe2c9f9 = L.popup({"maxWidth": 650})
-    var i_frame_623145c1008a039f6fe2c9f9 = `
-        <u><b>SCHOOL INFORMATION</b></u><br>
-        <b>Name:</b> Test School A <br>
-        <b>Electricity:</b> Consistent Access<br>
-        <b>Cellular Coverage:</b> 
-        
-        
-        4G   
-        
-        3G   
-        
-        
-        
-        <br><br>
-
-        <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
-        <b>Network Bandwidth:</b>
-                            
-         10.6 Mbps
-        
-    
-        <br> <br>
-
-        
-        <b>Middle Mile Technology and Projected Costs: </b> <br>
-        
-            <table style="width:100%">
-                <tr>
-                    <th rowspan='2' class="text-center">Technology</th>
-                    <th colspan='2' class="text-center">Projected Costs</th>
-                </tr>
-                <tr>
-                    <th class="text-center">TCO</th>
-                    <th class="text-center">NPV</th>
-                </tr>
-                <tr>
-                    <td> &nbsp  &nbsp </td>
-                    <td>  &nbsp<b> &nbsp</b> </td>
-                    <td> &nbsp  &nbsp </td>
-                </tr>
-                <tr>
-                    <td> &nbsp  &nbsp </td>
-                    <td>  &nbsp &nbsp </td>
-                    <td>  &nbsp <b> &nbsp</b> </td>
-                </tr>
-            </table>
-
-         <br>
-
-        <b>Last Mile Technology and Projected Costs: </b> <br><br>
-
-        
-    `
-    popup_623145c1008a039f6fe2c9f9.setContent(i_frame_623145c1008a039f6fe2c9f9)
-        
-    school_623145c1008a039f6fe2c9f9.bindPopup(popup_623145c1008a039f6fe2c9f9)
-
-    school_623145c1008a039f6fe2c9f9.bindTooltip(
-        `<div> Test School A </div>`,
+    school_623387a81d3a65a80465ab15.bindTooltip(
+        `<div> Holy Cross College </div>`,
         {"sticky": true}
     )
 
@@ -31077,7 +31143,8 @@
         },
         overlays :  {
             "\u003cspan style=\"color: green;\"\u003eFully Mapped Schools\u003c/span\u003e" : fullConfigGroup,
-            "\u003cspan style=\"color: red;\"\u003eGeographically Mapped Schools\u003c/span\u003e" : partConfigGroup,
+            "\u003cspan style=\"color: orange;\"\u003ePartially Mapped Schools\u003c/span\u003e" : partConfigGroup,
+            "\u003cspan style=\"color: red;\"\u003eGeographically Mapped Schools\u003c/span\u003e" : geoConfigGroup,
             "\u003cspan style=\"color:#f0c45c\"\u003e3G Cellular Coverage\u003c/span\u003e" : g3CoverageGroup,
             "\u003cspan style=\"color:#985cf0\"\u003e4G Cellular Coverage\u003c/span\u003e" : g4CoverageGroup,
         },

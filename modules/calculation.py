@@ -351,4 +351,4 @@ def middleMileTechnology(parameters):
 
 
 def lastMileTechnology():
-    pass
+    return 'Last mile name', '$5 TTD'

@@ -14,7 +14,7 @@ def convertTemplate(template):
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
-        {% if x.user_device_groups %} "markerColor": "green", {% else %} "markerColor": "red", {% endif %}
+        {% if x.user_device_groups and x.middle_mile_parameters and x.last_mile_parameters %} "markerColor": "green", {% elif x.user_device_groups or x.middle_mile_parameters or x.last_mile_parameters %} "markerColor": "orange", {% else %} "markerColor": "red", {% endif %}
         "prefix": "glyphicon"}
     )
 
@@ -22,7 +22,7 @@ def convertTemplate(template):
         [{{x.latitude}}, {{x.longitude}}], {
             icon: icon_{{x._id}},
         },
-    ).addTo({% if x.user_device_groups %} fullConfigGroup {% else %} partConfigGroup {% endif %})
+    ).addTo({% if x.user_device_groups and x.middle_mile_paramters and x.last_mile_paramters %} fullConfigGroup {% elif x.user_device_groups or x.middle_mile_parameters or x.last_mile_parameters %} partConfigGroup {% else %} geoConfigGroup {% endif %})
 
     var popup_{{x._id}} = L.popup({"maxWidth": 650})
     var i_frame_{{x._id}} = `
@@ -49,9 +49,10 @@ def convertTemplate(template):
     
         <br> <br>
 
-        {% if x.results %}
-        <b>Middle Mile Technology and Projected Costs: </b> <br>
-        
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
+        {% if x.middle_mile_parameters %}
+        <br>
             <table style="width:100%">
                 <tr>
                     <th rowspan='2' class="text-center">Technology</th>
@@ -73,16 +74,20 @@ def convertTemplate(template):
                 </tr>
             </table>
 
-         <br>
-
-        <b>Last Mile Technology and Projected Costs: </b> <br><br>
-
         {% else %}
-        <b>Middle Mile Technology and Projected Costs: </b> No user device groups have been configured <br>
-         <br><br>
-
-        <b>Last Mile Technology and Projected Costs: No user device groups have been configured</b> <br><br>
+        Parameters not configured <br>
         {% endif %}
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        {% if x.last_mile_parameters %}
+        <br> Configured
+        {% else %}
+        Parameters not configured
+        {% endif %}
+        <br>
+        
     `
     popup_{{x._id}}.setContent(i_frame_{{x._id}})
         

@@ -66,7 +66,7 @@
                 <li>
                     <div class='legend-subtitle'>
                         Mapped Status*
-                        <span class="tooltiptext"> Mapping a school refers to establishing its location and connectivity requirements. <br><br> 1. Geographically - The school has identification, location, and infrustructural data only. <br><br> 2. Fully - The school is geographically mapped and has the data needed for determining the required bandwidth.</span>
+                        <span class="tooltiptext"> Mapping a school refers to establishing its location and connectivity requirements. <br><br> 1. Geographically - The school has identification, location, and infrustructural data only. <br><br> 2. Partially - The school is geograpahically mapped and the required network baandwidth has been calculated but lacks the parameters needed for determining the most affordable middle- mile or last- mile option<br><br>3. Fully - The school is geographically mapped and all the data needed to determine the required bandwidth, the most affordable middle- and last- mile solutions and projected costs.</span>
                     </div>
                 </li>
 
@@ -76,6 +76,10 @@
                 </li>
                 <li>
                     <img src='../images/partial.png' width='24' height='31.5'>
+                    &nbsp Partially
+                </li>
+                <li>
+                    <img src='../images/geographic.png' width='24' height='31.5'>
                     &nbsp Geographically
                 </li>
                 
@@ -123,7 +127,7 @@
                 visibility: hidden;
                 font-size: 12px;
                 width: 300px;
-                height: 200px;
+                height: 300px;
                 background-color: black;
                 color: #fff;
                 text-align: left;
@@ -213,6 +217,7 @@
 
 
     // define school markers
+    var geoConfigGroup = L.featureGroup({}).addTo(worldMap)
     var partConfigGroup = L.featureGroup({}).addTo(worldMap)
     var fullConfigGroup = L.featureGroup({}).addTo(worldMap)
 
@@ -223,7 +228,7 @@
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
-        {% if x.user_device_groups %} "markerColor": "green", {% else %} "markerColor": "red", {% endif %}
+        {% if x.user_device_groups and x.middle_mile_parameters and x.last_mile_parameters %} "markerColor": "green", {% elif x.user_device_groups or x.middle_mile_parameters or x.last_mile_parameters %} "markerColor": "orange", {% else %} "markerColor": "red", {% endif %}
         "prefix": "glyphicon"}
     )
 
@@ -231,7 +236,7 @@
         [{{x.latitude}}, {{x.longitude}}], {
             icon: icon_{{x._id}},
         },
-    ).addTo({% if x.user_device_groups %} fullConfigGroup {% else %} partConfigGroup {% endif %})
+    ).addTo({% if x.user_device_groups and x.middle_mile_paramters and x.last_mile_paramters %} fullConfigGroup {% elif x.user_device_groups or x.middle_mile_parameters or x.last_mile_parameters %} partConfigGroup {% else %} geoConfigGroup {% endif %})
 
     var popup_{{x._id}} = L.popup({"maxWidth": 650})
     var i_frame_{{x._id}} = `
@@ -258,9 +263,10 @@
     
         <br> <br>
 
-        {% if x.results %}
-        <b>Middle Mile Technology and Projected Costs: </b> <br>
-        
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
+        {% if x.middle_mile_parameters %}
+        <br>
             <table style="width:100%">
                 <tr>
                     <th rowspan='2' class="text-center">Technology</th>
@@ -282,16 +288,20 @@
                 </tr>
             </table>
 
-         <br>
-
-        <b>Last Mile Technology and Projected Costs: </b> <br><br>
-
         {% else %}
-        <b>Middle Mile Technology and Projected Costs: </b> No user device groups have been configured <br>
-         <br><br>
-
-        <b>Last Mile Technology and Projected Costs: No user device groups have been configured</b> <br><br>
+        Parameters not configured <br>
         {% endif %}
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        {% if x.last_mile_parameters %}
+        <br> Configured
+        {% else %}
+        Parameters not configured
+        {% endif %}
+        <br>
+        
     `
     popup_{{x._id}}.setContent(i_frame_{{x._id}})
         
@@ -30925,7 +30935,8 @@
         },
         overlays :  {
             "\u003cspan style=\"color: green;\"\u003eFully Mapped Schools\u003c/span\u003e" : fullConfigGroup,
-            "\u003cspan style=\"color: red;\"\u003eGeographically Mapped Schools\u003c/span\u003e" : partConfigGroup,
+            "\u003cspan style=\"color: orange;\"\u003ePartially Mapped Schools\u003c/span\u003e" : partConfigGroup,
+            "\u003cspan style=\"color: red;\"\u003eGeographically Mapped Schools\u003c/span\u003e" : geoConfigGroup,
             "\u003cspan style=\"color:#f0c45c\"\u003e3G Cellular Coverage\u003c/span\u003e" : g3CoverageGroup,
             "\u003cspan style=\"color:#985cf0\"\u003e4G Cellular Coverage\u003c/span\u003e" : g4CoverageGroup,
         },

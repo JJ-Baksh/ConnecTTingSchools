@@ -1,7 +1,7 @@
 import os, math
 from pymongo import MongoClient
 from bson.objectid import ObjectId
-from modules.calculation import requiredNetworkBandwidth, middleMileTechnology
+from modules.calculation import requiredNetworkBandwidth, middleMileTechnology, lastMileTechnology
 import pandas as pd
 
 
@@ -62,8 +62,8 @@ class Schools:
         self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
         {'$set': {
             "user_device_groups": school_data_dB["user_device_groups"],
-            "middle_mile_paramters": '',
-            "last_mile_paramters": '',
+            #"middle_mile_parameters": '',
+            #"last_mile_parameters": '',
             "results": results
         }})
 
@@ -71,13 +71,16 @@ class Schools:
 
 
     # updating results for middle- mile
-    def updateMiddleMile(self, school_data_dB, parameters):
+    def selectMiddleMile(self, school_data_dB, parameters):
+        
+        self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
+        {'$set': {
+            "middle_mile_parameters": parameters
+        }})
         
         middle_tech_tco, middle_tech_npv = middleMileTechnology(parameters)
         
-        # arrange results data for entry to database
-        print(school_data_dB['results']['required_bandwidth'])
-        
+        # arrange results data for entry to database      
         results = { 'required_bandwidth' : school_data_dB['results']['required_bandwidth'],
                     'middle_mile_technology_TCO': {'name': f'{middle_tech_tco[0]}', 
                                                    'TCO':  f'${middle_tech_tco[1]} TTD',
@@ -97,6 +100,37 @@ class Schools:
         self.cluster.close()
     
     
+    # updating resutls for last- mile
+    def selectLastMile(self, school_data_dB, parameters):
+        
+        self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
+        {'$set': {
+            "last_mile_parameters": parameters
+        }})
+        
+        a, b = lastMileTechnology()
+        
+        # arrange results data for entry to database      
+        results = { 'required_bandwidth' : school_data_dB['results']['required_bandwidth'],
+                    'middle_mile_technology_TCO': {'name': school_data_dB['results']['middle_mile_technology_TCO']['name'], 
+                                                   'TCO':  school_data_dB['results']['middle_mile_technology_TCO']['TCO'],
+                                                   'NPV':  school_data_dB['results']['middle_mile_technology_TCO']['NPV']},
+                    'middle_mile_technology_NPV': {'name': school_data_dB['results']['middle_mile_technology_NPV']['name'], 
+                                                   'TCO':  school_data_dB['results']['middle_mile_technology_NPV']['TCO'],
+                                                   'NPV':  school_data_dB['results']['middle_mile_technology_NPV']['NPV']},
+                    'last_mile_technology_NPV': {'name': f'{a}',
+                                                 'NPV': f'{b}'}
+        }
+
+        self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
+        {'$set': {
+            "results": results
+        }})
+
+        self.cluster.close()
+    
+    
+    
     # updating results for middle- mile
     def updateMiddleMileParamters(self, school_data_dB, parameters):
             
@@ -109,17 +143,14 @@ class Schools:
 
                 self.cluster.close()
     
-    # updating resutls for last- mile
-    def updateLastMile():
-        pass
-
-
+    
     # retrieve schools in database
     def getSchoolListing(self, school_name={}):
         if school_name: item = self.db.find_one(school_name)
         else: item = list(self.db.find(school_name))
         self.cluster.close()
         return item
+
 
 
 def getMiddleMileDefaultParamters(bandwidth): 
@@ -251,6 +282,7 @@ def getMiddleMileDefaultParamters(bandwidth):
     return {'focl': middle_mile_focl,
             'mw': middle_mile_mw,
             'sat': middle_mile_sat}
+
 
 
 def arrangeSchoolData(post_data):
