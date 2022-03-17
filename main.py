@@ -2,18 +2,13 @@
 from flask import Flask, render_template, request, url_for, redirect, flash, session
 import os
 from modules.user_accounts import UserAccounts
-from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters
+from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters, getLastMileDefaultParamters
 from modules.map import addCoverageMap, convertTemplate
 
 
 ##### initialize project components
 app = Flask(__name__)                                               # create Flask application
 app.config['SECRET_KEY'] = os.environ['3020_flask_app_secret_key']  # required for forms collection
-
-
-###### function methods for convenience (run once if necessary)
-# Schools().setDefaultParamters() # adds default middle- mile and last- mile paramters to the database
-
 
 
 ##### primary functions
@@ -191,6 +186,7 @@ def schoolEdit(school):
 @app.route('/schools/<school>/editUDG', methods=['GET', 'POST'])
 def schoolUserDeviceGroup(school):
 
+
     if 'all_groups' not in session:
         all_schools = Schools().getSchoolListing()
         school_data_dB = [x for x in all_schools if x['school_name'] == school]
@@ -201,6 +197,7 @@ def schoolUserDeviceGroup(school):
 
     # arrival to school user device group page with no POST data
     if not request.form:
+        print(session['all_groups'])
         return render_template('editUDG.html', user=userSession(), school=school, udg=session['all_groups'])
 
     
@@ -236,8 +233,11 @@ def schoolUserDeviceGroup(school):
         elif request.form.get("editUDG"):
             for index, group in enumerate(session['all_groups']):
                 if group['group_name'] == request.form.get('id_name'):
-                    session['all_groups'][index] = user_group
+                    tmp = session['all_groups']
+                    tmp[index] = user_group
+                    session['all_groups'] = tmp
                     break
+
             return redirect(url_for(".schoolUserDeviceGroup", school=school))
 
 
@@ -246,6 +246,7 @@ def schoolUserDeviceGroup(school):
             if x['group_name'] == request.form['delete']:
                 session['all_groups'].remove(x)
                 break
+        
         return redirect(url_for(".schoolUserDeviceGroup", school=school))
     
     if request.form.get("save"):
@@ -262,7 +263,6 @@ def schoolUserDeviceGroup(school):
 
 @app.route('/schools/<school>/middlemile', methods=['GET', 'POST'])
 def middlemile(school):
-
     
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
@@ -270,6 +270,7 @@ def middlemile(school):
     if not school_data_dB[0]['middle_mile_parameters']:
         bandwidth = school_data_dB[0]['results']['required_bandwidth']
         paramter_val = getMiddleMileDefaultParamters(bandwidth)
+        
     else:
         paramter_val = school_data_dB[0]['middle_mile_parameters']
 
@@ -282,6 +283,7 @@ def middlemile(school):
     middle_mile_paramters = {
         'focl': {
             'length' : float(request.form["focl_length"]),
+            'T_payback' : request.form["focl_T_payback"],
             'C_hdd' : request.form["focl_C_hdd"],
             'C_cd' : request.form["focl_C_cd"],
             'C_clm' : request.form["focl_C_clm"],
@@ -406,18 +408,101 @@ def middlemile(school):
     return redirect(url_for(".lastmile", school=school))
 
 
+
 @app.route('/schools/<school>/lastmile', methods=['GET', 'POST'])
 def lastmile(school):
     
-    # arrival to middle-mile paramter configuration page with no POST data
-    if not request.form:
-        return render_template('lastmile.html', user=userSession(), school=school)
-    
-    parameters = '1'
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
     
-    Schools().selectLastMile(school_data_dB[0], parameters)
+    if not school_data_dB[0]['last_mile_parameters']:
+        paramter_val = getLastMileDefaultParamters()
+    else:
+        paramter_val = school_data_dB[0]['last_mile_parameters']
+
+    # arrival to middle-mile paramter configuration page with no POST data
+    if not request.form:
+        return render_template('lastmile.html', user=userSession(), school=school, param = paramter_val)
+    
+    last_mile_paramters = {
+        'focl': {
+            'aoe_units' : request.form["focl_aoe_units"],
+            'teap_units' : request.form["focl_teap_units"],
+            'length' : request.form["focl_length"],
+            'equipment' : request.form["focl_equipment"],
+            'deployment' : request.form["focl_deployment"],
+            'operation' : request.form["focl_operation"],
+            
+            'In' : request.form["focl_In"],
+            'T_vat' : request.form["focl_T_vat"],
+            'S_operation' : request.form["focl_S_operation"],
+            'T_prof' : request.form["focl_T_prof"],
+            'S_equip_mat' : request.form["focl_S_equip_mat"],
+            'T_lt' : request.form["focl_T_lt"],
+            'K_disc' : request.form["focl_K_disc"],
+            's_inv' : request.form["focl_s_inv"],
+        },
+        
+        'mw': {
+            'aoe_units' : request.form["mw_aoe_units"],
+            'teap_units' : request.form["mw_teap_units"],
+            'length' : request.form["mw_length"],
+            'equipment' : request.form["mw_equipment"],
+            'deployment' : request.form["mw_deployment"],
+            'operation' : request.form["mw_operation"],
+            
+            'In' : request.form["mw_In"],
+            'T_vat' : request.form["mw_T_vat"],
+            'S_operation' : request.form["mw_S_operation"],
+            'T_prof' : request.form["mw_T_prof"],
+            'S_equip_mat' : request.form["mw_S_equip_mat"],
+            'T_lt' : request.form["mw_T_lt"],
+            'K_disc' : request.form["mw_K_disc"],
+            's_inv' : request.form["mw_s_inv"],
+        },
+        
+        'sat': {
+            'aoe_units' : request.form["sat_aoe_units"],
+            'teap_units' : request.form["sat_teap_units"],
+            'length' : request.form["sat_length"],
+            'equipment' : request.form["sat_equipment"],
+            'deployment' : request.form["sat_deployment"],
+            'operation' : request.form["sat_operation"],
+            
+            'In' : request.form["sat_In"],
+            'T_vat' : request.form["sat_T_vat"],
+            'S_operation' : request.form["sat_S_operation"],
+            'T_prof' : request.form["sat_T_prof"],
+            'S_equip_mat' : request.form["sat_S_equip_mat"],
+            'T_lt' : request.form["sat_T_lt"],
+            'K_disc' : request.form["sat_K_disc"],
+            's_inv' : request.form["sat_s_inv"],
+        },
+        
+        'cell': {
+            'aoe_units' : request.form["cell_aoe_units"],
+            'teap_units' : request.form["cell_teap_units"],
+            'length' : request.form["cell_length"],
+            'equipment' : request.form["cell_equipment"],
+            'deployment' : request.form["cell_deployment"],
+            'operation' : request.form["cell_operation"],
+            
+            'In' : request.form["cell_In"],
+            'T_vat' : request.form["cell_T_vat"],
+            'S_operation' : request.form["cell_S_operation"],
+            'T_prof' : request.form["cell_T_prof"],
+            'S_equip_mat' : request.form["cell_S_equip_mat"],
+            'T_lt' : request.form["cell_T_lt"],
+            'K_disc' : request.form["cell_K_disc"],
+            's_inv' : request.form["cell_s_inv"],
+        }
+    }
+    
+
+    all_schools = Schools().getSchoolListing()
+    school_data_dB = [x for x in all_schools if x['school_name'] == school]
+    
+    Schools().selectLastMile(school_data_dB[0], last_mile_paramters)
     updateMap()     # update map
     
     return redirect(url_for(".schoolListing"))

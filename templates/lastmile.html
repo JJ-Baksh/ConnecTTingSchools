@@ -13,7 +13,7 @@
 <a class="nav-link" href="/about">About</a>
 <a class="nav-link dropdown-toggle active" href="#" id="navbarDarkDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false"> Databases </a>
 <div class="dropdown-menu dropdown-menu-dark dropdown-menu-end" aria-labelledby="navbarDarkDropdownMenuLink">
-    <a class="dropdown-item" href="#">Your Projects</a>
+    <!-- <a class="dropdown-item" href="#">Your Projects</a> -->
     <a class="dropdown-item active" href="/schools">School Listing</a>
 </div>
 <a class="nav-link" href="/logout">Log out</a>
@@ -32,6 +32,7 @@
                 <div class="mb-3">
                     <span><h5>Fibre Optic Cable Laying (FOCL)</h5></span>
                 </div>
+
                 <table class="table">
                     <thead>
                         <tr>
@@ -43,11 +44,142 @@
                     <tbody>
 
                         <tr>
-                            <td>Length</td>
-                            <td>The distance between the school and a local PoP</td>
+                            <td># AOE Units</td>
+                            <td>Active AOEs and the number of related installation locations</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_length' min="0" step="any" class="form-control" required> km
+                                    <input type="number" name='focl_aoe_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td># TEAP Units</td>
+                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_teap_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Length of hanged-up cables of link for distribution and aggregation segments</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_length' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Total cost of equipment and materials</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_equipment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Total cost of access network deployment</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_deployment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cost of annual operation of an access network</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_operation' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+         
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
@@ -55,6 +187,479 @@
                     </tbody>
                 </table>
 
+                <div class="mb-3">
+                    <span><h5>Microwave (MW)</h5></span>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td># AOE Units</td>
+                            <td>Active AOEs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_aoe_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td># TEAP Units</td>
+                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_teap_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Length of hanged-up cables of link for distribution and aggregation segments</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_length' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Total cost of equipment and materials</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_equipment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Total cost of access network deployment</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_deployment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cost of annual operation of an access network</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_operation' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+         
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="mb-3">
+                    <span><h5>Satellite</h5></span>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td># AOE Units</td>
+                            <td>Active AOEs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_aoe_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td># TEAP Units</td>
+                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_teap_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Length of hanged-up cables of link for distribution and aggregation segments</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_length' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Total cost of equipment and materials</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_equipment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Total cost of access network deployment</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_deployment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cost of annual operation of an access network</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_operation' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+         
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
+
+                <div class="mb-3">
+                    <span><h5>Cellular</h5></span>
+                </div>
+
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th class='col-4' scope="col">Parameter</th>
+                            <th class='col-6' scope="col">Description</th>
+                            <th class='col-2' scope="col">Value</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td># AOE Units</td>
+                            <td>Active AOEs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_aoe_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td># TEAP Units</td>
+                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_teap_units' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Length of hanged-up cables of link for distribution and aggregation segments</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_length' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Total cost of equipment and materials</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_equipment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+                        
+                        <tr>
+                            <td>Total cost of access network deployment</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_deployment' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cost of annual operation of an access network</td>
+                            <td>--</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_operation' min="0" step="any" class="form-control" required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Annual Potential Income from Channel Operation</td>
+                            <td>This parameter is used to determine the total operating income after taxes</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_In' min="0" step="0.01" class="form-control" value='{{param["focl"]["In"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Value-Added Tax Rate</td>
+                            <td>The local VAT rate on goods and services in the country</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_T_vat' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_vat"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Cost of Annual Operation</td>
+                            <td>This paramter is used to determine the net opering profit after tax</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_S_operation' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_operation"]}}' required> $TTD/year
+                                </div> 
+                            </td>
+                        </tr>
+        
+        
+                        <tr>
+                            <td>Corporate Tax Rate</td>
+                            <td>The local tax rate on chargable profit</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_T_prof' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_prof"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+         
+                        <tr>
+                            <td>Total Cost of Equipment and Materials</td>
+                            <td>This paramter is used in combination with the net operating profit to determine the annual cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_S_equip_mat' min="0" step="0.01" class="form-control" value='{{param["focl"]["S_equip_mat"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Average Lifetime of Equipment and Materials</td>
+                            <td>The time period over which the FOCL equipment and materials will be maintained</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_T_lt' min="0" step="0.01" class="form-control" value='{{param["focl"]["T_lt"]}}' required> years
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Discount Rate</td>
+                            <td>The rate used to determine the discounted cash flow</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_K_disc' min="0" step="0.01" class="form-control" value='{{param["focl"]["K_disc"]}}' required> %
+                                </div> 
+                            </td>
+                        </tr>
+        
+                        <tr>
+                            <td>Total Investment Costs</td>
+                            <td>The difference between the discounted cash flow anad investment costs is the net present value</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_s_inv' min="0" step="0.01" class="form-control" value='{{param["focl"]["s_inv"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                    </tbody>
+                </table>
 
 
                 <div class="text-center">

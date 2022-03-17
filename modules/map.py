@@ -56,7 +56,7 @@ def convertTemplate(template):
             <table style="width:100%">
                 <tr>
                     <th rowspan='2' class="text-center">Technology</th>
-                    <th colspan='2' class="text-center">Projected Costs</th>
+                    <th colspan='2' class="text-center">Projected Costs ($TTD)</th>
                 </tr>
                 <tr>
                     <th class="text-center">TCO</th>
@@ -82,7 +82,7 @@ def convertTemplate(template):
         
         <b>Last Mile Technology and Projected Costs: </b> 
         {% if x.last_mile_parameters %}
-        <br> Configured
+        <br> {{x.results.last_mile_technology_NPV.name}} : $ {{x.results.last_mile_technology_NPV.NPV}} TTD
         {% else %}
         Parameters not configured
         {% endif %}

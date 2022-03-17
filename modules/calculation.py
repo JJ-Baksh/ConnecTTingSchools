@@ -350,5 +350,36 @@ def middleMileTechnology(parameters):
     return final_tco, final_npv
 
 
-def lastMileTechnology():
-    return 'Last mile name', '$5 TTD'
+def lastMileTechnology(parameters):
+    tech = {'focl': 0, 
+            'mw': 0, 
+            'sat': 0, 
+            'cell': 0}
+    
+    T_payback = 5
+    
+    for i in parameters: 
+        In = float(parameters[i]['In'])
+        T_vat = float(parameters[i]['T_vat'])
+        S_operation = float(parameters[i]['S_operation'])
+        T_prof = float(parameters[i]['T_prof'])
+        S_equip_mat = float(parameters[i]['S_equip_mat'])
+        T_lt = float(parameters[i]['T_lt'])
+        K_disc = float(parameters[i]['K_disc'])
+        s_inv = float(parameters[i]['s_inv'])
+
+        # NPV calculations
+        niat = In * (1 - (T_vat/100))
+        nopat = (niat - S_operation) * (1 - (T_prof/100))
+        cf = nopat + (S_equip_mat / T_lt)
+        
+        cf_disc = 0
+        for j in range(1, T_payback):
+            cf_disc += (cf / (1 + (K_disc/100))**j)
+        
+        npv = cf_disc - s_inv
+        
+        tech[i] = npv
+
+    
+    return min(tech.items(), key=lambda x: x[1])

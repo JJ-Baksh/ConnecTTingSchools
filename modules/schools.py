@@ -83,11 +83,11 @@ class Schools:
         # arrange results data for entry to database      
         results = { 'required_bandwidth' : school_data_dB['results']['required_bandwidth'],
                     'middle_mile_technology_TCO': {'name': f'{middle_tech_tco[0]}', 
-                                                   'TCO':  f'${middle_tech_tco[1]} TTD',
-                                                   'NPV':  f'${middle_tech_tco[2]} TTD'}, 
+                                                   'TCO':  f'{middle_tech_tco[1]}',
+                                                   'NPV':  f'{middle_tech_tco[2]}'}, 
                     'middle_mile_technology_NPV': {'name': f'{middle_tech_npv[0]}', 
-                                                   'TCO':  f'${middle_tech_npv[1]} TTD',
-                                                   'NPV':  f'${middle_tech_npv[2]} TTD'}, 
+                                                   'TCO':  f'{middle_tech_npv[1]}',
+                                                   'NPV':  f'{middle_tech_npv[2]}'}, 
                     'last_mile_technology_NPV': {'name': '',
                                                  'NPV': ''}
         }
@@ -108,7 +108,7 @@ class Schools:
             "last_mile_parameters": parameters
         }})
         
-        a, b = lastMileTechnology()
+        a = lastMileTechnology(parameters)
         
         # arrange results data for entry to database      
         results = { 'required_bandwidth' : school_data_dB['results']['required_bandwidth'],
@@ -118,8 +118,8 @@ class Schools:
                     'middle_mile_technology_NPV': {'name': school_data_dB['results']['middle_mile_technology_NPV']['name'], 
                                                    'TCO':  school_data_dB['results']['middle_mile_technology_NPV']['TCO'],
                                                    'NPV':  school_data_dB['results']['middle_mile_technology_NPV']['NPV']},
-                    'last_mile_technology_NPV': {'name': f'{a}',
-                                                 'NPV': f'{b}'}
+                    'last_mile_technology_NPV': {'name': f'{a[0]}',
+                                                 'NPV': f'{a[1]}'}
         }
 
         self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
@@ -282,6 +282,87 @@ def getMiddleMileDefaultParamters(bandwidth):
     return {'focl': middle_mile_focl,
             'mw': middle_mile_mw,
             'sat': middle_mile_sat}
+
+
+def getLastMileDefaultParamters(): 
+    # all values will be user-definable but all assumed should be defined by the user first
+    last_mile_focl = {
+        'aoe_units' : 5,
+        'teap_units' : 10,
+        'length' : 20,
+        'equipment' : 1000000,
+        'deployment' : 2500000, 
+        'operation' : 560000, 
+        
+        'In' : 26000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 600000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 200000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5,               # discount rate (%) - ASSUMED
+        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    last_mile_mw = {
+        'aoe_units' : 10,
+        'teap_units' : 20,
+        'length' : 20,
+        'equipment' : 5000000,
+        'deployment' : 1500000, 
+        'operation' : 420000, 
+        
+        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 100000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' :5 ,               # discord rate (%) - ASSUMED
+        's_inv' : 70000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    last_mile_sat = {
+        'aoe_units' : 5,
+        'teap_units' : 10,
+        'length' : 20,
+        'equipment' : 1000000,
+        'deployment' : 2500000, 
+        'operation' : 560000, 
+        
+        'In' : 39000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 900000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 600000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5,               # discord rate (%) - ASSUMED
+        's_inv' : 80000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    last_mile_cell = {
+        'aoe_units' : 5,
+        'teap_units' : 10,
+        'length' : 20,
+        'equipment' : 1000000,
+        'deployment' : 2500000, 
+        'operation' : 560000, 
+        
+        'In' : 21000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
+        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
+        'S_equip_mat' : 200000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5,               # discord rate (%) - ASSUMED
+        's_inv' : 1000000          # total investment costs for access network construction ($TTD) - ASSUMED
+    }
+    
+    
+    return {'focl': last_mile_focl,
+            'mw': last_mile_mw,
+            'sat': last_mile_sat,
+            'cell': last_mile_cell}
 
 
 
