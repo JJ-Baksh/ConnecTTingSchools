@@ -379,7 +379,7 @@ def lastMileTechnology(parameters):
         
         npv = cf_disc - s_inv
         
-        tech[i] = float("{:.2f}".format( npv ))
+        tech[i] = "{:.2f}".format( npv )
 
     
     return min(tech.items(), key=lambda x: x[1])
