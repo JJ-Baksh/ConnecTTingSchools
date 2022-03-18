@@ -356,7 +356,7 @@
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
-         "markerColor": "red", 
+         "markerColor": "orange", 
         "prefix": "glyphicon"}
     )
 
@@ -364,7 +364,7 @@
         [10.7069897235975, -61.5107602733107], {
             icon: icon_6233c88ca2af91babc35ccfc,
         },
-    ).addTo( geoConfigGroup )
+    ).addTo( partConfigGroup )
 
     var popup_6233c88ca2af91babc35ccfc = L.popup({"maxWidth": 650})
     var i_frame_6233c88ca2af91babc35ccfc = `
@@ -385,7 +385,7 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         No user device groups configured
+         24.9 Mbps
         
     
         <br> <br>
@@ -393,7 +393,28 @@
 
         <b>Middle Mile Technology and Projected Costs: </b> 
         
-        Parameters not configured <br>
+        <br>
+            <table style="width:100%">
+                <tr>
+                    <th rowspan='2' class="text-center">Technology</th>
+                    <th colspan='2' class="text-center">Projected Costs ($TTD)</th>
+                </tr>
+                <tr>
+                    <th class="text-center">TCO</th>
+                    <th class="text-center">NPV</th>
+                </tr>
+                <tr>
+                    <td> &nbsp Satellite &nbsp </td>
+                    <td>  &nbsp<b>268900.00 &nbsp</b> </td>
+                    <td> &nbsp 75797398.82 &nbsp </td>
+                </tr>
+                <tr>
+                    <td> &nbsp Microwave radio &nbsp </td>
+                    <td>  &nbsp3302289.66 &nbsp </td>
+                    <td>  &nbsp <b>76712254.05 &nbsp</b> </td>
+                </tr>
+            </table>
+
         
         
         <br>

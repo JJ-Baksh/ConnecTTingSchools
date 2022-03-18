@@ -351,10 +351,10 @@ def middleMileTechnology(parameters):
 
 
 def lastMileTechnology(parameters):
-    tech = {'focl': 0, 
-            'mw': 0, 
-            'sat': 0, 
-            'cell': 0}
+    tech = {'Fiber Optic Cable': 0, 
+            'Microwave': 0, 
+            'Satellite': 0, 
+            'Cellular': 0}
     
     T_payback = 5
     
@@ -379,7 +379,7 @@ def lastMileTechnology(parameters):
         
         npv = cf_disc - s_inv
         
-        tech[i] = npv
+        tech[i] = float("{:.2f}".format( npv ))
 
     
     return min(tech.items(), key=lambda x: x[1])

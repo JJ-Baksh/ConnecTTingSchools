@@ -425,7 +425,7 @@ def lastmile(school):
         return render_template('lastmile.html', user=userSession(), school=school, param = paramter_val)
     
     last_mile_paramters = {
-        'focl': {
+        'Fiber Optic Cable': {
             'aoe_units' : request.form["focl_aoe_units"],
             'teap_units' : request.form["focl_teap_units"],
             'length' : request.form["focl_length"],
@@ -443,7 +443,7 @@ def lastmile(school):
             's_inv' : request.form["focl_s_inv"],
         },
         
-        'mw': {
+        'Microwave': {
             'aoe_units' : request.form["mw_aoe_units"],
             'teap_units' : request.form["mw_teap_units"],
             'length' : request.form["mw_length"],
@@ -461,7 +461,7 @@ def lastmile(school):
             's_inv' : request.form["mw_s_inv"],
         },
         
-        'sat': {
+        'Satellite': {
             'aoe_units' : request.form["sat_aoe_units"],
             'teap_units' : request.form["sat_teap_units"],
             'length' : request.form["sat_length"],
@@ -479,7 +479,7 @@ def lastmile(school):
             's_inv' : request.form["sat_s_inv"],
         },
         
-        'cell': {
+        'Cellular': {
             'aoe_units' : request.form["cell_aoe_units"],
             'teap_units' : request.form["cell_teap_units"],
             'length' : request.form["cell_length"],
