@@ -28,7 +28,7 @@ def updateMap():
 
 
 
-###### route for initalizing the map and default values used in the application
+###### route for initalizing the map
 @app.route('/')
 def inital():
     ##### initalizing the map
@@ -62,6 +62,7 @@ def inital():
 def home():
     if 'all_groups' in session:
         session.pop('all_groups', None)
+    
     return render_template('home.html', user=userSession())
 
 
@@ -134,13 +135,14 @@ def register():
 ##### functionality routes
 @app.route('/schools', methods=['GET', 'POST'])
 def schoolListing():
-    session.pop('all_groups', None) # cleanup
-    all_schools = Schools().getSchoolListing()
+    session.pop('all_groups', None)                 # remove excess session data
+    all_schools = Schools().getSchoolListing()      # retrieve list of all schools from database
     
-    # edit or delete school record
+    # if an edit button was clicked
     if request.form.get("edit"): 
         return redirect(url_for("schoolEdit", school=request.form["edit"]))
 
+    # if a delete button was clicked
     elif request.form.get("delete"):
         school_name = request.form["delete"]
         Schools().DeletefromDB(school_name)     # remove from database

@@ -359,10 +359,10 @@ def getLastMileDefaultParamters():
     }
     
     
-    return {'focl': last_mile_focl,
-            'mw': last_mile_mw,
-            'sat': last_mile_sat,
-            'cell': last_mile_cell}
+    return {'Fiber Optic Cable': last_mile_focl,
+            'Microwave': last_mile_mw,
+            'Satellite': last_mile_sat,
+            'Cellular': last_mile_cell}
 
 
 
