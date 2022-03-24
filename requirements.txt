@@ -11,3 +11,5 @@ Werkzeug==2.0.2
 WTForms==2.3.3
 yarl==1.6.3
 openpyxl==3.0.9
+itsdangerous==2.0.1
+Flask-Mail==0.9.1
