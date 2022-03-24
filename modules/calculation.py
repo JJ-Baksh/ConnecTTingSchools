@@ -5,6 +5,7 @@ from math import log10, floor
 def round_sig(x, sig=3):
    return round(x, sig-int(floor(log10(abs(x))))-1)
 
+
 def requiredNetworkBandwidth(user_device_groups):
     # all parameter values are stored in the Excel document
     df = pd.read_excel('./static/services/Profile_Service_Parametes.xlsx')

@@ -224,7 +224,92 @@
    
     
     
-    var icon_6233c6b1a2af91babc35cce8 = L.AwesomeMarkers.icon(
+    var icon_6234b065ca5c2ffa69c85ea3 = L.AwesomeMarkers.icon(
+        {"extraClasses": "fa-rotate-0", 
+        icon: "info-sign", 
+        "iconColor": "white",
+         "markerColor": "green", 
+        "prefix": "glyphicon"}
+    )
+
+    var school_6234b065ca5c2ffa69c85ea3 = L.marker(
+        [11.1806290319663, -60.8050054143551], {
+            icon: icon_6234b065ca5c2ffa69c85ea3,
+        },
+    ).addTo( partConfigGroup )
+
+    var popup_6234b065ca5c2ffa69c85ea3 = L.popup({"maxWidth": 650})
+    var i_frame_6234b065ca5c2ffa69c85ea3 = `
+        <u><b>SCHOOL INFORMATION</b></u><br>
+        <b>Name:</b> Buccoo Government Primary School <br>
+        <b>Electricity:</b> Consistent Access<br>
+        <b>Cellular Coverage:</b> 
+        
+        
+        4G   
+        
+        3G   
+        
+        
+        
+        <br><br>
+
+        <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
+        <b>Network Bandwidth:</b>
+                            
+         5.82 Mbps
+        
+    
+        <br> <br>
+
+
+        <b>Middle Mile Technology and Projected Costs: </b> 
+        
+        <br>
+            <table style="width:100%">
+                <tr>
+                    <th rowspan='2' class="text-center">Technology</th>
+                    <th colspan='2' class="text-center">Projected Costs ($TTD)</th>
+                </tr>
+                <tr>
+                    <th class="text-center">TCO</th>
+                    <th class="text-center">NPV</th>
+                </tr>
+                <tr>
+                    <td> &nbsp Satellite &nbsp </td>
+                    <td>  &nbsp<b>173500.00 &nbsp</b> </td>
+                    <td> &nbsp 75797398.82 &nbsp </td>
+                </tr>
+                <tr>
+                    <td> &nbsp Microwave radio &nbsp </td>
+                    <td>  &nbsp3302289.66 &nbsp </td>
+                    <td>  &nbsp <b>76712254.05 &nbsp</b> </td>
+                </tr>
+            </table>
+
+        
+        
+        <br>
+        
+        <b>Last Mile Technology and Projected Costs: </b> 
+        
+        <br>  : $  TTD
+        
+        <br>
+        
+    `
+    popup_6234b065ca5c2ffa69c85ea3.setContent(i_frame_6234b065ca5c2ffa69c85ea3)
+        
+    school_6234b065ca5c2ffa69c85ea3.bindPopup(popup_6234b065ca5c2ffa69c85ea3)
+
+    school_6234b065ca5c2ffa69c85ea3.bindTooltip(
+        `<div> Buccoo Government Primary School </div>`,
+        {"sticky": true}
+    )
+
+    
+    
+    var icon_6234b12c8f8f63635e070632 = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
@@ -232,17 +317,17 @@
         "prefix": "glyphicon"}
     )
 
-    var school_6233c6b1a2af91babc35cce8 = L.marker(
-        [11.1806290319663, -60.8050054143551], {
-            icon: icon_6233c6b1a2af91babc35cce8,
+    var school_6234b12c8f8f63635e070632 = L.marker(
+        [10.4604509731823, -61.421069522052], {
+            icon: icon_6234b12c8f8f63635e070632,
         },
     ).addTo( geoConfigGroup )
 
-    var popup_6233c6b1a2af91babc35cce8 = L.popup({"maxWidth": 650})
-    var i_frame_6233c6b1a2af91babc35cce8 = `
+    var popup_6234b12c8f8f63635e070632 = L.popup({"maxWidth": 650})
+    var i_frame_6234b12c8f8f63635e070632 = `
         <u><b>SCHOOL INFORMATION</b></u><br>
-        <b>Name:</b> Buccoo Government Primary School <br>
-        <b>Electricity:</b> Consistent Access<br>
+        <b>Name:</b> Carapichaima R.C. Primary School <br>
+        <b>Electricity:</b> Limited Access<br>
         <b>Cellular Coverage:</b> 
         
         
@@ -277,18 +362,18 @@
         <br>
         
     `
-    popup_6233c6b1a2af91babc35cce8.setContent(i_frame_6233c6b1a2af91babc35cce8)
+    popup_6234b12c8f8f63635e070632.setContent(i_frame_6234b12c8f8f63635e070632)
         
-    school_6233c6b1a2af91babc35cce8.bindPopup(popup_6233c6b1a2af91babc35cce8)
+    school_6234b12c8f8f63635e070632.bindPopup(popup_6234b12c8f8f63635e070632)
 
-    school_6233c6b1a2af91babc35cce8.bindTooltip(
-        `<div> Buccoo Government Primary School </div>`,
+    school_6234b12c8f8f63635e070632.bindTooltip(
+        `<div> Carapichaima R.C. Primary School </div>`,
         {"sticky": true}
     )
 
     
     
-    var icon_6233c788a2af91babc35ccf0 = L.AwesomeMarkers.icon(
+    var icon_6234b1838f8f63635e070639 = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
@@ -296,17 +381,17 @@
         "prefix": "glyphicon"}
     )
 
-    var school_6233c788a2af91babc35ccf0 = L.marker(
-        [10.4604509731823, -61.421069522052], {
-            icon: icon_6233c788a2af91babc35ccf0,
+    var school_6234b1838f8f63635e070639 = L.marker(
+        [10.7069897235975, -61.5107602733107], {
+            icon: icon_6234b1838f8f63635e070639,
         },
     ).addTo( partConfigGroup )
 
-    var popup_6233c788a2af91babc35ccf0 = L.popup({"maxWidth": 650})
-    var i_frame_6233c788a2af91babc35ccf0 = `
+    var popup_6234b1838f8f63635e070639 = L.popup({"maxWidth": 650})
+    var i_frame_6234b1838f8f63635e070639 = `
         <u><b>SCHOOL INFORMATION</b></u><br>
-        <b>Name:</b> Carapichaima R.C. Primary School <br>
-        <b>Electricity:</b> Limited Access<br>
+        <b>Name:</b> Maraval R.C. Primary School <br>
+        <b>Electricity:</b> Consistent Access<br>
         <b>Cellular Coverage:</b> 
         
         
@@ -321,7 +406,7 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         1.95 Mbps
+         13.6 Mbps
         
     
         <br> <br>
@@ -341,18 +426,18 @@
         <br>
         
     `
-    popup_6233c788a2af91babc35ccf0.setContent(i_frame_6233c788a2af91babc35ccf0)
+    popup_6234b1838f8f63635e070639.setContent(i_frame_6234b1838f8f63635e070639)
         
-    school_6233c788a2af91babc35ccf0.bindPopup(popup_6233c788a2af91babc35ccf0)
+    school_6234b1838f8f63635e070639.bindPopup(popup_6234b1838f8f63635e070639)
 
-    school_6233c788a2af91babc35ccf0.bindTooltip(
-        `<div> Carapichaima R.C. Primary School </div>`,
+    school_6234b1838f8f63635e070639.bindTooltip(
+        `<div> Maraval R.C. Primary School </div>`,
         {"sticky": true}
     )
 
     
     
-    var icon_6233c88ca2af91babc35ccfc = L.AwesomeMarkers.icon(
+    var icon_6234b1dc8f8f63635e07063f = L.AwesomeMarkers.icon(
         {"extraClasses": "fa-rotate-0", 
         icon: "info-sign", 
         "iconColor": "white",
@@ -360,17 +445,17 @@
         "prefix": "glyphicon"}
     )
 
-    var school_6233c88ca2af91babc35ccfc = L.marker(
-        [10.7069897235975, -61.5107602733107], {
-            icon: icon_6233c88ca2af91babc35ccfc,
+    var school_6234b1dc8f8f63635e07063f = L.marker(
+        [10.6478574924142, -61.2851370310922], {
+            icon: icon_6234b1dc8f8f63635e07063f,
         },
     ).addTo( partConfigGroup )
 
-    var popup_6233c88ca2af91babc35ccfc = L.popup({"maxWidth": 650})
-    var i_frame_6233c88ca2af91babc35ccfc = `
+    var popup_6234b1dc8f8f63635e07063f = L.popup({"maxWidth": 650})
+    var i_frame_6234b1dc8f8f63635e07063f = `
         <u><b>SCHOOL INFORMATION</b></u><br>
-        <b>Name:</b> Maraval R.C. Primary School <br>
-        <b>Electricity:</b> No Access<br>
+        <b>Name:</b> Holy Cross College <br>
+        <b>Electricity:</b> Consistent Access<br>
         <b>Cellular Coverage:</b> 
         
         
@@ -385,7 +470,7 @@
         <u><b>RECOMMENDED CONNECTIVITY PARAMETERS</b></u><br>
         <b>Network Bandwidth:</b>
                             
-         24.9 Mbps
+         2.26 Mbps
         
     
         <br> <br>
@@ -405,7 +490,7 @@
                 </tr>
                 <tr>
                     <td> &nbsp Satellite &nbsp </td>
-                    <td>  &nbsp<b>268900.00 &nbsp</b> </td>
+                    <td>  &nbsp<b>155700.00 &nbsp</b> </td>
                     <td> &nbsp 75797398.82 &nbsp </td>
                 </tr>
                 <tr>
@@ -426,12 +511,12 @@
         <br>
         
     `
-    popup_6233c88ca2af91babc35ccfc.setContent(i_frame_6233c88ca2af91babc35ccfc)
+    popup_6234b1dc8f8f63635e07063f.setContent(i_frame_6234b1dc8f8f63635e07063f)
         
-    school_6233c88ca2af91babc35ccfc.bindPopup(popup_6233c88ca2af91babc35ccfc)
+    school_6234b1dc8f8f63635e07063f.bindPopup(popup_6234b1dc8f8f63635e07063f)
 
-    school_6233c88ca2af91babc35ccfc.bindTooltip(
-        `<div> Maraval R.C. Primary School </div>`,
+    school_6234b1dc8f8f63635e07063f.bindTooltip(
+        `<div> Holy Cross College </div>`,
         {"sticky": true}
     )
 

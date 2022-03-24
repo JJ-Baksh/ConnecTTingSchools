@@ -32,11 +32,28 @@ class UserAccounts:
         return error
 
 
-    # LOGIN validation
     def ValidateUserAccount(self, form):
         # search for an entry in database with a matching email and password
-        result = self.db.find_one({"$and":[{"email": form['email'], "password" : form['password']}]})
-        self.cluster.close()    # close connection after use
+        result = self.db.find_one({
+            "$and":
+                [{"email": form['email'], "password" : form['password']}]
+            })
+        self.cluster.close()
         
         if not result: return None
+        elif not result['verified']: return None
+            
         return {'firstName': result['firstName']}
+    
+    
+    def VerifyEmail(self, email):
+        result = self.db.find_one({"email" : email})
+        
+        self.db.update_one({"email" : email}, 
+        {'$set': {
+            "verified": True
+        }})
+        
+        self.cluster.close()
+        
+        return result['firstName']

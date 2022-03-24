@@ -1,6 +1,9 @@
 ###### imports and dependancies
 from flask import Flask, render_template, request, url_for, redirect, flash, session
+from flask_mail import Mail, Message
+from itsdangerous import SignatureExpired, URLSafeTimedSerializer
 import os
+from functools import wraps
 from modules.user_accounts import UserAccounts
 from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters, getLastMileDefaultParamters
 from modules.map import addCoverageMap, convertTemplate
@@ -9,83 +12,79 @@ from modules.map import addCoverageMap, convertTemplate
 ##### initialize project components
 app = Flask(__name__)                                               # create Flask application
 app.config['SECRET_KEY'] = os.environ['3020_flask_app_secret_key']  # required for forms collection
+app.config['MAIL_SERVER']='smtp.gmail.com'
+app.config['MAIL_PORT'] = 465
+app.config['MAIL_USERNAME'] = 'jw0373364@gmail.com'
+app.config['MAIL_PASSWORD'] = os.environ['PRAW_PASSWORD']
+app.config['MAIL_USE_TLS'] = False
+app.config['MAIL_USE_SSL'] = True
+
+mail = Mail(app)
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
+## decorator to ensure correct user authorization level before accessing
+def login_required(f):
+    @wraps(f)
+    def decorater(*args, **kwargs):
+        if session.get('firstName') is None:
+            return redirect('/login',code=302)
+        return f(*args, **kwargs)
+    return decorater
 
 
-##### primary functions
 
 def userSession():
-    if 'firstName' in session: return session['firstName']
-    return None
+    return session.get('firstName')
 
 
 def updateMap():
-    all_schools = Schools().getSchoolListing()
-    with open('./static/map/map_template_c.html', 'w') as f: 
-        f.write(render_template('map_template_b.html', school=all_schools))
-    return all_schools
-
-
-
-
-
-###### route for initalizing the map
-@app.route('/')
-def inital():
-    ##### initalizing the map
-    
-    # if map_template_b does not exist: 
-        # render the original code (map_template_a) with cellular coverage areas
-        # add the jinja2 loop for schools (convertTemplate function)
-        # write contents to map_template_b
-        
-    if not os.path.exists('./templates/map_template_b.html'):
-        template = render_template('map_template_a.html', tower=addCoverageMap())
-        with open('./templates/map_template_b.html', 'w') as f: f.write(convertTemplate(template))
-    
-    
-    # create final HTML which will be displayed (map_template_c)
-        # take map_template_b and add the schools in the database
-    
     with open('./static/map/map_template_c.html', 'w') as f:
         all_schools = Schools().getSchoolListing()
         f.write(render_template('map_template_b.html', school=all_schools))
-    
+        return all_schools
 
+
+
+
+## initalize the map
+@app.route('/')
+def inital():
+        
+    if not os.path.exists('./templates/map_template_b.html'):
+        template = render_template('map_template_a.html', tower=addCoverageMap())
+        with open('./templates/map_template_b.html', 'w') as f: 
+            f.write(convertTemplate(template))
+    
+    with open('./static/map/map_template_c.html', 'w') as f:
+        f.write(render_template('map_template_b.html', school=Schools().getSchoolListing()))
+    
     return redirect(url_for(".home"))
 
 
-
-
-
-##### information routes
+## information routes
 @app.route('/home')
 def home():
-    if 'all_groups' in session:
-        session.pop('all_groups', None)
-    
+    session.pop('all_groups', None)
     return render_template('home.html', user=userSession())
 
 
 @app.route('/about')
 def about():
+    session.pop('all_groups', None)
     return render_template('about.html', user=userSession())
 
 
-
-
-
-##### user authentication routes
+## user authentication routes
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    session.pop('all_groups', None)
     
-    # inital arrival to login page
     if not request.form: 
         return render_template('login.html')
     
     # retrieve and validate POST data
     user = UserAccounts().ValidateUserAccount(request.form)
     
-
     # on failed validation, show error message and return to login page with previously filled information
     if not user:
         flash('Invalid email/password')
@@ -97,14 +96,17 @@ def login():
 
 
 @app.route('/logout')
+@login_required
 def logout():
     session.pop('firstName', None)
+    session.pop('all_groups', None)
     return redirect(url_for(".home"))
 
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
-
+    session.pop('all_groups', None)
+    
     # inital arrival to registration page
     if not request.form: return render_template('register.html')
 
@@ -120,23 +122,42 @@ def register():
 
     if error['status']: return render_template('register.html', error=error, form=request.form)
     
-    # submit user data to database
-    reg_form = { 'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password }
+    # send token to user email to verify email
+    token = s.dumps(email, salt='email-confirm')
+    msg = Message('ConnecTTing Schools Verify Email', sender='jw0373364@gmail.com', recipients=[email])
+    
+    link = url_for('confirm_email', token=token, _external=True)
+    msg.body = f'Click on the link to verify your email: {link}\n\n This code will expire in 1 hour.'
+    mail.send(msg)
+    
+    reg_form = { 'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password, 'verified': False}
     UserAccounts().AddtoDB(reg_form)
 
-    # return to landing page with login status
-    session['firstName'] = firstName
-    return redirect(url_for(".home"))
+    # return to landing page
+    flash(f'Check {email} for your verification link')
+    return redirect(url_for(".login"))
 
 
-
+@app.route('/confirm_email/<token>')
+def confirm_email(token):
+    try:
+        email = s.loads(token, salt='email-confirm', max_age=3600)
+        
+        session['name'] = UserAccounts().VerifyEmail(email)
+        flash('Verification Successful. Please Log In!')
+        return redirect(url_for(".login"))
+    
+    except SignatureExpired:
+        flash(f'Verification Link Expired. Try Again.')
+        return redirect(url_for(".register"))
 
 
 ##### functionality routes
 @app.route('/schools', methods=['GET', 'POST'])
+@login_required
 def schoolListing():
-    session.pop('all_groups', None)                 # remove excess session data
-    all_schools = Schools().getSchoolListing()      # retrieve list of all schools from database
+    session.pop('all_groups', None)
+    all_schools = Schools().getSchoolListing()
     
     # if an edit button was clicked
     if request.form.get("edit"): 
@@ -145,49 +166,48 @@ def schoolListing():
     # if a delete button was clicked
     elif request.form.get("delete"):
         school_name = request.form["delete"]
-        Schools().DeletefromDB(school_name)     # remove from database
-        all_schools = updateMap()               # update listing and map
+        Schools().DeletefromDB(school_name)
+        all_schools = updateMap()
     
     return render_template('schoolListing.html', user=userSession(), list=all_schools)
 
 
 @app.route('/schools/add', methods=['GET', 'POST'])
+@login_required
 def schoolAdd():
-
-    # add school page (No POST data)
+    session.pop('all_groups', None)
     all_schools = Schools().getSchoolListing()
-    if not request.form: return render_template('addSchool.html',user=userSession(), list=all_schools)
+    
+    if not request.form: 
+        return render_template('addSchool.html',user=userSession(), list=all_schools)
 
-    # POST data validation is performed on the front-end
-
-    school_data = arrangeSchoolData(request.form)   # arrange POST data for entry to database
-    Schools().AddtoDB(school_data)                  # add to database
-    updateMap()                                     # update map
+    school_data = arrangeSchoolData(request.form)
+    Schools().AddtoDB(school_data)
+    updateMap()
     
     return redirect(url_for(".schoolUserDeviceGroup", school=school_data['school_name']))
 
 
 @app.route('/schools/<school>/editInfo', methods=['GET', 'POST'])
+@login_required
 def schoolEdit(school):
-
-    # edit school page (No POST data)
+    session.pop('all_groups', None)
+    
     if not request.form:
         all_schools = Schools().getSchoolListing()
         school_data_dB = [x for x in all_schools if x['school_name'] == school]
         return render_template('editSchool.html', user=userSession(), school_data_dB=school_data_dB[0], list=all_schools)
-    
-    # POST data validation is performed on the front-end
 
-    school_data_dB = arrangeSchoolData(request.form)    # arrange POST data for entry to database
-    Schools().EditDB(school_data_dB)                    # update databaseng
-    updateMap()                                         # update map
+    school_data_dB = arrangeSchoolData(request.form)
+    Schools().EditDB(school_data_dB)
+    updateMap()
     
     return redirect(url_for(".schoolUserDeviceGroup", school=school_data_dB['school_name']))
 
 
 @app.route('/schools/<school>/editUDG', methods=['GET', 'POST'])
+@login_required
 def schoolUserDeviceGroup(school):
-
 
     if 'all_groups' not in session:
         all_schools = Schools().getSchoolListing()
@@ -195,17 +215,11 @@ def schoolUserDeviceGroup(school):
         dB_groups = school_data_dB[0]['user_device_groups']
         session['all_groups'] = dB_groups
 
-
-
     # arrival to school user device group page with no POST data
     if not request.form:
-        print(session['all_groups'])
         return render_template('editUDG.html', user=userSession(), school=school, udg=session['all_groups'])
 
-    
-    
     if request.form.get("addUDG") or request.form.get("editUDG"):
-        # arrange services
         service_list = ['Conversational Voice', 
                         'Video Conference',
                         'Streaming Audio',
@@ -231,7 +245,6 @@ def schoolUserDeviceGroup(school):
             session['all_groups'] = tmp
             return redirect(url_for(".schoolUserDeviceGroup", school=school))
         
-        
         elif request.form.get("editUDG"):
             for index, group in enumerate(session['all_groups']):
                 if group['group_name'] == request.form.get('id_name'):
@@ -241,7 +254,6 @@ def schoolUserDeviceGroup(school):
                     break
 
             return redirect(url_for(".schoolUserDeviceGroup", school=school))
-
 
     if request.form.get("delete"):
         for x in session['all_groups']:
@@ -264,7 +276,9 @@ def schoolUserDeviceGroup(school):
 
 
 @app.route('/schools/<school>/middlemile', methods=['GET', 'POST'])
+@login_required
 def middlemile(school):
+    session.pop('all_groups', None)
     
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
@@ -410,9 +424,10 @@ def middlemile(school):
     return redirect(url_for(".lastmile", school=school))
 
 
-
 @app.route('/schools/<school>/lastmile', methods=['GET', 'POST'])
+@login_required
 def lastmile(school):
+    session.pop('all_groups', None)
     
     all_schools = Schools().getSchoolListing()
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
@@ -505,10 +520,9 @@ def lastmile(school):
     school_data_dB = [x for x in all_schools if x['school_name'] == school]
     
     Schools().selectLastMile(school_data_dB[0], last_mile_paramters)
-    updateMap()     # update map
+    updateMap()
     
     return redirect(url_for(".schoolListing"))
-
 
 
 
