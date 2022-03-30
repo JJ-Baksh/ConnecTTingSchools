@@ -9,7 +9,6 @@ class Schools:
     def __init__(self):
         self.cluster = MongoClient(os.environ['3020_DB_uri'], connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
         self.db = self.cluster['ECNG3020']['Schools']
-
     
     
     def AddtoDB(self, school_form):
@@ -119,7 +118,13 @@ class Schools:
                                                    'TCO':  school_data_dB['results']['middle_mile_technology_NPV']['TCO'],
                                                    'NPV':  school_data_dB['results']['middle_mile_technology_NPV']['NPV']},
                     'last_mile_technology_NPV': {'name': f'{a[0]}',
-                                                 'NPV': f'{a[1]}'}
+                                                 'NPV': f'{a[1]}',
+                                                 'M_aoe_act': f'{a[2]}',
+                                                 'M_teap_act': f'{a[3]}',
+                                                 'length': f'{a[4]}',
+                                                 'S_equip_mat': f'{a[5]}',
+                                                 'S_deployment': f'{a[6]}',
+                                                 'S_operation': f'{a[7]}'}
         }
 
         self.db.update_one({"_id": ObjectId(f'{school_data_dB["_id"]}')}, 
@@ -200,14 +205,14 @@ def getMiddleMileDefaultParamters(bandwidth):
         'S_maint_focl_norm' : 1000, # FOCL maintainance along route - ASSUMED
         'S_maint_cd_norm' : 1000,   # cable duct mantainance - ASSUMED
         
-        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,             # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
         'S_operation' : 400000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
         'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
         'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
         'K_disc' : 5,               # discount rate (%) - ASSUMED
-        's_inv' : 50000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        's_inv' : 5000000           # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     middle_mile_mw = {
@@ -230,8 +235,8 @@ def getMiddleMileDefaultParamters(bandwidth):
         'S_maint_1pylon_norm' : 0,      # typical cost for one RTS pylon maintainance ($TTD/hour)
         'S_maint_afd_norm' : 0,         # typical cost for antenna feeder device maintainance per RTS ($TTD/hour)
         'S_maint_rts_norm' : 0,         # typical cost for internal RTS device maintainance ($TTD/hour)
-        'S_spectrum' : 10000,           # spectrum licensing cost for the entire channel ($TTD)
-        'S_annual_spectrum_fee' : 1000, # annual spectrum licensing cost for the entire channel ($TTD) - ASSUMED
+        'S_spectrum' : 25000,           # spectrum licensing cost for the entire channel ($TTD)
+        'S_annual_spectrum_fee' : 10000, # annual spectrum licensing cost for the entire channel ($TTD) - ASSUMED
 
         # labor cost norms (man-hour/unit) for ...
         'T_geod_norm' : 67,         # geodetic work at RTS pylon location
@@ -241,18 +246,18 @@ def getMiddleMileDefaultParamters(bandwidth):
         'T_coord_norm' : 0,         # design solutions coordination on one RTS construction
 
         # typical annual labor cost (man-hours/unit) for ...
-        'T_maint_pylon_norm' : 2000,    # RTS pylon maintainance - ASSUMED
-        'T_maint_afd_norm' : 2000,      # cost for antenna feeder device maintainance - ASSUMED
-        'T_maint_rts_norm' : 2000,      # internal RTS device maintainance - ASSUMED
+        'T_maint_pylon_norm' : 16,    # RTS pylon maintainance - ASSUMED
+        'T_maint_afd_norm' : 16,      # cost for antenna feeder device maintainance - ASSUMED
+        'T_maint_rts_norm' : 16,      # internal RTS device maintainance - ASSUMED
         
-        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
-        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'S_operation' : 200000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 100000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
-        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
-        'K_disc' :5 ,               # discord rate (%) - ASSUMED
-        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        'S_equip_mat' : 300000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 15,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5 ,               # discount rate (%) - ASSUMED
+        's_inv' : 2000000          # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     middle_mile_sat = {
@@ -268,14 +273,14 @@ def getMiddleMileDefaultParamters(bandwidth):
         'S_maint_1user' : 500,  # typical cost for user terminal set maintainance per hour ($TTD/hour) - ASSUMED
         'T_maint_1user' : 16,   # annual labor norms for one user terminal set maintainance (man-hours/unit)
         
-        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
         'S_operation' : 600000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 400000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
         'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
-        'K_disc' : 5,               # discord rate (%) - ASSUMED
-        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        'K_disc' : 5,               # discount rate (%) - ASSUMED
+        's_inv' : 10000000          # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     
@@ -287,75 +292,83 @@ def getMiddleMileDefaultParamters(bandwidth):
 def getLastMileDefaultParamters(): 
     # all values will be user-definable but all assumed should be defined by the user first
     last_mile_focl = {
-        'aoe_units' : 5,
-        'teap_units' : 10,
-        'length' : 20,
-        'equipment' : 1000000,
-        'deployment' : 2500000, 
-        'operation' : 560000, 
+        'M_aoe_cover' : 10,
+        'M_aoe' : 10,
+        'N_connect' : 2,
+        'C_teap_aoe' : 4,
+        'length' : 5,
+        'S_places_cost' : 20000,
+        'S_inst_equip' : 30000,
+        'S_cable' : 15000,
         
-        'In' : 26000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,             # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
-        'S_operation' : 600000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'S_operation' : 400000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 200000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
         'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
         'K_disc' : 5,               # discount rate (%) - ASSUMED
-        's_inv' : 20000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        's_inv' : 5000000          # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     last_mile_mw = {
-        'aoe_units' : 10,
-        'teap_units' : 20,
-        'length' : 20,
-        'equipment' : 5000000,
-        'deployment' : 1500000, 
-        'operation' : 420000, 
+        'M_aoe_cover' : 10,
+        'M_aoe' : 10,
+        'N_connect' : 2,
+        'C_teap_aoe' : 4,
+        'length' : 5,
+        'S_places_cost' : 20000,
+        'S_inst_equip' : 30000,
+        'S_cable' : 15000,
         
-        'In' : 36000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,             # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
-        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'S_operation' : 200000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 100000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
-        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
-        'K_disc' :5 ,               # discord rate (%) - ASSUMED
-        's_inv' : 70000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        'S_equip_mat' : 300000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 15,                # average lifetime of equipment and materials (years) - ASSUMED
+        'K_disc' : 5 ,              # discount rate (%) - ASSUMED
+        's_inv' : 2000000           # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     last_mile_sat = {
-        'aoe_units' : 5,
-        'teap_units' : 10,
-        'length' : 20,
-        'equipment' : 1000000,
-        'deployment' : 2500000, 
-        'operation' : 560000, 
+        'M_aoe_cover' : 10,
+        'M_aoe' : 10,
+        'N_connect' : 2,
+        'C_teap_aoe' : 4,
+        'length' : 5,
+        'S_places_cost' : 20000,
+        'S_inst_equip' : 30000,
+        'S_cable' : 15000,
         
-        'In' : 39000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
-        'S_operation' : 900000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'S_operation' : 600000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 600000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'S_equip_mat' : 500000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
         'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
         'K_disc' : 5,               # discord rate (%) - ASSUMED
-        's_inv' : 80000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        's_inv' : 10000000          # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     last_mile_cell = {
-        'aoe_units' : 5,
-        'teap_units' : 10,
-        'length' : 20,
-        'equipment' : 1000000,
-        'deployment' : 2500000, 
-        'operation' : 560000, 
+        'M_aoe_cover' : 10,
+        'M_aoe' : 10,
+        'N_connect' : 2,
+        'C_teap_aoe' : 4,
+        'length' : 5,
+        'S_places_cost' : 20000,
+        'S_inst_equip' : 30000,
+        'S_cable' : 15000,
         
-        'In' : 21000000,            # annual potential income from channel operation ($TTD/year) - ASSUMED
+        'In' : 6000000,             # annual potential income from channel operation ($TTD/year) - ASSUMED
         'T_vat' : 15,               # value-added tax rate (%) - ASSUMED
-        'S_operation' : 300000,     # cost of annual operation ($TTD/year) - ASSUMED
+        'S_operation' : 100000,     # cost of annual operation ($TTD/year) - ASSUMED
         'T_prof' : 10,              # corporate tax rate (%) - ASSUMED
-        'S_equip_mat' : 200000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
-        'T_lt' : 25,                # average lifetime of equipment and materials (years) - ASSUMED
+        'S_equip_mat' : 300000,     # total cost of equipment, components, and material ($TTD) - ASSUMED
+        'T_lt' : 10,                # average lifetime of equipment and materials (years) - ASSUMED
         'K_disc' : 5,               # discord rate (%) - ASSUMED
-        's_inv' : 1000000          # total investment costs for access network construction ($TTD) - ASSUMED
+        's_inv' : 3000000           # total investment costs for access network construction ($TTD) - ASSUMED
     }
     
     

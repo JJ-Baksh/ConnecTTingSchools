@@ -44,21 +44,41 @@
                     <tbody>
 
                         <tr>
-                            <td># AOE Units</td>
-                            <td>Active AOEs and the number of related installation locations</td>
+                            <td># AOE Units (subscribers)</td>
+                            <td>The number of AOE units needed to cover all subscribers in the territory</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_aoe_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='focl_M_aoe_cover' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["M_aoe_cover"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td># TEAP Units</td>
-                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td># AOE Units (installations)</td>
+                            <td>The number of locations for AOE installations </td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_teap_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='focl_M_aoe' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["M_aoe"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>TEAP ports per AOE</td>
+                            <td>The numebr of TEAP ports needed to connect one AOE</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_N_connect' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["N_connect"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>AOEs per TEAP</td>
+                            <td>The number of AOEs that can be connected to one TEAP</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_C_teap_aoe' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["C_teap_aoe"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
@@ -68,40 +88,42 @@
                             <td>--</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_length' min="0" step="any" class="form-control" required> units
-                                </div> 
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Total cost of equipment and materials</td>
-                            <td>--</td>
-                            <td>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_equipment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='focl_length' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["length"]}}' required> km
                                 </div> 
                             </td>
                         </tr>
                         
+
                         <tr>
-                            <td>Total cost of access network deployment</td>
-                            <td>--</td>
+                            <td>Installation Labour Cost</td>
+                            <td>The cost of installation work at all locations in this scenario</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_deployment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='focl_S_places_cost' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["S_places_cost"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Cost of annual operation of an access network</td>
-                            <td>--</td>
+                            <td>Equipment Installation Cost</td>
+                            <td>The cost of insalling and configuring active equipment</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='focl_operation' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='focl_S_inst_equip' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["S_inst_equip"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
+
+                        <tr>
+                            <td>Cable Installation Cost</td>
+                            <td>The cost of installing cable ducts and cable infrustructure (if necessary)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='focl_S_cable' min="0" step="any" class="form-control" value='{{param["Fiber Optic Cable"]["S_cable"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
 
                         <tr>
                             <td>Annual Potential Income from Channel Operation</td>
@@ -202,21 +224,41 @@
                     <tbody>
 
                         <tr>
-                            <td># AOE Units</td>
-                            <td>Active AOEs and the number of related installation locations</td>
+                            <td># AOE Units (subscribers)</td>
+                            <td>The number of AOE units needed to cover all subscribers in the territory</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_aoe_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='mw_M_aoe_cover' min="0" step="any" class="form-control" value='{{param["Microwave"]["M_aoe_cover"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td># TEAP Units</td>
-                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td># AOE Units (installations)</td>
+                            <td>The number of locations for AOE installations </td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_teap_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='mw_M_aoe' min="0" step="any" class="form-control" value='{{param["Microwave"]["M_aoe"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>TEAP ports per AOE</td>
+                            <td>The numebr of TEAP ports needed to connect one AOE</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_N_connect' min="0" step="any" class="form-control" value='{{param["Microwave"]["N_connect"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>AOEs per TEAP</td>
+                            <td>The number of AOEs that can be connected to one TEAP</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_C_teap_aoe' min="0" step="any" class="form-control" value='{{param["Microwave"]["C_teap_aoe"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
@@ -226,37 +268,38 @@
                             <td>--</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_length' min="0" step="any" class="form-control" required> units
-                                </div> 
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Total cost of equipment and materials</td>
-                            <td>--</td>
-                            <td>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_equipment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='mw_length' min="0" step="any" class="form-control" value='{{param["Microwave"]["length"]}}' required> km
                                 </div> 
                             </td>
                         </tr>
                         
+
                         <tr>
-                            <td>Total cost of access network deployment</td>
-                            <td>--</td>
+                            <td>Installation Labour Cost</td>
+                            <td>The cost of installation work at all locations in this scenario</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_deployment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='mw_S_places_cost' min="0" step="any" class="form-control" value='{{param["Microwave"]["S_places_cost"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Cost of annual operation of an access network</td>
-                            <td>--</td>
+                            <td>Equipment Installation Cost</td>
+                            <td>The cost of insalling and configuring active equipment</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='mw_operation' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='mw_S_inst_equip' min="0" step="any" class="form-control" value='{{param["Microwave"]["S_inst_equip"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cable Installation Cost</td>
+                            <td>The cost of installing cable ducts and cable infrustructure (if necessary)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='mw_S_cable' min="0" step="any" class="form-control" value='{{param["Microwave"]["S_cable"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
@@ -360,21 +403,41 @@
                     <tbody>
 
                         <tr>
-                            <td># AOE Units</td>
-                            <td>Active AOEs and the number of related installation locations</td>
+                            <td># AOE Units (subscribers)</td>
+                            <td>The number of AOE units needed to cover all subscribers in the territory</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_aoe_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='sat_M_aoe_cover' min="0" step="any" class="form-control" value='{{param["Satellite"]["M_aoe_cover"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td># TEAP Units</td>
-                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td># AOE Units (installations)</td>
+                            <td>The number of locations for AOE installations </td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_teap_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='sat_M_aoe' min="0" step="any" class="form-control" value='{{param["Satellite"]["M_aoe"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>TEAP ports per AOE</td>
+                            <td>The numebr of TEAP ports needed to connect one AOE</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_N_connect' min="0" step="any" class="form-control" value='{{param["Satellite"]["N_connect"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>AOEs per TEAP</td>
+                            <td>The number of AOEs that can be connected to one TEAP</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_C_teap_aoe' min="0" step="any" class="form-control" value='{{param["Satellite"]["C_teap_aoe"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
@@ -384,37 +447,38 @@
                             <td>--</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_length' min="0" step="any" class="form-control" required> units
-                                </div> 
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Total cost of equipment and materials</td>
-                            <td>--</td>
-                            <td>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_equipment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='sat_length' min="0" step="any" class="form-control" value='{{param["Satellite"]["length"]}}' required> km
                                 </div> 
                             </td>
                         </tr>
                         
+
                         <tr>
-                            <td>Total cost of access network deployment</td>
-                            <td>--</td>
+                            <td>Installation Labour Cost</td>
+                            <td>The cost of installation work at all locations in this scenario</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_deployment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='sat_S_places_cost' min="0" step="any" class="form-control" value='{{param["Satellite"]["S_places_cost"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Cost of annual operation of an access network</td>
-                            <td>--</td>
+                            <td>Equipment Installation Cost</td>
+                            <td>The cost of insalling and configuring active equipment</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='sat_operation' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='sat_S_inst_equip' min="0" step="any" class="form-control" value='{{param["Satellite"]["S_inst_equip"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cable Installation Cost</td>
+                            <td>The cost of installing cable ducts and cable infrustructure (if necessary)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='sat_S_cable' min="0" step="any" class="form-control" value='{{param["Satellite"]["S_cable"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
@@ -518,21 +582,41 @@
                     <tbody>
 
                         <tr>
-                            <td># AOE Units</td>
-                            <td>Active AOEs and the number of related installation locations</td>
+                            <td># AOE Units (subscribers)</td>
+                            <td>The number of AOE units needed to cover all subscribers in the territory</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_aoe_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='cell_M_aoe_cover' min="0" step="any" class="form-control" value='{{param["Cellular"]["M_aoe_cover"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td># TEAP Units</td>
-                            <td>Active TEAPs and the number of related installation locations</td>
+                            <td># AOE Units (installations)</td>
+                            <td>The number of locations for AOE installations </td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_teap_units' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='cell_M_aoe' min="0" step="any" class="form-control" value='{{param["Cellular"]["M_aoe"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>TEAP ports per AOE</td>
+                            <td>The numebr of TEAP ports needed to connect one AOE</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_N_connect' min="0" step="any" class="form-control" value='{{param["Cellular"]["N_connect"]}}' required> units
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>AOEs per TEAP</td>
+                            <td>The number of AOEs that can be connected to one TEAP</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_C_teap_aoe' min="0" step="any" class="form-control" value='{{param["Cellular"]["C_teap_aoe"]}}' required> units
                                 </div> 
                             </td>
                         </tr>
@@ -542,37 +626,38 @@
                             <td>--</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_length' min="0" step="any" class="form-control" required> units
-                                </div> 
-                            </td>
-                        </tr>
-
-                        <tr>
-                            <td>Total cost of equipment and materials</td>
-                            <td>--</td>
-                            <td>
-                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_equipment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='cell_length' min="0" step="any" class="form-control" value='{{param["Cellular"]["length"]}}' required> km
                                 </div> 
                             </td>
                         </tr>
                         
+
                         <tr>
-                            <td>Total cost of access network deployment</td>
-                            <td>--</td>
+                            <td>Installation Labour Cost</td>
+                            <td>The cost of installation work at all locations in this scenario</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_deployment' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='cell_S_places_cost' min="0" step="any" class="form-control" value='{{param["Cellular"]["S_places_cost"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>
 
                         <tr>
-                            <td>Cost of annual operation of an access network</td>
-                            <td>--</td>
+                            <td>Equipment Installation Cost</td>
+                            <td>The cost of insalling and configuring active equipment</td>
                             <td>
                                 <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
-                                    <input type="number" name='cell_operation' min="0" step="any" class="form-control" required> units
+                                    <input type="number" name='cell_S_inst_equip' min="0" step="any" class="form-control" value='{{param["Cellular"]["S_inst_equip"]}}' required> $TTD
+                                </div> 
+                            </td>
+                        </tr>
+
+                        <tr>
+                            <td>Cable Installation Cost</td>
+                            <td>The cost of installing cable ducts and cable infrustructure (if necessary)</td>
+                            <td>
+                                <div class="d-grid gap-2 d-md-flex justify-content-md-center" style='align-items: center;'>
+                                    <input type="number" name='cell_S_cable' min="0" step="any" class="form-control" value='{{param["Cellular"]["S_cable"]}}' required> $TTD
                                 </div> 
                             </td>
                         </tr>

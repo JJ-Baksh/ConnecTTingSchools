@@ -7,6 +7,7 @@ def round_sig(x, sig=3):
 
 
 def requiredNetworkBandwidth(user_device_groups):
+    
     # all parameter values are stored in the Excel document
     df = pd.read_excel('./static/services/Profile_Service_Parametes.xlsx')
     
@@ -95,12 +96,9 @@ def requiredNetworkBandwidth(user_device_groups):
 def middleMileTechnology(parameters):
     
     def focl():
-        ##### inital data
-        
+
         l = float(parameters['focl']['length'])          # kilometers
         T_payback = 5   # years
-
-        ##### default values
 
         # coefficients (C)
         C_hdd = float(parameters['focl']['C_hdd'])
@@ -169,7 +167,7 @@ def middleMileTechnology(parameters):
         S_maint_cd = L_cd * T_maint_cd_norm * S_maint_cd_norm
         S_maint_total = S_maint_FOCL + S_maint_cd
 
-
+        # NPV calculations
         In = float(parameters['focl']['In'])           # assumed
         T_vat = float(parameters['focl']['T_vat'])              # assumed
         S_operation = float(parameters['focl']['S_operation'])    # assumed
@@ -179,7 +177,6 @@ def middleMileTechnology(parameters):
         K_disc = float(parameters['focl']['K_disc'])              # assumed
         s_inv = float(parameters['focl']['s_inv'])        # assumed
 
-        # NPV calculations
         niat = In * (1 - (T_vat/100))
         nopat = (niat - S_operation) * (1 - (T_prof/100))
         cf = nopat + (S_equip_mat / T_lt)
@@ -190,7 +187,7 @@ def middleMileTechnology(parameters):
         
         npv = cf_disc - s_inv
 
-        return S_focl_instal+ (T_payback *S_maint_total), npv
+        return S_focl_instal+ (T_payback * S_maint_total), npv
     
     
     def microwave():
@@ -301,6 +298,7 @@ def middleMileTechnology(parameters):
         S_rent_chan = V_chan * S_rent_1mbit
         S_serv_user = N_user * S_maint_1user * T_maint_1user
         S_maint_user = S_rent_chan + S_serv_user
+
         
         ##### NPV calculations
         In = float(parameters['sat']['In'])           # assumed
@@ -332,7 +330,7 @@ def middleMileTechnology(parameters):
     
     tco = [focl_tco, mw_tco, sat_tco]
     npv = [focl_npv, mw_npv, sat_npv]
-
+    
     index_min_tco = tco.index(min(tco))
     index_max_npv = npv.index(max(npv))
 
@@ -359,7 +357,16 @@ def lastMileTechnology(parameters):
     
     T_payback = 5
     
-    for i in parameters: 
+    for i in parameters:
+        M_aoe_cover = float(parameters[i]['M_aoe_cover'])
+        M_aoe = float(parameters[i]['M_aoe'])
+        N_connect = float(parameters[i]['N_connect'])
+        C_teap_aoe = float(parameters[i]['C_teap_aoe'])
+        length = float(parameters[i]['length'])
+        S_places_cost = float(parameters[i]['S_places_cost'])
+        S_inst_equip = float(parameters[i]['S_inst_equip'])
+        S_cable = float(parameters[i]['S_cable'])
+        
         In = float(parameters[i]['In'])
         T_vat = float(parameters[i]['T_vat'])
         S_operation = float(parameters[i]['S_operation'])
@@ -368,6 +375,11 @@ def lastMileTechnology(parameters):
         T_lt = float(parameters[i]['T_lt'])
         K_disc = float(parameters[i]['K_disc'])
         s_inv = float(parameters[i]['s_inv'])
+
+        # Deployment Cost calculations
+        M_aoe_act = max(M_aoe_cover, M_aoe)
+        M_teap_act = M_aoe * N_connect/C_teap_aoe
+        S_deployment = S_places_cost + S_inst_equip + S_cable
 
         # NPV calculations
         niat = In * (1 - (T_vat/100))
@@ -380,7 +392,6 @@ def lastMileTechnology(parameters):
         
         npv = cf_disc - s_inv
         
-        tech[i] = "{:.2f}".format( npv )
+        tech[i] = float("{:.2f}".format( npv ))
 
-    
-    return min(tech.items(), key=lambda x: x[1])
+    return (f'{max(tech, key=tech.get)}', max(tech.values()), M_aoe_act, M_teap_act, length, S_equip_mat, S_deployment, S_operation)

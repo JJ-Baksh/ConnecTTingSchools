@@ -242,7 +242,6 @@
     var i_frame_{{x._id}} = `
         <u><b>SCHOOL INFORMATION</b></u><br>
         <b>Name:</b> {{x.school_name}} <br>
-        <b>Electricity:</b> {{x.electricity}} Access<br>
         <b>Cellular Coverage:</b> 
         {% if x.available_coverage %}
         {% for i in x.available_coverage %}
@@ -296,7 +295,35 @@
         
         <b>Last Mile Technology and Projected Costs: </b> 
         {% if x.last_mile_parameters %}
-        <br> {{x.results.last_mile_technology_NPV.name}} : $ {{x.results.last_mile_technology_NPV.NPV}} TTD
+        <br> 
+        
+            <table style="width:100%">
+                <tr>
+                    <th class="text-center">Technology</th>
+                    <th class="text-center">{{x.results.last_mile_technology_NPV.name}}</th>
+                </tr>
+
+                <tr>
+                    <td> # of AOEs and TEAPs </td>
+                    <td> &nbsp {{x.results.last_mile_technology_NPV.M_aoe_act}}, {{x.results.last_mile_technology_NPV.M_teap_act}} &nbsp </td>
+                </tr>
+                <tr>
+                    <td> Cable length needed</td>
+                    <td> &nbsp {{x.results.last_mile_technology_NPV.length}} km &nbsp </td>
+                </tr>
+                <tr>
+                    <td> Deployment Cost </td>
+                    <td> &nbsp ${{x.results.last_mile_technology_NPV.S_deployment}} TTD &nbsp </td>
+                </tr>
+                <tr>
+                    <td> Operation Cost </td>
+                    <td> &nbsp ${{x.results.last_mile_technology_NPV.S_operation}} TTD &nbsp </td>
+                </tr>
+                <tr>
+                    <td> NPV </td>
+                    <td> &nbsp ${{x.results.last_mile_technology_NPV.NPV}} TTD &nbsp </td>
+                </tr>
+            </table>
         {% else %}
         Parameters not configured
         {% endif %}

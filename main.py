@@ -8,6 +8,14 @@ from modules.user_accounts import UserAccounts
 from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters, getLastMileDefaultParamters
 from modules.map import addCoverageMap, convertTemplate
 
+## database test functions
+# from pymongo import MongoClient
+# cluster = MongoClient(os.environ['3020_DB_uri'])
+# database = cluster['ECNG3020']
+# collection = database['Test']
+# print(collection.find_one())
+# cluster.close()
+
 
 ##### initialize project components
 app = Flask(__name__)                                               # create Flask application
@@ -258,7 +266,9 @@ def schoolUserDeviceGroup(school):
     if request.form.get("delete"):
         for x in session['all_groups']:
             if x['group_name'] == request.form['delete']:
-                session['all_groups'].remove(x)
+                tmp = session['all_groups']
+                tmp.remove(x)
+                session['all_groups'] = tmp
                 break
         
         return redirect(url_for(".schoolUserDeviceGroup", school=school))
@@ -443,12 +453,14 @@ def lastmile(school):
     
     last_mile_paramters = {
         'Fiber Optic Cable': {
-            'aoe_units' : request.form["focl_aoe_units"],
-            'teap_units' : request.form["focl_teap_units"],
+            'M_aoe_cover' : request.form["focl_M_aoe_cover"],
+            'M_aoe' : request.form["focl_M_aoe"],
+            'N_connect' : request.form["focl_N_connect"],
+            'C_teap_aoe' : request.form["focl_C_teap_aoe"],
             'length' : request.form["focl_length"],
-            'equipment' : request.form["focl_equipment"],
-            'deployment' : request.form["focl_deployment"],
-            'operation' : request.form["focl_operation"],
+            'S_places_cost' : request.form["focl_S_places_cost"],
+            'S_inst_equip' : request.form["focl_S_inst_equip"],
+            'S_cable' : request.form["focl_S_cable"],
             
             'In' : request.form["focl_In"],
             'T_vat' : request.form["focl_T_vat"],
@@ -461,12 +473,14 @@ def lastmile(school):
         },
         
         'Microwave': {
-            'aoe_units' : request.form["mw_aoe_units"],
-            'teap_units' : request.form["mw_teap_units"],
+            'M_aoe_cover' : request.form["mw_M_aoe_cover"],
+            'M_aoe' : request.form["mw_M_aoe"],
+            'N_connect' : request.form["mw_N_connect"],
+            'C_teap_aoe' : request.form["mw_C_teap_aoe"],
             'length' : request.form["mw_length"],
-            'equipment' : request.form["mw_equipment"],
-            'deployment' : request.form["mw_deployment"],
-            'operation' : request.form["mw_operation"],
+            'S_places_cost' : request.form["mw_S_places_cost"],
+            'S_inst_equip' : request.form["mw_S_inst_equip"],
+            'S_cable' : request.form["mw_S_cable"],
             
             'In' : request.form["mw_In"],
             'T_vat' : request.form["mw_T_vat"],
@@ -479,12 +493,14 @@ def lastmile(school):
         },
         
         'Satellite': {
-            'aoe_units' : request.form["sat_aoe_units"],
-            'teap_units' : request.form["sat_teap_units"],
+            'M_aoe_cover' : request.form["sat_M_aoe_cover"],
+            'M_aoe' : request.form["sat_M_aoe"],
+            'N_connect' : request.form["sat_N_connect"],
+            'C_teap_aoe' : request.form["sat_C_teap_aoe"],
             'length' : request.form["sat_length"],
-            'equipment' : request.form["sat_equipment"],
-            'deployment' : request.form["sat_deployment"],
-            'operation' : request.form["sat_operation"],
+            'S_places_cost' : request.form["sat_S_places_cost"],
+            'S_inst_equip' : request.form["sat_S_inst_equip"],
+            'S_cable' : request.form["sat_S_cable"],
             
             'In' : request.form["sat_In"],
             'T_vat' : request.form["sat_T_vat"],
@@ -497,12 +513,14 @@ def lastmile(school):
         },
         
         'Cellular': {
-            'aoe_units' : request.form["cell_aoe_units"],
-            'teap_units' : request.form["cell_teap_units"],
+            'M_aoe_cover' : request.form["cell_M_aoe_cover"],
+            'M_aoe' : request.form["cell_M_aoe"],
+            'N_connect' : request.form["cell_N_connect"],
+            'C_teap_aoe' : request.form["cell_C_teap_aoe"],
             'length' : request.form["cell_length"],
-            'equipment' : request.form["cell_equipment"],
-            'deployment' : request.form["cell_deployment"],
-            'operation' : request.form["cell_operation"],
+            'S_places_cost' : request.form["cell_S_places_cost"],
+            'S_inst_equip' : request.form["cell_S_inst_equip"],
+            'S_cable' : request.form["cell_S_cable"],
             
             'In' : request.form["cell_In"],
             'T_vat' : request.form["cell_T_vat"],
