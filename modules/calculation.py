@@ -394,4 +394,4 @@ def lastMileTechnology(parameters):
         
         tech[i] = float("{:.2f}".format( npv ))
 
-    return (f'{max(tech, key=tech.get)}', max(tech.values()), M_aoe_act, M_teap_act, length, S_equip_mat, S_deployment, S_operation)
+    return (f'{max(tech, key=tech.get)}', max(tech.values()), M_aoe_act, M_teap_act, length, float("{:.2f}".format( S_equip_mat )), float("{:.2f}".format( S_deployment )), float("{:.2f}".format( S_operation )))
