@@ -10,7 +10,7 @@ from modules.map import addCoverageMap, convertTemplate
 
 # database test functions
 from pymongo import MongoClient
-cluster = MongoClient(os.environ['3020_DB_uri'])
+cluster = MongoClient('mongodb+srv://ECNG3020:Electrical1999@cluster0.nxa5e.mongodb.net/ECNG3020?retryWrites=true&w=majority')
 database = cluster['ECNG3020']
 collection = database['Test']
 print(collection.find_one())
