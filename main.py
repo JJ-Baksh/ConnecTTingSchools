@@ -19,11 +19,11 @@ from modules.map import addCoverageMap, convertTemplate
 
 ##### initialize project components
 app = Flask(__name__)                                               # create Flask application
-app.config['SECRET_KEY'] = os.environ['3020_flask_app_secret_key']  # required for forms collection
+app.config['SECRET_KEY'] = 'rA7AfwoD0i'  # required for forms collection
 app.config['MAIL_SERVER']='smtp.gmail.com'
 app.config['MAIL_PORT'] = 465
-app.config['MAIL_USERNAME'] = 'jw0373364@gmail.com'
-app.config['MAIL_PASSWORD'] = os.environ['PRAW_PASSWORD']
+app.config['MAIL_USERNAME'] = 'connecTTingSchools@gmail.com'
+app.config['MAIL_PASSWORD'] = 'irnrafphtremufyp'
 app.config['MAIL_USE_TLS'] = False
 app.config['MAIL_USE_SSL'] = True
 
@@ -132,7 +132,7 @@ def register():
     
     # send token to user email to verify email
     token = s.dumps(email, salt='email-confirm')
-    msg = Message('ConnecTTing Schools Verify Email', sender='jw0373364@gmail.com', recipients=[email])
+    msg = Message('ConnecTTing Schools Verify Email', sender='connecTTingSchools@gmail.com', recipients=[email])
     
     link = url_for('confirm_email', token=token, _external=True)
     msg.body = f'Click on the link to verify your email: {link}\n\n This code will expire in 1 hour.'
