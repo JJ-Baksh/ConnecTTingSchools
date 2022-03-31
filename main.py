@@ -8,13 +8,13 @@ from modules.user_accounts import UserAccounts
 from modules.schools import Schools, arrangeSchoolData, getMiddleMileDefaultParamters, getLastMileDefaultParamters
 from modules.map import addCoverageMap, convertTemplate
 
-## database test functions
-# from pymongo import MongoClient
-# cluster = MongoClient(os.environ['3020_DB_uri'])
-# database = cluster['ECNG3020']
-# collection = database['Test']
-# print(collection.find_one())
-# cluster.close()
+# database test functions
+from pymongo import MongoClient
+cluster = MongoClient(os.environ['3020_DB_uri'])
+database = cluster['ECNG3020']
+collection = database['Test']
+print(collection.find_one())
+cluster.close()
 
 
 ##### initialize project components

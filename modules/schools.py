@@ -4,10 +4,11 @@ from bson.objectid import ObjectId
 from modules.calculation import requiredNetworkBandwidth, middleMileTechnology, lastMileTechnology
 import pandas as pd
 
+uri = 'mongodb+srv://ECNG3020:Electrical1999@cluster0.nxa5e.mongodb.net/ECNG3020?retryWrites=true&w=majority'
 
 class Schools:
     def __init__(self):
-        self.cluster = MongoClient(os.environ['3020_DB_uri'], connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
+        self.cluster = MongoClient(uri, connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
         self.db = self.cluster['ECNG3020']['Schools']
     
     

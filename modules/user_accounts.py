@@ -1,10 +1,12 @@
 import os
 from pymongo import MongoClient
 
+uri = 'mongodb+srv://ECNG3020:Electrical1999@cluster0.nxa5e.mongodb.net/ECNG3020?retryWrites=true&w=majority'
+
 class UserAccounts:
 
     def __init__(self):
-        self.cluster = MongoClient(os.environ['3020_DB_uri'], connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
+        self.cluster = MongoClient(uri, connectTimeoutMS=30000, socketTimeoutMS=None, socketKeepAlive=True, connect=False, maxPoolsize=1)
         self.db = self.cluster['ECNG3020']['UserAccounts']
 
     # add user entry to the database
